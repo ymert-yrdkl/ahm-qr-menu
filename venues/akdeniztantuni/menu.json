@@ -1,0 +1,427 @@
+{
+  "version": 2,
+  "updatedAt": "",
+  "name": "Akdeniz Tantuni",
+  "tagline": "En güzel aşklar tantuniyle başlar.",
+  "logo": "logo.jpg",
+  "theme": {
+    "primary": "#e2d51c",
+    "paper": "#141210",
+    "imageFit": "cover"
+  },
+  "contact": {
+    "phone": "0380 524 69 49",
+    "address": "Düzce Merkez Şube\nCedidiye Mah. Eski Bolu Cad. No:66/b\nMerkez / Düzce",
+    "mapsUrl": "",
+    "instagram": "https://www.instagram.com/akdeniztantuni33/",
+    "website": "",
+    "orderUrl": "https://www.yemeksepeti.com/restaurant/yhfe/akdeniz-33-tantuni",
+    "orderLabel": "",
+    "wifiName": "",
+    "wifiPassword": ""
+  },
+  "note": "Üniversite Beçi Şube: 0531 665 08 81\nAlerjen bilgisi için personelimize danışın.",
+  "currency": "₺",
+  "categories": [
+    {
+      "id": "et-tantuniler",
+      "name": "Et Tantuniler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "yogurtlu-et-tantuni",
+          "name": "Yoğurtlu Et Tantuni",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu ile",
+          "price": "",
+          "variants": [],
+          "image": "yogurtlu-et-tantuni.jpg",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "et-tantuni-durum",
+          "name": "Et Tantuni Dürüm",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu ile",
+          "price": "",
+          "variants": [],
+          "image": "et-tantuni-durum.jpg",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "ekmek-arasi-et-tantuni",
+          "name": "Ekmek Arası Et Tantuni",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu ile",
+          "price": "",
+          "variants": [],
+          "image": "ekmek-arasi-et-tantuni.jpg",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "tavuk-tantuniler",
+      "name": "Tavuk Tantuniler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "yogurtlu-tavuk-tantuni",
+          "name": "Yoğurtlu Tavuk Tantuni",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu, turp ile",
+          "price": "",
+          "variants": [],
+          "image": "yogurtlu-tavuk-tantuni.jpg",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "tavuk-tantuni-durum",
+          "name": "Tavuk Tantuni Dürüm",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu, turp ile",
+          "price": "",
+          "variants": [],
+          "image": "tavuk-tantuni-durum.jpg",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "ekmek-arasi-tavuk-tantuni",
+          "name": "Ekmek Arası Tavuk Tantuni",
+          "desc": "Maydanoz, domates, soğan. Meze, roka, limon, biber turşusu, lahana turşusu, turp ile",
+          "price": "",
+          "variants": [],
+          "image": "ekmek-arasi-tavuk-tantuni.jpg",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "menuler",
+      "name": "Menüler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "yogurtlu-tavuk-tantuni-menu",
+          "name": "Yoğurtlu Tavuk Tantuni Menü",
+          "desc": "Yoğurtlu tavuk tantuni, soğan, domates, lahana turşusu, limon, biber turşusu, roka ve Coca-Cola (20 cl, cam şişe)",
+          "price": "",
+          "variants": [],
+          "image": "yogurtlu-tavuk-tantuni-menu.jpg",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "et-tantuni-menu",
+          "name": "Et Tantuni Menü",
+          "desc": "Ekmek arası et tantuni veya et tantuni dürüm, roka, limon, biber turşusu, lahana salatası, turp, günün Eker tatlısı ve ayran (20 cl)",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "tavuk-tantuni-menu",
+          "name": "Tavuk Tantuni Menü",
+          "desc": "Ekmek arası tavuk tantuni veya tavuk tantuni dürüm, roka, limon, biber turşusu, lahana salatası, günün Eker tatlısı ve ayran (20 cl)",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "5-li-tavuk-menu",
+          "name": "5'li Tavuk Menü",
+          "desc": "5 adet ekmek arası tavuk tantuni, roka, limon, biber turşusu, lahana turşusu, salata ve 2 adet ayran (30 cl)",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "5-li-tavuk-tantuni-durum-menu",
+          "name": "5'li Tavuk Tantuni Dürüm Menü",
+          "desc": "5 adet tavuk tantuni dürüm, roka, limon, biber turşusu, lahana turşusu, turp ve 2 adet ayran (20 cl)",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "yan-urunler",
+      "name": "Yan Ürünler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "yogurtlu-lahana",
+          "name": "Yoğurtlu Lahana",
+          "desc": "Tek kişilik",
+          "price": "",
+          "variants": [],
+          "image": "yogurtlu-lahana.jpg",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "tatlilar",
+      "name": "Tatlılar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "eker-kazandibi-100-gr",
+          "name": "Eker Kazandibi (100 gr)",
+          "desc": "Paket tatlı",
+          "price": "",
+          "variants": [],
+          "image": "eker-kazandibi-100-gr.jpg",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "eker-cikolatali-puding-100-gr",
+          "name": "Eker Çikolatalı Puding (100 gr)",
+          "desc": "Paket tatlı",
+          "price": "",
+          "variants": [],
+          "image": "eker-cikolatali-puding-100-gr.jpg",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sutlac-100-gr",
+          "name": "Sütlaç (100 gr)",
+          "desc": "Pirinç, süt ve şekerle hazırlanan hafif puding kıvamında tatlı",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "icecekler",
+      "name": "İçecekler",
+      "desc": "",
+      "layout": "compact",
+      "hidden": false,
+      "items": [
+        {
+          "id": "ayran-30-cl",
+          "name": "Ayran (30 cl)",
+          "desc": "Büyük",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "ayran-20-cl",
+          "name": "Ayran (20 cl)",
+          "desc": "Küçük",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "salgam-suyu-30-cl",
+          "name": "Şalgam Suyu (30 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "coca-cola-33-cl",
+          "name": "Coca-Cola (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "coca-cola-zero-sugar-33-cl",
+          "name": "Coca-Cola Zero Sugar (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fanta-33-cl",
+          "name": "Fanta (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "pepsi-33-cl",
+          "name": "Pepsi (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fuse-tea-33-cl",
+          "name": "Fuse Tea (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "nigde-gazozu-25-cl",
+          "name": "Niğde Gazozu (25 cl)",
+          "desc": "Cam şişe",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "damla-karpuz-cilek-soda-20-cl",
+          "name": "Damla Karpuz & Çilek Soda (20 cl)",
+          "desc": "Cam şişe",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "damla-elmali-soda-20-cl",
+          "name": "Damla Elmalı Soda (20 cl)",
+          "desc": "Cam şişe",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "soda-20-cl",
+          "name": "Soda (20 cl)",
+          "desc": "Cam şişe",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "su-50-cl",
+          "name": "Su (50 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    }
+  ]
+}

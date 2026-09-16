@@ -1,0 +1,744 @@
+{
+  "version": 2,
+  "updatedAt": "",
+  "name": "Schnitz Go",
+  "tagline": "Good Fast Food",
+  "logo": "logo.svg",
+  "theme": {
+    "primary": "#c1272d",
+    "paper": "#faf8f4",
+    "imageFit": "contain"
+  },
+  "contact": {
+    "phone": "0551 715 69 90",
+    "address": "Kültür Mahallesi\nKuyumcuzade Blv. No:90/A\nMerkez / Düzce",
+    "mapsUrl": "https://www.google.com/maps/place//data=!4m2!3m1!1s0x409d75e4cce25e15:0x2015508c2c732485",
+    "instagram": "https://www.instagram.com/schnitz.go/",
+    "website": "",
+    "orderUrl": "https://www.yemeksepeti.com/restaurant/b6a2/schnitz-go-b6a2",
+    "orderLabel": "",
+    "wifiName": "",
+    "wifiPassword": ""
+  },
+  "note": "Alerjen bilgisi için personelimize danışın.",
+  "currency": "₺",
+  "categories": [
+    {
+      "id": "bowl",
+      "name": "Bowl’lar",
+      "desc": "Makarna tabanı, üstünde şnitzel. Yanında coleslaw ve patates.",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "mix-bowl",
+          "name": "Mix Bowl",
+          "desc": "Penne makarna, tavuk şnitzel, coleslaw salata, patates kızartması, salatalık turşusu, fresh sos, BBQ sos.",
+          "price": "",
+          "variants": [],
+          "image": "mix-bowl.webp",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "spicy-bowl",
+          "name": "Spicy Bowl",
+          "desc": "Acılı buffalo soslu penne makarna, tavuk şnitzel, coleslaw salata, patates kızartması, jalapeño turşusu, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "spicy-bowl.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fresh-bowl",
+          "name": "Fresh Bowl",
+          "desc": "Kremalı penne makarna, tavuk şnitzel, patates kızartması, salatalık turşusu, coleslaw salata, fresh sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "pesto-soslu-makarna-bowl",
+          "name": "Pesto Soslu Makarna Bowl",
+          "desc": "Pesto soslu penne, tavuk şnitzel, coleslaw salata, salatalık turşusu, fresh sos.",
+          "price": "",
+          "variants": [],
+          "image": "pesto-bowl.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "buff-bowl",
+          "name": "Buff Bowl",
+          "desc": "Acılı buffalo soslu penne makarna, tavuk şnitzel, coleslaw salata, patates kızartması, salatalık turşusu, BBQ sos ve ranch ile.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "honey-bowl",
+          "name": "Honey Bowl",
+          "desc": "Sade penne makarna, tavuk şnitzel, patates kızartması, salatalık turşusu, coleslaw salata, ballı hardal sos, ranch sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "caesar-bowl",
+          "name": "Caesar Bowl",
+          "desc": "Marul, çeri domates, roka, tavuk şnitzel, caesar sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "crispy-bowl",
+          "name": "Crispy Bowl",
+          "desc": "Patates kızartması, tavuk şnitzel, soğan halkası, coleslaw salata, jalapeño turşusu, BBQ sos, sarımsaklı mayonez, cheddar sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "veggie-bowl",
+          "name": "Veggie Bowl",
+          "desc": "Seçtiğiniz soslu penne, patates kızartması, coleslaw salata, salatalık turşusu. İki adet sos ile.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "kremali-mantarli-tavuklu-makarna",
+          "name": "Kremalı Mantarlı Tavuklu Makarna",
+          "desc": "Sulu tavuk parçaları, taze mantar ve bol parmesan peyniriyle kremalı makarna.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "kremali-kori-soslu-tavuklu-bowl",
+          "name": "Kremalı Köri Soslu Tavuklu Bowl",
+          "desc": "Kremalı penne makarna, köri soslu tavuk, coleslaw salata, turşu, patates kızartması.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "kremali-bbq-soslu-tavuklu-bowl",
+          "name": "Kremalı BBQ Soslu Tavuklu Bowl",
+          "desc": "Kremalı penne, BBQ soslu tavuk, coleslaw salata, turşu, patates kızartması.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "kremali-buffalo-soslu-tavuklu-bowl",
+          "name": "Kremalı Buffalo Soslu Tavuklu Bowl",
+          "desc": "Kremalı penne, buffalo soslu acılı tavuk, coleslaw salatası, turşu, patates kızartması.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "sandvic",
+      "name": "Sandviçler",
+      "desc": "Uzun ekmekte, iki elle tutulan hâli.",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "turco-sandvic",
+          "name": "Turco Sandviç",
+          "desc": "Tavuk şnitzel, marul, domates, salatalık turşusu, dip sos, ketçap, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "turco-sandvic.webp",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fry-sandvic",
+          "name": "Fry Sandviç",
+          "desc": "Tavuk şnitzel, patates kızartması, salatalık turşusu, soğan, dip sos, cheddar sos, BBQ sos.",
+          "price": "",
+          "variants": [],
+          "image": "fry-sandvic.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "spicy-sandvic",
+          "name": "Spicy Sandviç",
+          "desc": "Tavuk, patates kızartması, jalapeño turşusu, acılı buffalo sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "mix-sandvic",
+          "name": "Mix Sandviç",
+          "desc": "Tavuk şnitzel, marul, salatalık turşusu, patates kızartması, dip sos, fresh sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sezar-sandvic",
+          "name": "Sezar Sandviç",
+          "desc": "Tavuk şnitzel, marul, roka, çeri domates, sezar sos, parmesan peyniri.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "patso-sandvic",
+          "name": "Patso Sandviç",
+          "desc": "Patates kızartması, eritilmiş cheddar peyniri, BBQ sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "durum",
+      "name": "Dürümler",
+      "desc": "Lavaşa sarılı, yolda yenen hâli.",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "schnitz-durum",
+          "name": "Schnitz Dürüm",
+          "desc": "Lavaş ekmeğinde tavuk şnitzel, marul, domates, turşu, ketçap, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "schnitz-durum.webp",
+          "tags": [
+            "populer"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "acili-buffalo-durum",
+          "name": "Acılı Buffalo Dürüm",
+          "desc": "Lavaş ekmeğinde tavuk şnitzel, marul, domates, turşu, buffalo sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "buffalo-durum.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "bbq-soslu-durum",
+          "name": "BBQ Soslu Dürüm",
+          "desc": "Tavuk şnitzel, marul, turşu, domates, BBQ sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "bbq-durum.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sweet-durum",
+          "name": "Sweet Dürüm",
+          "desc": "Lavaş içinde tavuk şnitzel, marul, domates, turşu, ballı hardal, acı tatlı sos ve sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "sweet-durum.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fresh-durum",
+          "name": "Fresh Dürüm",
+          "desc": "Tavuk şnitzel, marul, turşu, domates, fresh sos, sarımsaklı mayonez.",
+          "price": "",
+          "variants": [],
+          "image": "fresh-durum.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "burger",
+      "name": "Burgerler",
+      "desc": "Cheddarlı ekmek arası. Menülü seçenekleriyle.",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "snitzel-burger",
+          "name": "Şnitzel Burger",
+          "desc": "Tavuk şnitzel, cheddar peyniri, marul, domates, salatalık turşusu, dip sos, BBQ sos, ranch sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "honey-burger",
+          "name": "Honey Burger",
+          "desc": "Tavuk şnitzel, cheddar peyniri, coleslaw salatası, kıtır soğan, ballı hardal sos, ranch sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "spicy-burger",
+          "name": "Spicy Burger",
+          "desc": "Tavuk şnitzel, cheddar peyniri, marul, domates, jalapeño turşusu, dip sos, buffalo acı sos.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "gurme-burger-menu",
+          "name": "Gurme Burger Menü",
+          "desc": "Tavuk şnitzel, turşu, cheddar peyniri, mantar sos, sarımsaklı mayonez, kıtır soğan. Patates kızartması ve kutu içecekle.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "schnitz-burger-menu",
+          "name": "Schnitz Burger Menü",
+          "desc": "Tavuk şnitzel, cheddar peyniri, marul, domates, turşu, dip sos, ketçap ve sarımsaklı mayonez. Patates ve içecekle.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "spicy-burger-menu",
+          "name": "Spicy Burger Menü",
+          "desc": "Tavuk şnitzel, cheddar peyniri, marul, domates, jalapeño turşusu, dip sos ve buffalo acı sos. Patates ve içecekle.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "honey-burger-menu",
+          "name": "Honey Burger Menü",
+          "desc": "Tavuk şnitzel, cheddar peyniri, coleslaw salata, kıtır soğan, ballı hardal ve ranch sos. Patates ve içecekle.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "yan",
+      "name": "Yan ürünler",
+      "desc": "Patatesler ve soğan halkası.",
+      "layout": "photo",
+      "hidden": false,
+      "items": [
+        {
+          "id": "cheddarli-patates-kizartmasi",
+          "name": "Cheddarlı Patates Kızartması",
+          "desc": "Parmak dilim patates, üstünde eritilmiş cheddar.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "soslu-patates-kizartmasi",
+          "name": "Soslu Patates Kızartması",
+          "desc": "Parmak dilim patates, seçtiğiniz soslarla.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "buffalo-aci-soslu-patates",
+          "name": "Buffalo Acı Soslu Patates",
+          "desc": "Patates kızartması, buffalo acı sosu.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "patates-kizartmasi",
+          "name": "Patates Kızartması",
+          "desc": "Parmak dilim.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sogan-halkasi-6-adet",
+          "name": "Soğan Halkası (6 adet)",
+          "desc": "Kıtır kaplama, 6 adet olarak servis edilir.",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "icecek",
+      "name": "İçecekler",
+      "desc": "Kutu, şişe ve ayran.",
+      "layout": "compact",
+      "hidden": false,
+      "items": [
+        {
+          "id": "coca-cola-33-cl",
+          "name": "Coca-Cola (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fanta-33-cl",
+          "name": "Fanta (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sprite-33-cl",
+          "name": "Sprite (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fuse-tea-seftali-33-cl",
+          "name": "Fuse Tea Şeftali (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fuse-tea-limon-33-cl",
+          "name": "Fuse Tea Limon (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fuse-tea-karpuz-33-cl",
+          "name": "Fuse Tea Karpuz (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "cappy-visne-33-cl",
+          "name": "Cappy Vişne (33 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "uzay-kola-25-cl-cam",
+          "name": "Uzay Kola (25 cl, cam)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "uzay-gazoz-25-cl-cam",
+          "name": "Uzay Gazoz (25 cl, cam)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "ayran-28-cl",
+          "name": "Ayran (28 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sade-soda-25-cl-cam",
+          "name": "Sade Soda (25 cl, cam)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "su-50-cl",
+          "name": "Su (50 cl)",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    },
+    {
+      "id": "sos",
+      "name": "Soslar",
+      "desc": "Ekstra istersen ayrı ayrı da var. Adet olarak servis edilir.",
+      "layout": "compact",
+      "hidden": false,
+      "items": [
+        {
+          "id": "ketcap",
+          "name": "Ketçap",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "sarimsakli-mayonez",
+          "name": "Sarımsaklı Mayonez",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "barbeku-sos",
+          "name": "Barbekü Sos",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "buffalo-aci-sos",
+          "name": "Buffalo Acı Sos",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "aci-tatli-sos",
+          "name": "Acı Tatlı Sos",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        },
+        {
+          "id": "fresh-sos",
+          "name": "Fresh Sos",
+          "desc": "",
+          "price": "",
+          "variants": [],
+          "image": "",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false
+        }
+      ]
+    }
+  ]
+}

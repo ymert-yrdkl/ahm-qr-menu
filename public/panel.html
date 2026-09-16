@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{{NAME}} · Menü paneli</title>
+<link rel="icon" href="{{ICON}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Outfit:wght@500;600&display=swap">
+<link rel="stylesheet" href="/assets/panel.css?v={{V}}">
+<style>:root{ {{THEME_VARS}} }</style>
+</head>
+<body data-slug="{{SLUG}}" data-name="{{NAME}}" data-logo="{{LOGO}}">
+<div id="root"><div class="boot">Panel açılıyor…</div></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script src="/assets/common.js?v={{V}}"></script>
+<script src="/vendor/qrcode.js?v={{V}}"></script>
+<script type="module" src="/assets/panel.js?v={{V}}"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "ahm-qr-menu",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AHM Cloud çok mekânlı QR menü: tek tasarım, mekân başına renk, menü paneli",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "kontrol": "node tools/kontrol.mjs",
+    "yeni-mekan": "node tools/yeni-mekan.mjs",
+    "ice-aktar": "node tools/ice-aktar.mjs"
+  }
+}
