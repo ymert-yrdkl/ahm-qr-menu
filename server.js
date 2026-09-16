@@ -36,7 +36,9 @@ const DOMAIN_MAP = new Map(
     .map(([d, s]) => [d.trim().toLowerCase(), slugify(s)]),
 );
 
-const RESERVED = new Set(['www', 'panel', 'api', 'admin', 'app', 'mail', 'static', 'assets']);
+const RESERVED = new Set(['www', 'panel', 'api', 'admin', 'app', 'mail', 'static', 'assets', 'qr']);
+// Bu adreslerde mekân yoldan seçilir: qr.ahmcloud.com/schnitzgo
+const PATH_HOSTS = new Set([...listEnv(process.env.PATH_HOSTS || 'qr.ahmcloud.com'), 'qr.localhost'].map((h) => h.toLowerCase()));
 const MAX_JSON = 3 * 1024 * 1024;
 const MAX_UPLOAD = 8 * 1024 * 1024;
 const BACKUP_KEEP = 30;
@@ -209,7 +211,7 @@ function clientIp(req) {
 }
 
 function cookieHeader(req, name, value, maxAgeSec) {
-  const parts = [`${name}=${encodeURIComponent(value)}`, 'Path=/', 'HttpOnly', 'SameSite=Strict', `Max-Age=${maxAgeSec}`];
+  const parts = [`${name}=${encodeURIComponent(value)}`, `Path=${req.qrmBase ? req.qrmBase + '/' : '/'}`, 'HttpOnly', 'SameSite=Strict', `Max-Age=${maxAgeSec}`];
   if (isHttps(req)) parts.push('Secure');
   return parts.join('; ');
 }
@@ -468,7 +470,7 @@ async function renderHome(res, status, message) {
   sendHtml(res, status, html);
 }
 
-async function renderMenu(res, slug, venue, extraHeaders) {
+async function renderMenu(res, slug, venue, extraHeaders, base = '') {
   const theme = buildTheme(venue.theme);
   const data = { ...publicView(venue), v: slug };
   const html = fill(await template('menu.html'), {
@@ -477,21 +479,23 @@ async function renderMenu(res, slug, venue, extraHeaders) {
     THEME_COLOR: theme.paper,
     THEME_VARS: themeToCss(theme),
     BODY_CLASS: `fit-${venue.theme.imageFit} scheme-${theme.scheme}`,
-    ICON: venue.logo ? `/img/${encodeURIComponent(venue.logo)}` : '/assets/favicon.svg',
+    ICON: venue.logo ? `${base}/img/${encodeURIComponent(venue.logo)}` : '/assets/favicon.svg',
+    BASE: escHtml(base),
     DATA: jsonForScript(data),
     V: ASSET_V,
   });
   sendHtml(res, 200, html, extraHeaders);
 }
 
-async function renderPanel(res, slug, venue, extraHeaders) {
+async function renderPanel(res, slug, venue, extraHeaders, base = '') {
   const theme = buildTheme(venue.theme);
   const html = fill(await template('panel.html'), {
     NAME: escHtml(venue.name || slug),
     SLUG: escHtml(slug),
     THEME_VARS: themeToCss(theme),
-    ICON: venue.logo ? `/img/${encodeURIComponent(venue.logo)}` : '/assets/favicon.svg',
-    LOGO: venue.logo ? `/img/${encodeURIComponent(venue.logo)}` : '',
+    ICON: venue.logo ? `${base}/img/${encodeURIComponent(venue.logo)}` : '/assets/favicon.svg',
+    LOGO: venue.logo ? `${base}/img/${encodeURIComponent(venue.logo)}` : '',
+    BASE: escHtml(base),
     V: ASSET_V,
   });
   sendHtml(res, 200, html, { 'X-Robots-Tag': 'noindex, nofollow', ...extraHeaders });
@@ -678,10 +682,29 @@ async function handle(req, res) {
   }
 
   if (pathname === '/robots.txt') {
-    return send(res, 200, 'User-agent: *\nDisallow: /panel/\n', { 'Content-Type': 'text/plain; charset=utf-8' });
+    return send(res, 200, 'User-agent: *\nDisallow: /panel/\nDisallow: /*/panel/\n', { 'Content-Type': 'text/plain; charset=utf-8' });
   }
 
-  const { slug, setCookie } = await resolveVenue(req, url);
+  let slug;
+  let setCookie = null;
+  let base = '';
+  const host = String(req.headers.host || '').toLowerCase().replace(/:\d+$/, '').replace(/\.$/, '');
+  if (PATH_HOSTS.has(host)) {
+    const seg = pathname.split('/');
+    const first = seg[1] || '';
+    if (!first) return renderHome(res, 200, 'QR menü altyapısı çalışıyor.');
+    slug = /^[a-z0-9][a-z0-9-]{0,62}$/.test(first) ? first : '';
+    if (!slug) return renderHome(res, 404, 'Bu adreste bir menü bulunamadı.');
+    base = '/' + slug;
+    if (seg.length === 2) {
+      if (!readOnly) return fail(res, 404, 'Bulunamadı.');
+      return send(res, 301, '', { Location: base + '/' + (url.search || '') });
+    }
+    pathname = '/' + seg.slice(2).join('/');
+    req.qrmBase = base;
+  } else {
+    ({ slug, setCookie } = await resolveVenue(req, url));
+  }
   const venue = slug ? await loadVenue(slug) : null;
   if (!venue) {
     if (!readOnly) return fail(res, 404, 'Mekân bulunamadı.');
@@ -689,7 +712,7 @@ async function handle(req, res) {
   }
   const extra = setCookie ? { 'Set-Cookie': setCookie } : {};
 
-  if (pathname === '/' && readOnly) return renderMenu(res, slug, venue, extra);
+  if (pathname === '/' && readOnly) return renderMenu(res, slug, venue, extra, base);
 
   if (pathname === '/api/menu' && readOnly) return sendJson(res, 200, publicView(venue), { 'Cache-Control': 'no-cache' });
 
@@ -700,8 +723,8 @@ async function handle(req, res) {
     return send(res, 404, 'Bulunamadı', { 'Content-Type': 'text/plain; charset=utf-8' });
   }
 
-  if (pathname === '/panel' && readOnly) return send(res, 301, '', { Location: '/panel/' });
-  if (pathname === '/panel/' && readOnly) return renderPanel(res, slug, venue, extra);
+  if (pathname === '/panel' && readOnly) return send(res, 301, '', { Location: base + '/panel/' });
+  if (pathname === '/panel/' && readOnly) return renderPanel(res, slug, venue, extra, base);
   if (pathname.startsWith('/panel/api/')) return panelApi(req, res, url, slug, pathname.slice('/panel/api/'.length));
 
   if (!readOnly) return fail(res, 404, 'Bulunamadı.');

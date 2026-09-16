@@ -7,6 +7,7 @@
   catch (e) { D = { categories: [] }; }
 
   var Q = window.QRM;
+  var BASE = document.body.getAttribute('data-base') || '';
   var TAGS = Q.TAGS;
   var CUR = D.currency || '₺';
   var C = D.contact || {};
@@ -24,7 +25,7 @@
 
   function img(name, alt, eager) {
     var i = document.createElement('img');
-    i.src = '/img/' + encodeURIComponent(name);
+    i.src = BASE + '/img/' + encodeURIComponent(name);
     i.alt = alt || '';
     i.decoding = 'async';
     if (!eager) i.loading = 'lazy';

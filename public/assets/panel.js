@@ -4,6 +4,7 @@ import { buildTheme, themeToCss, parseHex, toHex, contrast } from './color.js';
 const TAGS = window.QRM.TAGS;
 const root = document.getElementById('root');
 const SLUG = document.body.dataset.slug || '';
+const BASE = document.body.dataset.base || '';
 
 const S = {
   menu: null,
@@ -59,7 +60,7 @@ function slug(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'oge';
 }
 const uid = (base) => `${slug(base)}-${Math.random().toString(36).slice(2, 6)}`;
-const imgUrl = (name) => '/img/' + encodeURIComponent(name);
+const imgUrl = (name) => BASE + '/img/' + encodeURIComponent(name);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 function fmtDate(iso) {
@@ -101,7 +102,7 @@ async function api(path, { method = 'GET', json, body, headers = {} } = {}) {
   if (body !== undefined) opt.body = body;
   let res;
   try {
-    res = await fetch('/panel/api/' + path, opt);
+    res = await fetch(BASE + '/panel/api/' + path, opt);
   } catch {
     throw new Error('Sunucuya ulaşılamadı. İnternet bağlantınızı kontrol edin.');
   }
@@ -426,7 +427,7 @@ function render() {
       h('div', { class: 'in' },
         brandLine(S.role === 'admin' ? 'Yönetici' : 'Menü paneli'),
         h('span', { class: 'state', id: 'state', role: 'status' }),
-        h('a', { class: 'btn', href: '/', target: '_blank', rel: 'noopener', text: 'Menüyü aç' }),
+        h('a', { class: 'btn', href: BASE + '/', target: '_blank', rel: 'noopener', text: 'Menüyü aç' }),
         h('button', { class: 'btn primary', type: 'button', id: 'save', text: 'Kaydet', onclick: save }),
         h('button', { class: 'btn', type: 'button', text: 'Çıkış', onclick: logout })),
       h('nav', { class: 'tabs', role: 'tablist', 'aria-label': 'Panel bölümleri' },
@@ -959,7 +960,7 @@ h1 span{color:${th.brandInk}}
 }
 
 function viewQr() {
-  if (!S.qrUrl) S.qrUrl = location.origin + '/';
+  if (!S.qrUrl) S.qrUrl = location.origin + BASE + '/';
   const box = h('div', { class: 'qr-box', role: 'img', 'aria-label': 'Menü QR kodu önizlemesi' });
   const urlIn = h('input', { type: 'url', value: S.qrUrl, 'aria-label': 'QR kodun açacağı adres' });
   const paint = () => {
