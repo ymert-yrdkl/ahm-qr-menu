@@ -1,0 +1,3 @@
+# Yayından kaldırılan mekânlar. Her satıra bir mekân klasörünün adı.
+# Mekânın menüsü ve görselleri silinmez. Satırı silip yeniden yayına alınca geri açılır.
+akdeniztantuni

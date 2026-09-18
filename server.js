@@ -3,7 +3,7 @@
 // Bağımlılık yok, Node.js 20+ yeterli.
 
 import http from 'node:http';
-import { promises as fs, createReadStream } from 'node:fs';
+import { promises as fs, createReadStream, readFileSync } from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { promisify } from 'node:util';
@@ -35,6 +35,19 @@ const DOMAIN_MAP = new Map(
     .filter((p) => p.length === 2)
     .map(([d, s]) => [d.trim().toLowerCase(), slugify(s)]),
 );
+
+// Yayından kaldırılan mekânlar: venues/_kapali.txt (satır başına bir mekân) ve DISABLED_VENUES ortam değişkeni.
+// Mekânın verileri silinmez, yalnızca adresleri 404 döner.
+function readDisabled() {
+  let lines = [];
+  try {
+    lines = readFileSync(path.join(SEED_DIR, '_kapali.txt'), 'utf8').split(/\r?\n/);
+  } catch {
+    lines = [];
+  }
+  return new Set([...lines, ...listEnv(process.env.DISABLED_VENUES || '')].map((l) => l.replace(/#.*$/, '').trim().toLowerCase()).filter(Boolean));
+}
+const DISABLED = readDisabled();
 
 const RESERVED = new Set(['www', 'panel', 'api', 'admin', 'app', 'mail', 'static', 'assets', 'qr']);
 // Bu adreslerde mekân yoldan seçilir: qr.ahmcloud.com/schnitzgo
@@ -705,7 +718,7 @@ async function handle(req, res) {
   } else {
     ({ slug, setCookie } = await resolveVenue(req, url));
   }
-  const venue = slug ? await loadVenue(slug) : null;
+  const venue = slug && !DISABLED.has(slug) ? await loadVenue(slug) : null;
   if (!venue) {
     if (!readOnly) return fail(res, 404, 'Mekân bulunamadı.');
     return renderHome(res, slug ? 404 : pathname === '/' ? 200 : 404, slug ? 'Bu adreste bir menü bulunamadı.' : 'QR menü altyapısı çalışıyor.');
@@ -742,6 +755,7 @@ async function main() {
   console.log(`[qr-menu] veri klasörü: ${DATA_DIR}`);
   console.log(`[qr-menu] mekânlar: ${venues.join(', ') || 'yok'}`);
   console.log(`[qr-menu] alan adları: *.${BASE_DOMAINS.join(', *.')}`);
+  if (DISABLED.size) console.log(`[qr-menu] kapalı mekânlar: ${[...DISABLED].join(', ')}`);
   if (!ADMIN_PASSWORD) console.warn('[qr-menu] UYARI: ADMIN_PASSWORD tanımlı değil. Mekân şifresi olmayan panellere giriş yapılamaz.');
 
   const server = http.createServer((req, res) => {
