@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f4ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16120e" media="(prefers-color-scheme: dark)">
+<title>Dino Gastro Cafe — Düzce</title>
+<meta name="description" content="Düzce Bankalar Sokak'ta kahve ve fırın. Espresso bar, günlük kruvasanlar, vitrin tatlıları. Her gün 09.00–24.00.">
+<meta property="og:title" content="Dino Gastro Cafe — Düzce">
+<meta property="og:description" content="Espresso bar, günlük kruvasanlar, vitrin tatlıları. Bankalar Sk. No:4/C, Düzce.">
+<meta property="og:image" content="img/marka/fistikli-dilim-genis.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23f7f4ec'/><path d='M8 6h8.5c5.2 0 8.5 4 8.5 10s-3.3 10-8.5 10H8zm5 4v12h3c2.9 0 4.6-2.3 4.6-6s-1.7-6-4.6-6z' fill='%238e3b22'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   Dino Gastro Cafe · tanıtım sitesi (demo3.ahmcloud.com)
+
+   RENK — markanın kendi malzemesinden örneklendi:
+     #f7f4ec logo zemini · #cdc0b8 kolaj karosu
+     #a79b82 wordmark (yalnızca logo kilidi) · #8e3b22 kolaj yazıları
+   TİPOGRAFİ — Bodoni Moda + Jost, ui-ux-pro-max veri tabanındaki
+   "Luxury Minimalist" eşleşmesi; etiketler Bodoni Moda SC small caps.
+   DÜZEN — Instagram'daki "THE ART OF CRAFTING" kolajının mantığı:
+   fotoğraflar ve aralıklı caps yazı taşıyan krem karolar aynı ızgarada.
+   Portfolio Grid deseni (nötr zemin, işi öne çıkar). Köşe ve gölge yok.
+   ERİŞİLEBİLİRLİK — ölçülmüş: mürekkep 15.3:1 · ikincil 5.7:1 ·
+   etiket 4.9:1 · kiremit 6.8:1
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --kagit:       #f7f4ec;
+  --kil:         #cdc0b8;
+  --kil-acik:    #e7e0d5;
+  --cizgi:       #ded5c7;
+  --cizgi-ince:  #eae3d8;
+  --kenar-ui:    #8f8365;
+
+  --murekkep:    #231c16;
+  --murekkep-2:  #6a5f52;
+  --greige-yazi: #756a51;
+  --greige:      #a79b82;   /* yalnızca logo kilidi */
+  --kiremit:     #8e3b22;
+  --uzerinde:    #f7f4ec;
+
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px; --s-5: 20px;
+  --s-6: 24px; --s-8: 32px; --s-10: 40px; --s-12: 48px; --s-16: 64px;
+
+  --t-2xs: 10.5px; --t-xs: 12.5px; --t-sm: 14px; --t-base: 16.5px;
+  --t-lg: 18px;
+
+  --kenar: 20px;
+  --olcu: 1180px;
+  --tap: 44px;
+
+  --d-hizli: 150ms; --d-normal: 200ms; --d-yavas: 300ms;
+  --cik: cubic-bezier(.32,.72,0,1);
+
+  --sans: "Jost", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --serif: "Bodoni Moda", "Didot", "Bodoni MT", Georgia, serif;
+  }
+@media (min-width: 768px)  { :root { --kenar: 32px; } }
+@media (min-width: 1100px) { :root { --kenar: 44px; } }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --kagit:       #16120e;
+    --kil:         #3a3128;
+    --kil-acik:    #241e17;
+    --cizgi:       #332b22;
+    --cizgi-ince:  #262019;
+    --kenar-ui:    #7d7059;
+    --murekkep:    #f2ebe0;
+    --murekkep-2:  #b0a48f;
+    --greige-yazi: #a89b84;
+    --greige:      #9c8f77;
+    --kiremit:     #d98a68;
+    --uzerinde:    #16120e;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--s-16);   /* yapışkan başlık odağı örtmesin */
+}
+body {
+  margin: 0; background: var(--kagit); color: var(--murekkep);
+  font-family: var(--sans); font-weight: 400;
+  font-size: var(--t-base); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
+}
+img { display: block; max-width: 100%; }
+picture { display: contents; }
+a { color: inherit; text-decoration: none; }
+svg { flex: none; }
+:focus-visible { outline: 2px solid var(--kiremit); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* markanın kendi etiket üslubu: tam büyük harf, geniş harf aralığı —
+   Instagram kolajındaki "THE ART" / "OF CRAFTING" gibi */
+.caps {
+  font-family: var(--serif); font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .22em; font-size: var(--t-2xs); line-height: 1.4;
+}
+.sinir { max-width: var(--olcu); margin-inline: auto; padding-inline: var(--kenar); }
+
+/* markanın yağlı kâğıdını anıştıran çok hafif doku (Nature Distilled) */
+.doku {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
+}
+
+.atla {
+  position: absolute; left: var(--s-3); top: var(--s-3); z-index: 200;
+  transform: translateY(-180%);
+  background: var(--kiremit); color: var(--uzerinde);
+  padding: var(--s-3) var(--s-4); font-size: var(--t-sm);
+}
+.atla:focus { transform: none; }
+
+/* ─── masthead ─── */
+.ust {
+  position: sticky; top: 0; z-index: 30;
+  background: color-mix(in srgb, var(--kagit) 86%, transparent);
+  -webkit-backdrop-filter: saturate(160%) blur(18px);
+  backdrop-filter: saturate(160%) blur(18px);
+  border-bottom: 1px solid var(--cizgi-ince);
+  padding-top: env(safe-area-inset-top);
+}
+.ust-ic { display: flex; align-items: center; gap: var(--s-6); min-height: 68px; }
+.kilit { margin-right: auto; line-height: 1; }
+.kilit .ad { font-family: var(--serif); font-weight: 400; font-size: 26px; }
+.kilit .alt {
+  display: block; margin-top: 5px; color: var(--greige);
+  font-family: var(--serif); text-transform: uppercase;
+  letter-spacing: .32em; font-size: 10px;
+}
+.ust nav { display: flex; align-items: center; gap: var(--s-6); }
+.ust nav a {
+  color: var(--murekkep-2); padding: var(--s-4) 0; white-space: nowrap;
+  transition: color var(--d-hizli) ease-in-out;
+}
+.ust nav a.vurgu { color: var(--kiremit); }
+@media (hover: hover) { .ust nav a:hover { color: var(--kiremit); } }
+@media (max-width: 720px) { .ust nav .gizle-dar { display: none; } .ust-ic { gap: var(--s-4); } }
+
+/* ─── açılış ─── */
+.acilis {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
+  border-bottom: 1px solid var(--cizgi);
+  position: relative; z-index: 2;
+}
+.acilis-yazi {
+  padding: clamp(40px, 6vw, 88px) var(--kenar);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.acilis-yazi > .caps { color: var(--greige-yazi); }
+.acilis h1 {
+  margin: var(--s-5) 0 0;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(33px, 4.4vw, 58px); line-height: 1.09;
+  letter-spacing: -.012em; max-width: 15ch;
+  overflow-wrap: anywhere; text-wrap: balance;
+}
+.acilis .giris {
+  margin: var(--s-6) 0 0; max-width: 40ch;
+  color: var(--murekkep-2); font-size: var(--t-base);
+}
+/* editoryal düşen harf */
+.acilis .giris::first-letter {
+  font-family: var(--serif); font-weight: 400; color: var(--murekkep);
+  float: left; font-size: 3.05em; line-height: .84;
+  padding: .06em .1em 0 0;
+}
+.baglar { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-8); margin-top: var(--s-8); }
+.bag {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  min-height: var(--tap); padding: var(--s-3) 0;
+  color: var(--kiremit); border-bottom: 1px solid var(--kiremit);
+  white-space: nowrap;
+}
+.bag svg { transition: transform var(--d-normal) var(--cik); }  /* düzen değil, dönüşüm */
+@media (hover: hover) { .bag:hover svg { transform: translateX(5px); } }
+.acilis-gorsel { background: var(--kil-acik); }
+.acilis-gorsel img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 820px) {
+  .acilis { grid-template-columns: minmax(0, 1fr); }
+  .acilis-gorsel { order: -1; aspect-ratio: 4 / 3; }
+  .acilis-yazi { padding-block: var(--s-8) var(--s-10); }
+}
+
+/* ─── künye ─── */
+.kunye { border-bottom: 1px solid var(--cizgi); position: relative; z-index: 2; }
+.kunye dl {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0; max-width: var(--olcu); margin-inline: auto;
+}
+.kunye dl > div { padding: var(--s-5) var(--kenar); border-left: 1px solid var(--cizgi-ince); }
+.kunye dl > div:first-child { border-left: 0; }
+.kunye dt { color: var(--greige-yazi); margin-bottom: var(--s-2); }
+.kunye dd { margin: 0; font-size: var(--t-sm); }
+/* tek başına duran değer bağlantıları en az 24 px yüksekliğe ulaşsın (WCAG 2.2) */
+.kunye a { color: var(--kiremit); display: inline-block; padding-block: 4px; }
+@media (max-width: 760px) {
+  .kunye dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kunye dl > div:nth-child(3) { border-left: 0; }
+  .kunye dl > div:nth-child(n+3) { border-top: 1px solid var(--cizgi-ince); }
+}
+
+/* ─── bölüm başlığı ─── */
+.bolum { padding-top: clamp(52px, 8vw, 104px); position: relative; z-index: 2; }
+.bolum-basi { display: flex; align-items: center; gap: var(--s-5); margin-bottom: var(--s-8); }
+.bolum-basi h2 {
+  margin: 0; font-family: var(--serif); font-weight: 400;
+  font-size: clamp(26px, 3.6vw, 40px); line-height: 1.1; white-space: nowrap;
+}
+.bolum-basi .rule { flex: 1; height: 1px; background: var(--cizgi); }
+.bolum-basi .sag { color: var(--greige-yazi); white-space: nowrap; }
+
+/* ─── vitrin mozaiği ─── */
+.mozaik { display: grid; gap: var(--s-3); grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.mozaik figure { margin: 0; position: relative; background: var(--kil-acik); overflow: hidden; }
+.mozaik img { width: 100%; height: 100%; object-fit: cover; }
+.mozaik figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: var(--s-5) var(--s-4) var(--s-4);
+  background: linear-gradient(to top, rgba(24,18,13,.78), rgba(24,18,13,.16) 70%, transparent);
+  color: #fff;
+}
+.mozaik figcaption b { display: block; font-family: var(--serif); font-weight: 500; font-size: var(--t-lg); }
+.mozaik figcaption span { display: block; margin-top: 3px; color: rgba(255,255,255,.86); font-size: var(--t-xs); }
+
+.karo {
+  background: var(--kil); color: var(--kiremit);
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--s-6); text-align: center; min-height: 130px;
+}
+.karo .caps { font-size: 11.5px; letter-spacing: .28em; }
+
+.m-a { grid-column: span 5; aspect-ratio: 4 / 5; }
+.m-b { grid-column: span 4; aspect-ratio: 3 / 4; }
+.m-c { grid-column: span 3; }
+.m-d { grid-column: span 4; aspect-ratio: 1 / 1; }
+.m-e { grid-column: span 5; aspect-ratio: 4 / 3; }
+.m-f { grid-column: span 3; aspect-ratio: 3 / 4; }
+@media (max-width: 860px) {
+  .mozaik { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .m-a { grid-column: span 6; aspect-ratio: 4 / 3; }
+  .m-b, .m-c, .m-d, .m-f { grid-column: span 3; }
+  .m-e { grid-column: span 6; }
+}
+
+/* ─── zanaat bandı ─── */
+.band { position: relative; margin-top: clamp(52px, 8vw, 104px); z-index: 2; }
+.band img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--kil-acik); }
+.band .yazi {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  text-align: center; padding: var(--kenar);
+  background: linear-gradient(to bottom,
+    rgba(24,18,13,.26) 0%, rgba(24,18,13,.58) 42%,
+    rgba(24,18,13,.58) 62%, rgba(24,18,13,.26) 100%);
+}
+.band .yazi > div { color: #fff; }
+.band .yazi p {
+  margin: var(--s-4) auto 0; max-width: 22ch;
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(22px, 3.4vw, 38px); line-height: 1.2; text-wrap: balance;
+}
+@media (max-width: 640px) { .band img { aspect-ratio: 4 / 5; } }
+
+/* ─── menü dizini ─── */
+.dizin { border-top: 1px solid var(--cizgi); }
+.dizin-satir {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) auto;
+  gap: var(--s-6); align-items: baseline;
+  padding: var(--s-5) 0; border-bottom: 1px solid var(--cizgi-ince);
+}
+.dizin-ad {
+  font-family: var(--serif); font-weight: 400;
+  font-size: clamp(20px, 2.6vw, 28px);
+}
+.dizin-ornek { color: var(--greige-yazi); font-size: var(--t-sm); }
+.dizin-sayi { color: var(--greige-yazi); font-variant-numeric: tabular-nums; font-size: var(--t-xs); }
+@media (max-width: 720px) {
+  .dizin-satir { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-1) var(--s-4); }
+  .dizin-ornek { grid-column: 1 / -1; }
+}
+
+/* ─── uğrarken ─── */
+.ziyaret {
+  display: grid; gap: clamp(24px, 4vw, 54px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, .72fr);
+  align-items: start;
+}
+@media (max-width: 820px) { .ziyaret { grid-template-columns: minmax(0, 1fr); } }
+.ziyaret img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: var(--kil-acik); }
+.bilgi { border-top: 1px solid var(--cizgi); margin: 0; }
+.bilgi > div {
+  display: grid; grid-template-columns: 120px minmax(0, 1fr);
+  gap: var(--s-5); padding: var(--s-4) 0; border-bottom: 1px solid var(--cizgi-ince);
+}
+.bilgi dt { color: var(--greige-yazi); margin: 0; padding-top: 4px; }
+.bilgi dd { margin: 0; font-size: var(--t-sm); }
+.bilgi a { color: var(--kiremit); border-bottom: 1px solid var(--kiremit); display: inline-block; padding-block: 3px 4px; }
+@media (max-width: 520px) { .bilgi > div { grid-template-columns: minmax(0, 1fr); gap: var(--s-1); } }
+
+/* ─── alt ─── */
+footer {
+  margin-top: clamp(56px, 8vw, 110px);
+  border-top: 1px solid var(--cizgi);
+  padding: var(--s-8) 0 calc(var(--s-8) + env(safe-area-inset-bottom));
+  color: var(--greige-yazi); position: relative; z-index: 2;
+}
+.footer-ic { display: flex; flex-wrap: wrap; gap: var(--s-4) var(--s-8); align-items: center; justify-content: space-between; }
+footer a { color: var(--greige-yazi); display: inline-block; padding: var(--s-2) 0; }
+@media (hover: hover) { footer a:hover { color: var(--kiremit); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<span class="doku" aria-hidden="true"></span>
+<a class="atla caps" href="#icerik">İçeriğe atla</a>
+
+<header class="ust">
+  <div class="sinir ust-ic">
+    <a class="kilit" href="#ust" aria-label="Dino Gastro Cafe — başa dön">
+      <span class="ad">Dino</span>
+      <span class="alt">Gastro Cafe</span>
+    </a>
+    <nav aria-label="Ana">
+      <a class="caps gizle-dar" href="#vitrin">Vitrin</a>
+      <a class="caps gizle-dar" href="#menu">Menü</a>
+      <a class="caps gizle-dar" href="#ugrarken">Uğrarken</a>
+      <a class="caps vurgu" href="https://maps.google.com/?q=Dino+Coffee+Bakery+Bankalar+Sk+No+4C+Duzce" target="_blank" rel="noopener">Yol tarifi</a>
+    </nav>
+  </div>
+</header>
+
+<main id="icerik">
+  <span id="ust"></span>
+
+  <section class="acilis">
+    <div class="acilis-yazi">
+      <span class="caps">Düzce · Bankalar Sokak</span>
+      <h1>Güneşin ışığıyla harmanlanmış bir lezzet hikâyesi</h1>
+      <p class="giris">
+        Espresso bar, günlük kruvasanlar ve vitrin tatlıları.
+        Her gün sabah dokuzdan gece yarısına kadar açığız.
+      </p>
+      <div class="baglar">
+        <a class="bag caps" href="#menu">Menüye bak
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="bag caps" href="tel:+903807908100">0380 790 81 00</a>
+      </div>
+    </div>
+    <div class="acilis-gorsel">
+      <picture>
+        <source srcset="img/marka/fistikli-dilim-koyu.webp" type="image/webp">
+        <img src="img/marka/fistikli-dilim-koyu.jpg" alt="Antep fıstıklı ekler, Dino baskılı yağlı kâğıt üzerinde" width="1125" height="1500" fetchpriority="high">
+      </picture>
+    </div>
+  </section>
+
+  <section class="kunye">
+    <dl>
+      <div><dt class="caps">Adres</dt><dd>Bankalar Sk. No:4/C<br>Kültür Mah., Düzce</dd></div>
+      <div><dt class="caps">Saatler</dt><dd>Her gün<br>09.00 – 24.00</dd></div>
+      <div><dt class="caps">Telefon</dt><dd><a href="tel:+903807908100">0380 790 81 00</a></dd></div>
+      <div><dt class="caps">Instagram</dt><dd><a href="https://www.instagram.com/dinocoffeebakery/" target="_blank" rel="noopener">@dinocoffeebakery</a></dd></div>
+    </dl>
+  </section>
+
+  <section class="bolum sinir" id="vitrin">
+    <div class="bolum-basi">
+      <h2>Vitrinden</h2>
+      <span class="rule"></span>
+      <span class="caps sag">Mekânda hazırlanır</span>
+    </div>
+
+    <div class="mozaik">
+      <figure class="m-a">
+        <picture>
+          <source srcset="img/marka/fistikli-tepsi.webp" type="image/webp">
+          <img src="img/marka/fistikli-tepsi.jpg" alt="Antep fıstıklı krema ve kadayıfla hazırlanmış ekler, gümüş tepside" width="1400" height="1050" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><b>Fıstıklı ekler</b><span>Tepside servis</span></figcaption>
+      </figure>
+      <figure class="m-b">
+        <picture>
+          <source srcset="img/marka/kolaj-zanaat.webp" type="image/webp">
+          <img src="img/marka/kolaj-zanaat.jpg" alt="Espresso hazırlanışından kareler" width="900" height="1200" loading="lazy" decoding="async">
+        </picture>
+      </figure>
+      <div class="m-c karo"><span class="caps">Espresso<br>bar</span></div>
+
+      <figure class="m-d">
+        <picture>
+          <source srcset="img/marka/visneli-cikolatali.webp" type="image/webp">
+          <img src="img/marka/visneli-cikolatali.jpg" alt="Vişne ve çikolatalı tatlı" width="1200" height="1200" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><b>Vişneli</b><span>Vitrin tatlısı</span></figcaption>
+      </figure>
+      <figure class="m-e">
+        <picture>
+          <source srcset="img/marka/waffle-kagit.webp" type="image/webp">
+          <img src="img/marka/waffle-kagit.jpg" alt="Orman meyveli tatlı, Dino baskılı yağlı kâğıt üzerinde" width="1400" height="1050" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><b>Kendi kâğıdımızda</b><span>Her tabakta marka baskısı</span></figcaption>
+      </figure>
+      <figure class="m-f">
+        <picture>
+          <source srcset="img/marka/iced-latte-dergi.webp" type="image/webp">
+          <img src="img/marka/iced-latte-dergi.jpg" alt="Buzlu latte, dergilerin üzerinde" width="720" height="960" loading="lazy" decoding="async">
+        </picture>
+        <figcaption><b>Iced latte</b><span>Soğuk bar</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band">
+    <picture>
+      <source srcset="img/marka/fistikli-dilim-genis.webp" type="image/webp">
+      <img src="img/marka/fistikli-dilim-genis.jpg" alt="Fıstıklı ekler kesilirken" width="1600" height="900" loading="lazy" decoding="async">
+    </picture>
+    <div class="yazi">
+      <div>
+        <span class="caps" lang="en">Dino Gastro Cafe</span>
+        <p>Kruvasanlar günlük, tatlılar vitrinde.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bolum sinir" id="menu">
+    <div class="bolum-basi">
+      <h2>Menü</h2>
+      <span class="rule"></span>
+      <span class="caps sag" id="menuOzet"></span>
+    </div>
+    <div class="dizin" id="dizin"></div>
+  </section>
+
+  <section class="bolum sinir" id="ugrarken">
+    <div class="bolum-basi">
+      <h2>Uğrarken</h2>
+      <span class="rule"></span>
+      <span class="caps sag">Merkez, Düzce</span>
+    </div>
+    <div class="ziyaret">
+      <dl class="bilgi">
+        <div>
+          <dt class="caps">Adres</dt>
+          <dd>Kültür Mah. Bankalar Sk. No:4/C, 81000 Merkez / Düzce<br>
+            <a href="https://maps.google.com/?q=Dino+Coffee+Bakery+Bankalar+Sk+No+4C+Duzce" target="_blank" rel="noopener">Haritada aç</a></dd>
+        </div>
+        <div><dt class="caps">Saatler</dt><dd>Her gün 09.00 – 24.00</dd></div>
+        <div><dt class="caps">Telefon</dt><dd><a href="tel:+903807908100">0380 790 81 00</a></dd></div>
+        <div><dt class="caps">Instagram</dt><dd><a href="https://www.instagram.com/dinocoffeebakery/" target="_blank" rel="noopener">@dinocoffeebakery</a></dd></div>
+        <div><dt class="caps">Paket</dt><dd>Yemeksepeti ve Trendyol Go üzerinden servis var.</dd></div>
+      </dl>
+      <picture>
+        <source srcset="img/marka/mekan-vitrin.webp" type="image/webp">
+        <img src="img/marka/mekan-vitrin.jpg" alt="Mekânın aydınlatmalı pasta vitrini" width="675" height="900" loading="lazy" decoding="async">
+      </picture>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="sinir footer-ic">
+    <span class="caps"><span lang="en">Dino Gastro Cafe</span> · Düzce</span>
+    <span class="caps">
+      <a href="tel:+903807908100">0380 790 81 00</a> ·
+      <a href="https://www.instagram.com/dinocoffeebakery/" target="_blank" rel="noopener">Instagram</a>
+    </span>
+    <span class="caps">© <span id="yil"></span></span>
+  </div>
+</footer>
+
+<script src="menu-veri.js?v=8c9fee23"></script>
+<script>
+(function () {
+  "use strict";
+  document.getElementById("yil").textContent = new Date().getFullYear();
+
+  var veri = window.DINO_MENU;
+  if (!veri) return;
+
+  var toplam = 0;
+  veri.kategoriler.forEach(function (k) { toplam += k.urunler.length; });
+  document.getElementById("menuOzet").textContent =
+    toplam + " ürün · " + veri.kategoriler.length + " bölüm";
+
+  function kacis(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  document.getElementById("dizin").innerHTML = veri.kategoriler.map(function (kat) {
+    var ornek = kat.urunler.slice(0, 3).map(function (u) { return kacis(u.ad); }).join(" · ");
+    return '<div class="dizin-satir">' +
+             '<span class="dizin-ad">' + kacis(kat.ad) + "</span>" +
+             '<span class="dizin-ornek">' + ornek + "</span>" +
+             '<span class="dizin-sayi">' + kat.urunler.length + "</span>" +
+           "</div>";
+  }).join("");
+})();
+</script>
+</body>
+</html>
