@@ -39,16 +39,20 @@ const DOMAIN_MAP = new Map(
 
 // Yayından kaldırılan mekânlar: venues/_kapali.txt (satır başına bir mekân) ve DISABLED_VENUES ortam değişkeni.
 // Mekânın verileri silinmez, yalnızca adresleri 404 döner.
-function readDisabled() {
+function readList(file, envValue) {
   let lines = [];
   try {
-    lines = readFileSync(path.join(SEED_DIR, '_kapali.txt'), 'utf8').split(/\r?\n/);
+    lines = readFileSync(path.join(SEED_DIR, file), 'utf8').split(/\r?\n/);
   } catch {
     lines = [];
   }
-  return new Set([...lines, ...listEnv(process.env.DISABLED_VENUES || '')].map((l) => l.replace(/#.*$/, '').trim().toLowerCase()).filter(Boolean));
+  return new Set([...lines, ...listEnv(envValue || '')].map((l) => l.replace(/#.*$/, '').trim().toLowerCase()).filter(Boolean));
 }
-const DISABLED = readDisabled();
+const DISABLED = readList('_kapali.txt', process.env.DISABLED_VENUES);
+// Demo mekânlar: venues/_demo.txt ve DEMO_VENUES. Paneli ŞİFRESİZ açılır (adresi bilen herkes düzenler).
+// Yalnız tanıtım için; gerçek müşteride satır silinip panel şifresi verilir.
+const DEMO = readList('_demo.txt', process.env.DEMO_VENUES);
+const DEMO_UPLOADS_PER_HOUR = 30;
 
 const RESERVED = new Set(['www', 'panel', 'api', 'admin', 'app', 'mail', 'static', 'assets', 'qr']);
 // Bu adreslerde mekân yoldan seçilir: qr.ahmcloud.com/schnitzgo
@@ -420,14 +424,34 @@ function readToken(token) {
 
 async function getSession(req, slug) {
   const p = readToken(parseCookies(req)[COOKIE]);
-  if (!p || p.v !== slug) return null;
-  if (p.r === 'admin') return ADMIN_PASSWORD && p.m === adminMark() ? p : null;
-  if (p.r === 'mekan') {
-    const auth = await readAuth(slug);
-    return auth.hash && p.g === (auth.gen || 0) ? p : null;
+  let s = null;
+  if (p && p.v === slug) {
+    if (p.r === 'admin') s = ADMIN_PASSWORD && p.m === adminMark() ? p : null;
+    else if (p.r === 'mekan') {
+      const auth = await readAuth(slug);
+      s = auth.hash && p.g === (auth.gen || 0) ? p : null;
+    }
   }
-  return null;
+  // Demo mekânda giriş yapmamış herkes "demo" rolüyle girer.
+  if (!s && DEMO.has(slug)) s = { v: slug, r: 'demo' };
+  return s;
 }
+
+const demoUploads = new Map();
+function demoUploadAllowed(ip) {
+  const now = Date.now();
+  const e = demoUploads.get(ip);
+  if (!e || e.reset < now) {
+    demoUploads.set(ip, { n: 1, reset: now + 3600 * 1000 });
+    return true;
+  }
+  e.n += 1;
+  return e.n <= DEMO_UPLOADS_PER_HOUR;
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, e] of demoUploads) if (e.reset < now) demoUploads.delete(k);
+}, 15 * 60 * 1000).unref();
 
 function sessionCookie(req, slug, role, gen) {
   const payload = { v: slug, r: role, exp: Date.now() + SESSION_TTL };
@@ -583,8 +607,9 @@ async function panelApi(req, res, url, slug, route) {
       ok: true,
       loggedIn: !!session,
       role: session ? session.r : '',
-      configured: Boolean(ADMIN_PASSWORD || auth.hash),
+      configured: Boolean(ADMIN_PASSWORD || auth.hash || DEMO.has(slug)),
       hasVenuePassword: Boolean(auth.hash),
+      demo: DEMO.has(slug),
     });
   }
 
@@ -641,6 +666,10 @@ async function panelApi(req, res, url, slug, route) {
   }
 
   if (route === 'upload' && method === 'POST') {
+    if (session.r === 'demo' && !demoUploadAllowed(clientIp(req))) {
+      req.resume();
+      return fail(res, 429, 'Demo panelde saatte en çok 30 fotoğraf yüklenebilir. Biraz sonra tekrar deneyin.');
+    }
     let buf;
     try {
       buf = await readBody(req, MAX_UPLOAD);
@@ -657,6 +686,7 @@ async function panelApi(req, res, url, slug, route) {
   }
 
   if (route === 'password' && method === 'POST') {
+    if (session.r === 'demo') return fail(res, 403, 'Bu demo mekânın paneli şifresiz. Şifre vermek için önce venues/_demo.txt listesinden çıkarılmalı.');
     const body = await readJson(req, res, 10 * 1024);
     if (!body) return;
     const next = typeof body.next === 'string' ? body.next : '';
@@ -807,6 +837,7 @@ async function main() {
   console.log(`[qr-menu] mekânlar: ${venues.join(', ') || 'yok'}`);
   console.log(`[qr-menu] alan adları: *.${BASE_DOMAINS.join(', *.')}`);
   if (DISABLED.size) console.log(`[qr-menu] kapalı mekânlar: ${[...DISABLED].join(', ')}`);
+  if (DEMO.size) console.warn(`[qr-menu] UYARI: şifresiz demo panel: ${[...DEMO].join(', ')}`);
   if (!ADMIN_PASSWORD) console.warn('[qr-menu] UYARI: ADMIN_PASSWORD tanımlı değil. Mekân şifresi olmayan panellere giriş yapılamaz.');
 
   const server = http.createServer((req, res) => {

@@ -151,6 +151,8 @@ main.view{max-width:1200px;margin:0 auto;padding:22px 20px 110px}
 .venue{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;align-items:start}
 .color-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .color-row input[type=text]{width:120px;font-variant-numeric:tabular-nums;text-transform:lowercase}
+/* Demo mekân uyarısı (şifresiz panel) */
+.demo-uyari{margin:0;padding:8px 24px;background:#fff4d6;color:#5c4400;font-size:13.5px;border-bottom:1px solid #f0d98c}
 /* Yıldız görünümü: çalışma saatleri */
 .hours{display:grid;gap:6px;margin:4px 0 8px}
 .hrow{display:grid;grid-template-columns:96px 76px 14px 76px auto;align-items:center;gap:8px}

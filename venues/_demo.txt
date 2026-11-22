@@ -1,0 +1,3 @@
+# Demo mekânlar: panelleri ŞİFRESİZ açılır, adresi bilen herkes menüyü değiştirebilir. Her satıra bir mekân klasörü.
+# Yalnız tanıtım için. Müşteri menüyü gerçekten kullanmaya başlayınca satırı silin, yeniden kurun ve panelden mekân şifresi verin.
+ispircafe

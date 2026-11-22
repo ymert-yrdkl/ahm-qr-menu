@@ -446,11 +446,12 @@ function render() {
   root.append(
     h('header', { class: 'top' },
       h('div', { class: 'in' },
-        brandLine(S.role === 'admin' ? 'Yönetici' : 'Menü paneli'),
+        brandLine(S.role === 'admin' ? 'Yönetici' : S.role === 'demo' ? 'Demo panel' : 'Menü paneli'),
         h('span', { class: 'state', id: 'state', role: 'status' }),
         h('a', { class: 'btn', href: BASE + '/', target: '_blank', rel: 'noopener', text: 'Menüyü aç' }),
         h('button', { class: 'btn primary', type: 'button', id: 'save', text: 'Kaydet', onclick: save }),
-        h('button', { class: 'btn', type: 'button', text: 'Çıkış', onclick: logout })),
+        S.role === 'demo' ? null : h('button', { class: 'btn', type: 'button', text: 'Çıkış', onclick: logout })),
+      S.role === 'demo' ? h('p', { class: 'demo-uyari', role: 'note', text: 'Demo panel: şifre yok, adresi bilen herkes menüyü değiştirebilir. Her kayıttan önce yedek alınır (Yedek sekmesi).' }) : null,
       h('nav', { class: 'tabs', role: 'tablist', 'aria-label': 'Panel bölümleri' },
         TABS.map(([k, label]) => h('button', {
           class: 'tab', type: 'button', role: 'tab', 'aria-selected': String(S.tab === k), text: label,
@@ -963,14 +964,15 @@ function viewVenue() {
       field('Para birimi', m, 'currency', { max: 4 })),
 
     h('h2', { class: 'sec-t', text: 'Panel şifresi' }),
-    h('p', { class: 'hint', text: S.role === 'admin'
+    S.role === 'demo' ? h('p', { class: 'hint', text: 'Bu bir demo mekân; paneli şifresiz açılır. Gerçek kullanıma geçerken sunucuda venues/_demo.txt listesinden çıkarılır ve buradan mekân şifresi verilir.' }) : null,
+    S.role === 'demo' ? null : h('p', { class: 'hint', text: S.role === 'admin'
       ? 'Yönetici olarak girdiniz. Mekân sahibine verilecek panel şifresini buradan belirleyin. Yönetici şifresi bütün mekânlarda çalışmaya devam eder.'
       : 'Şifreyi değiştirdiğinizde diğer cihazlardaki oturumlar kapanır.' }),
-    h('div', { class: 'grid2' },
+    S.role === 'demo' ? null : h('div', { class: 'grid2' },
       S.role === 'mekan' ? h('label', { class: 'f wide' }, h('span', { text: 'Mevcut şifre' }), pwCurrent) : null,
       h('label', { class: 'f' }, h('span', { text: 'Yeni şifre' }), pwNext),
       h('label', { class: 'f' }, h('span', { text: 'Yeni şifre tekrar' }), pwAgain)),
-    h('div', { class: 'acts' }, pwBtn,
+    S.role === 'demo' ? null : h('div', { class: 'acts' }, pwBtn,
       S.role === 'admin' ? h('span', { class: 'hint', text: S.hasVenuePassword ? 'Bu mekânın panel şifresi var.' : 'Bu mekânın henüz panel şifresi yok.' }) : null));
 
   paintPreview();

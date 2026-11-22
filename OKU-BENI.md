@@ -59,6 +59,7 @@ Dockerfile              Coolify bu dosyayla kurar.
 | `DOMAIN_MAP` | Mekânın kendi alan adı için: `menu.kafem.com=kafem,qr.burger.com=burgerlab` |
 | `DEFAULT_VENUE` | Alt alan adı eşleşmezse açılacak mekân. |
 | `SEED_OVERWRITE` | Depodaki sürümü sunucudakinin üzerine yazar (yukarıya bakın). |
+| `DEMO_VENUES` | Paneli şifresiz açılacak demo mekânlar (`venues/_demo.txt` ile aynı). Yalnız tanıtım için. |
 
 ## Yeni mekân ekleme
 
