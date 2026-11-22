@@ -10,6 +10,7 @@ import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { normalizeVenue, publicView, slugify, ValidationError } from './lib/schema.js';
 import { buildTheme, themeToCss } from './public/assets/color.js';
+import { yildizData, yildizPalette, yildizCover } from './lib/yildiz.js';
 
 const scrypt = promisify(crypto.scrypt);
 
@@ -75,7 +76,11 @@ const MIME = {
   '.webp': 'image/webp',
   '.ico': 'image/x-icon',
   '.txt': 'text/plain; charset=utf-8',
+  '.woff2': 'font/woff2',
 };
+
+// /img/<ad>?w=200 gibi isteklerde varsa <ad>-200.webp verilir (aktarma araçları üretir); yoksa asıl dosya.
+const IMG_SIZES = new Set([32, 200, 640, 900, 1200, 1600]);
 
 const BASE_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
@@ -484,6 +489,7 @@ async function renderHome(res, status, message) {
 }
 
 async function renderMenu(res, slug, venue, extraHeaders, base = '') {
+  if (venue.theme.design === 'yildiz') return renderYildiz(res, slug, venue, extraHeaders, base);
   const theme = buildTheme(venue.theme);
   const data = { ...publicView(venue), v: slug };
   const html = fill(await template('menu.html'), {
@@ -493,6 +499,35 @@ async function renderMenu(res, slug, venue, extraHeaders, base = '') {
     THEME_VARS: themeToCss(theme),
     BODY_CLASS: `fit-${venue.theme.imageFit} scheme-${theme.scheme}`,
     ICON: venue.logo ? `${base}/img/${encodeURIComponent(venue.logo)}` : '/assets/favicon.svg',
+    BASE: escHtml(base),
+    DATA: jsonForScript(data),
+    V: ASSET_V,
+  });
+  sendHtml(res, 200, html, extraHeaders);
+}
+
+// Yıldız görünümü: kapaklı tek sayfa. Tasarım menu-yildiz.html + assets/yildiz.js, veri lib/yildiz.js.
+async function renderYildiz(res, slug, venue, extraHeaders, base = '') {
+  const p = yildizPalette(venue.theme.primary);
+  const data = yildizData(venue, slug, base);
+  const cover = yildizCover(venue);
+  const img = cover ? `${base}/img/${encodeURIComponent(cover)}` : '';
+  const urunSayisi = data.menu.reduce((n, k) => n + k.urunler.length, 0);
+  const favicon = `data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%274%27 y=%274%27 width=%2724%27 height=%2724%27 rx=%277%27 fill=%27%23${p.vurgu.slice(1)}%27/%3E%3C/svg%3E`;
+  const html = fill(await template('menu-yildiz.html'), {
+    TITLE: escHtml(venue.name || 'Menü'),
+    DESCRIPTION: escHtml(`${venue.name || 'Mekân'}: ${urunSayisi} ürünlük menü, çalışma saatleri ve yol tarifi.`),
+    NAME: escHtml(venue.name || 'Menü'),
+    ICON: venue.logo ? `${base}/img/${encodeURIComponent(venue.logo)}` : favicon,
+    DILLER: escHtml(venue.languages.join(',')),
+    VURGU: p.vurgu,
+    VURGU_ACIK: p.vurguAcik,
+    GECE_YAZI: p.geceYazi,
+    GECE_ACIK: p.geceAcik,
+    HERO_KUCUK: img ? `${img}?w=32` : '',
+    HERO_ORTA: img ? `${img}?w=900` : '',
+    HERO_SRCSET: img ? `${img}?w=900 900w, ${img}?w=1600 1600w` : '',
+    OG_IMAGE: img ? `${img}?w=1600` : '',
     BASE: escHtml(base),
     DATA: jsonForScript(data),
     V: ASSET_V,
@@ -725,13 +760,29 @@ async function handle(req, res) {
   }
   const extra = setCookie ? { 'Set-Cookie': setCookie } : {};
 
-  if (pathname === '/' && readOnly) return renderMenu(res, slug, venue, extra, base);
+  // /menu: yıldız görünümünde menü katmanı açık başlar (sayfa kendisi ayırt eder); klasikte aynı sayfa.
+  if ((pathname === '/' || pathname === '/menu' || pathname === '/menu/') && readOnly) return renderMenu(res, slug, venue, extra, base);
 
   if (pathname === '/api/menu' && readOnly) return sendJson(res, 200, publicView(venue), { 'Cache-Control': 'no-cache' });
+
+  // Yıldız görünümünün anonim menü sayaçları. Şimdilik yalnız kabul edilir, saklanmaz.
+  if (pathname === '/api/olay' && method === 'POST') {
+    try {
+      await readBody(req, 16 * 1024);
+    } catch {
+      /* büyük ya da bozuk: yine sessizce kabul */
+    }
+    return send(res, 204, '', { 'Cache-Control': 'no-store' });
+  }
 
   if (pathname.startsWith('/img/') && readOnly) {
     const name = pathname.slice(5);
     const file = /^[a-z0-9][a-z0-9._-]{0,120}\.(webp|jpe?g|png|svg)$/i.test(name) ? safeJoin(imgDir(slug), name) : null;
+    const w = Number(url.searchParams.get('w'));
+    if (file && IMG_SIZES.has(w)) {
+      const variant = safeJoin(imgDir(slug), `${name.replace(/\.[a-z0-9]+$/i, '')}-${w}.webp`);
+      if (variant && (await serveFile(req, res, variant, 'public, max-age=86400'))) return;
+    }
     if (file && (await serveFile(req, res, file, 'public, max-age=86400'))) return;
     return send(res, 404, 'Bulunamadı', { 'Content-Type': 'text/plain; charset=utf-8' });
   }

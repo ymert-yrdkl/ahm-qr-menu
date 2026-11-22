@@ -1,0 +1,2386 @@
+{
+  "version": 2,
+  "name": "İspir Ekmek",
+  "tagline": "Cafe & Bistro",
+  "logo": "",
+  "theme": {
+    "primary": "#D2AE5E",
+    "paper": "",
+    "imageFit": "cover",
+    "design": "yildiz"
+  },
+  "cover": "kapak.webp",
+  "hours": {
+    "1": [
+      "05:30",
+      "24:00"
+    ],
+    "2": [
+      "05:30",
+      "24:00"
+    ],
+    "3": [
+      "05:30",
+      "24:00"
+    ],
+    "4": [
+      "05:30",
+      "24:00"
+    ],
+    "5": [
+      "05:30",
+      "24:00"
+    ],
+    "6": [
+      "05:30",
+      "24:00"
+    ],
+    "7": [
+      "05:30",
+      "24:00"
+    ]
+  },
+  "featured": {
+    "title": "İspir'in imzaları",
+    "label": "İspir imzası"
+  },
+  "languages": [
+    "tr",
+    "en"
+  ],
+  "i18n": {
+    "en": {
+      "note": "Please ask our staff for allergen and ingredient information. Prices include VAT.",
+      "featuredTitle": "House signatures",
+      "featuredLabel": "House signature"
+    }
+  },
+  "contact": {
+    "phone": "0507 248 81 18",
+    "address": "Mergiç, Esen Köyü Yolu, Merkez / Düzce",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=%C4%B0SP%C4%B0R+EKMEK+CAFE%26B%C4%B0STRO&query_place_id=ChIJSQY50L-fnUARGIJFyC6P734",
+    "instagram": "https://www.instagram.com/ispircafe/",
+    "website": "",
+    "orderUrl": "",
+    "orderLabel": "",
+    "wifiName": "",
+    "wifiPassword": "",
+    "reviewUrl": "https://search.google.com/local/writereview?placeid=ChIJSQY50L-fnUARGIJFyC6P734"
+  },
+  "note": "Alerjen ve içerik bilgisi için lütfen çalışanlarımıza sorun. Fiyatlara KDV dahildir.",
+  "currency": "₺",
+  "categories": [
+    {
+      "name": "Kahvaltılar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Breakfast"
+      },
+      "items": [
+        {
+          "name": "Kahvaltı tabağı",
+          "desc": "Süzme bal 35 g, fındık ezmesi 25 g, acuka 25 g, tereyağı 15 g, salatalık 30 g, domates 30 g, beyaz peynir 25 g, kaşar 35 g, zeytin 25 g, kuruyemiş 25 g, Nutella 15 g, 1 haşlanmış yumurta, 1 paçanga böreği 45 g, 1 yumurtalı ekmek 35 g, patates 70 g, 1 poğaça ve ekmek sepeti. 2 bardak çay dahil. Yumurta sahanda ya da haşlanmış olabilir.",
+          "price": "550",
+          "variants": [],
+          "image": "ispir-91.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Breakfast plate",
+            "desc": "Strained honey 35 g, hazelnut spread 25 g, acuka 25 g, butter 15 g, cucumber 30 g, tomato 30 g, white cheese 25 g, kashar cheese 35 g, olives 25 g, mixed nuts 25 g, Nutella 15 g, 1 boiled egg, 1 paçanga börek 45 g, 1 egg bread 35 g, fries 70 g, 1 poğaça and a bread basket. 2 glasses of tea included. Eggs can be fried or boiled."
+          }
+        },
+        {
+          "name": "Express kahvaltı",
+          "desc": "Beyaz peynir 25 g, kaşar 35 g, zeytin 70 g, salatalık 40 g, domates 60 g, 1 haşlanmış yumurta, 1 fincan çay dahil",
+          "price": "335",
+          "variants": [],
+          "image": "ispir-89.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Express breakfast",
+            "desc": "White cheese 25 g, kashar cheese 35 g, olives 70 g, cucumber 40 g, tomato 60 g, 1 boiled egg, 1 cup of tea included"
+          }
+        },
+        {
+          "name": "Serpme kahvaltı",
+          "desc": "İki kişilik. Fındık ezmesi, reçel, pekmez, labne, tereyağı, acuka, salatalık, domates, petek bal, kaymak, tahin, incir, kayısı, ceviz, patates, yeşil ve siyah zeytin, beyaz peynir, kaşar, örgü ve çeçil peyniri, 2 Nutella, 2 paçanga böreği, 2 yumurtalı ekmek, 2 poğaçalık sepet, mıhlama ya da menemen, su ve sınırsız çay. Yumurta sahanda, haşlanmış ya da sucuklu. Yazılanların dışındakiler ücretlidir.",
+          "price": "1100",
+          "variants": [],
+          "image": "ispir-serpme-2.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Turkish breakfast spread",
+            "desc": "For two. Hazelnut spread, jam, grape molasses, labneh, butter, acuka, cucumber, tomato, honeycomb, clotted cream, tahini, fig, apricot, walnut, potatoes, green and black olives, white, kashar, braided and string cheese, 2 Nutella, 2 paçanga börek, 2 egg breads, a basket of 2 poğaça, mıhlama or menemen, water and unlimited tea. Eggs fried, boiled or with sucuk. Anything extra is charged."
+          }
+        },
+        {
+          "name": "Sahanda yumurta",
+          "desc": "Tereyağı 40 g, yumurta 2 adet, tuz 2 g",
+          "price": "160",
+          "variants": [],
+          "image": "ispir-78.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Fried eggs",
+            "desc": "Butter 40 g, 2 eggs, salt 2 g"
+          }
+        },
+        {
+          "name": "Sucuklu yumurta",
+          "desc": "Sucuk 50 g, tereyağı 40 g, yumurta 2 adet",
+          "price": "290",
+          "variants": [],
+          "image": "ispir-90.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Eggs with sucuk",
+            "desc": "Sucuk 50 g, butter 40 g, 2 eggs"
+          }
+        },
+        {
+          "name": "Kavurmalı yumurta",
+          "desc": "Tereyağı 40 g, yumurta 2 adet, kavurma 60 g, tuz 2 g, kekik 2 g, pul biber 2 g",
+          "price": "345",
+          "variants": [],
+          "image": "ispir-79.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Eggs with kavurma",
+            "desc": "Butter 40 g, 2 eggs, kavurma 60 g, salt 2 g, thyme 2 g, chili flakes 2 g"
+          }
+        },
+        {
+          "name": "Pastırmalı yumurta",
+          "desc": "Tereyağı 40 g, yumurta 2 adet, pastırma 30 g",
+          "price": "320",
+          "variants": [],
+          "image": "ispir-81.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Eggs with pastırma",
+            "desc": "Butter 40 g, 2 eggs, pastırma 30 g"
+          }
+        },
+        {
+          "name": "Paçanga böreği",
+          "desc": "",
+          "price": "275",
+          "variants": [],
+          "image": "artboard-3.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Paçanga börek"
+          }
+        },
+        {
+          "name": "Kaşarlı mantarlı omlet",
+          "desc": "Yumurta 2 adet, mantar 55 g, kaşar 60 g, tuz 2 g, çeşni 2 g, zeytinyağı 20 g",
+          "price": "285",
+          "variants": [],
+          "image": "ispir-87.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mushroom & cheese omelette",
+            "desc": "2 eggs, mushrooms 55 g, kashar cheese 60 g, salt 2 g, seasoning 2 g, olive oil 20 g"
+          }
+        },
+        {
+          "name": "Karışık omlet",
+          "desc": "Yumurta 2 adet, mantar 30 g, sucuk 25 g, sosis 25 g, tuz 2 g, çeşni 2 g, kaşar 60 g, zeytinyağı 20 g",
+          "price": "285",
+          "variants": [],
+          "image": "ispir-88.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed omelette",
+            "desc": "2 eggs, mushrooms 30 g, sucuk 25 g, sausage 25 g, salt 2 g, seasoning 2 g, kashar cheese 60 g, olive oil 20 g"
+          }
+        },
+        {
+          "name": "Kaşarlı omlet",
+          "desc": "Yumurta 2 adet, kaşar 80 g, tuz 2 g, çeşni 2 g, zeytinyağı 20 g",
+          "price": "270",
+          "variants": [],
+          "image": "kasaaarli-omlet.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese omelette",
+            "desc": "2 eggs, kashar cheese 80 g, salt 2 g, seasoning 2 g, olive oil 20 g"
+          }
+        },
+        {
+          "name": "Mıhlama",
+          "desc": "Tereyağı 70 g, mısır unu 55 g, mıhlama peyniri 90 g, tuz 3 g",
+          "price": "275",
+          "variants": [],
+          "image": "artboard-2-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Butter 70 g, cornmeal 55 g, mıhlama cheese 90 g, salt 3 g"
+          }
+        },
+        {
+          "name": "Menemen",
+          "desc": "Domates 180 g, biber 70 g, çeşni 3 g, tuz 3 g, tereyağı 15 g, yumurta 1 adet",
+          "price": "240",
+          "variants": [],
+          "image": "artboard-1-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Tomato 180 g, peppers 70 g, seasoning 3 g, salt 3 g, butter 15 g, 1 egg"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Çorbalar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Soups"
+      },
+      "items": [
+        {
+          "name": "Ezogelin çorbası",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-6-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Ezogelin soup"
+          }
+        },
+        {
+          "name": "Mercimek çorbası",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-7-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Lentil soup"
+          }
+        },
+        {
+          "name": "Yayla çorbası",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-9-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Yayla soup"
+          }
+        },
+        {
+          "name": "Domates çorbası",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-11.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tomato soup"
+          }
+        },
+        {
+          "name": "Kremalı sebze çorbası",
+          "desc": "",
+          "price": "170",
+          "variants": [],
+          "image": "artboard-8-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cream of vegetable soup"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Türk mutfağı",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Turkish kitchen"
+      },
+      "items": [
+        {
+          "name": "Pirinç pilavı",
+          "desc": "Pilav 150 g",
+          "price": "180",
+          "variants": [],
+          "image": "artboard-4.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Rice pilaf",
+            "desc": "Rice 150 g"
+          }
+        },
+        {
+          "name": "Çökertme kebabı",
+          "desc": "Et 160 g, ekmek 80 g, kibrit cips 35 g, sarımsaklı yoğurt 100 g, tereyağı 40 g, çeri domates 2 adet, sivri biber 2 adet",
+          "price": "710",
+          "variants": [],
+          "image": "ispir-34.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Çökertme kebab",
+            "desc": "Beef 160 g, bread 80 g, shoestring fries 35 g, garlic yogurt 100 g, butter 40 g, 2 cherry tomatoes, 2 green peppers"
+          }
+        },
+        {
+          "name": "Sac tava",
+          "desc": "Et 170 g, pilav 100 g, tereyağı 40 g",
+          "price": "565",
+          "variants": [],
+          "image": "ispir-56.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Beef 170 g, rice 100 g, butter 40 g"
+          }
+        },
+        {
+          "name": "Beğendi yatağında İspir kebabı",
+          "desc": "Et 180 g, közlenmiş patlıcanlı beğendi 250 g, kibrit patates 35 g, sarımsaklı yoğurt 60 g, tereyağı 40 g",
+          "price": "660",
+          "variants": [],
+          "image": "ispir-33.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "İspir kebab on beğendi",
+            "desc": "Beef 180 g, smoky aubergine beğendi 250 g, shoestring fries 35 g, garlic yogurt 60 g, butter 40 g"
+          }
+        },
+        {
+          "name": "İspir lobya",
+          "desc": "İspir fasulye 350 g, biber turşusu 50 g, lahana turşusu 50 g",
+          "price": "525",
+          "variants": [],
+          "image": "ispir-32.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "İspir beans 350 g, pickled peppers 50 g, pickled cabbage 50 g"
+          }
+        },
+        {
+          "name": "Türkmen mantı",
+          "desc": "Türkmen mantı 200 g, süzme yoğurt 150 g, tereyağı 25 g, nane 3 g",
+          "price": "410",
+          "variants": [],
+          "image": "ispir-43.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Turkmen mantı",
+            "desc": "Turkmen mantı 200 g, strained yogurt 150 g, butter 25 g, mint 3 g"
+          }
+        },
+        {
+          "name": "Güveç kavurma",
+          "desc": "Kavurma et 180 g, biber turşusu 50 g, lahana turşusu 50 g, pul biber, kekik",
+          "price": "590",
+          "variants": [],
+          "image": "ispir-31.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kavurma in a clay pot",
+            "desc": "Kavurma 180 g, pickled peppers 50 g, pickled cabbage 50 g, chili flakes, thyme"
+          }
+        },
+        {
+          "name": "Askılı kebap",
+          "desc": "2 kalem kuzu, tavuk 400 g, bonfile 200 g, köfte 140 g, hellim 150 g, mantar 70 g, 1 lavaş, sucuk 120 g, 4 çeri domates, 4 sivri biber. Soslar: sarımsaklı yoğurt, hardal, acı sos, avokado",
+          "price": "2140",
+          "variants": [],
+          "image": "sebzelikebap.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Hanging kebab platter",
+            "desc": "2 lamb chops, chicken 400 g, beef tenderloin 200 g, meatballs 140 g, halloumi 150 g, mushrooms 70 g, 1 lavash, sucuk 120 g, 4 cherry tomatoes, 4 green peppers. Sauces: garlic yogurt, mustard, hot sauce, avocado"
+          }
+        },
+        {
+          "name": "Kayseri mantı",
+          "desc": "Kayseri mantısı 200 g, süzme yoğurt 150 g, tereyağı 25 g, nane 3 g",
+          "price": "390",
+          "variants": [],
+          "image": "ispir-44.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Kayseri mantı 200 g, strained yogurt 150 g, butter 25 g, mint 3 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Kırmızı etler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Red meat"
+      },
+      "items": [
+        {
+          "name": "Lokum bonfile",
+          "desc": "Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, tuz 2 g, sarımsak 2 g, çeşni 2 g",
+          "price": "830",
+          "variants": [],
+          "image": "ispir-45.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Beef tenderloin",
+            "desc": "Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, salt 2 g, garlic 2 g, seasoning 2 g"
+          }
+        },
+        {
+          "name": "Mantar soslu julyen bonfile",
+          "desc": "Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, krema 130 ml, hardal 10 g, soya sosu 20 g, mantar 50 g, tuz 2 g, sarımsak 2 g, çeşni 2 g",
+          "price": "830",
+          "variants": [],
+          "image": "ispir-47.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Beef julienne in mushroom sauce",
+            "desc": "Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, cream 130 ml, mustard 10 g, soy sauce 20 g, mushrooms 50 g, salt 2 g, garlic 2 g, seasoning 2 g"
+          }
+        },
+        {
+          "name": "Köz sebzeli bonfile",
+          "desc": "Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, köz sebze 100 g, tuz 2 g, sarımsak 2 g, çeşni 2 g",
+          "price": "865",
+          "variants": [],
+          "image": "ispir-45-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Beef tenderloin with roasted vegetables",
+            "desc": "Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, fire-roasted vegetables 100 g, salt 2 g, garlic 2 g, seasoning 2 g"
+          }
+        },
+        {
+          "name": "Kuzu pirzola",
+          "desc": "Kuzu 4 kalem, haşlanmış patates 90 g, lavaş 1 adet, domates 2 adet, sivri biber 2 adet",
+          "price": "865",
+          "variants": [],
+          "image": "ispir-65.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Lamb chops",
+            "desc": "4 lamb chops, boiled potatoes 90 g, 1 lavash, 2 tomatoes, 2 green peppers"
+          }
+        },
+        {
+          "name": "Arnavut ciğeri",
+          "desc": "Ciğer 190 g, lavaş 35 g",
+          "price": "585",
+          "variants": [],
+          "image": "ispir-17.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Albanian-style liver",
+            "desc": "Liver 190 g, lavash 35 g"
+          }
+        },
+        {
+          "name": "Izgara köfte",
+          "desc": "Köfte 180 g, patates 90 g, yeşillik 40 g, pilav 100 g",
+          "price": "510",
+          "variants": [],
+          "image": "12kft.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Grilled meatballs",
+            "desc": "Meatballs 180 g, fries 90 g, greens 40 g, rice 100 g"
+          }
+        },
+        {
+          "name": "Ispanaklı kremalı bonfile",
+          "desc": "Bonfile 200 g, ıspanak 100 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, krema 50 ml",
+          "price": "820",
+          "variants": [],
+          "image": "ispir-49.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Creamy spinach beef tenderloin",
+            "desc": "Beef tenderloin 200 g, spinach 100 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, cream 50 ml"
+          }
+        },
+        {
+          "name": "Karışık ızgara",
+          "desc": "Köfte 70 g, bonfile 100 g, sucuk 60 g, tavuk 170 g, haşlanmış patates 90 g, çeri domates 2 adet, sivri biber 2 adet",
+          "price": "980",
+          "variants": [],
+          "image": "ispir-52.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed grill",
+            "desc": "Meatballs 70 g, beef tenderloin 100 g, sucuk 60 g, chicken 170 g, boiled potatoes 90 g, 2 cherry tomatoes, 2 green peppers"
+          }
+        },
+        {
+          "name": "Ekmek arası Arnavut ciğeri",
+          "desc": "Ciğer 100 g, patates 90 g, çapata ekmeği 130 g, amerikan salata 80 g, soğan 30 g, sos 30 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-18.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Albanian liver sandwich",
+            "desc": "Liver 100 g, fries 90 g, ciabatta 130 g, Olivier salad 80 g, onion 30 g, sauce 30 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beyaz etler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Chicken"
+      },
+      "items": [
+        {
+          "name": "Şinitzel tavuk",
+          "desc": "Tavuk göğsü 200 g, mayonez 30 g, patates 70 g",
+          "price": "445",
+          "variants": [],
+          "image": "ispir-6.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chicken schnitzel",
+            "desc": "Chicken breast 200 g, mayonnaise 30 g, fries 70 g"
+          }
+        },
+        {
+          "name": "Meksika soslu tavuk",
+          "desc": "Tavuk göğsü 180 g, domates sos 50 g, acı sos 10 g, patates 70 g, çeşni 5 g, tuz 2 g, makarna 70 g, parmesan peyniri 10 g, krema 30 ml",
+          "price": "415",
+          "variants": [],
+          "image": "artboard-6.webp",
+          "tags": [
+            "acili"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mexican-style chicken",
+            "desc": "Chicken breast 180 g, tomato sauce 50 g, hot sauce 10 g, fries 70 g, seasoning 5 g, salt 2 g, pasta 70 g, parmesan 10 g, cream 30 ml"
+          }
+        },
+        {
+          "name": "Etli but ızgara",
+          "desc": "Kemikli but 300 g, pirinç 70 g, patates 70 g, sivri biber 20 g, çeri domates 50 g",
+          "price": "445",
+          "variants": [],
+          "image": "artboard-2.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Grilled chicken leg",
+            "desc": "Bone-in chicken leg 300 g, rice 70 g, fries 70 g, green peppers 20 g, cherry tomatoes 50 g"
+          }
+        },
+        {
+          "name": "Köri soslu tavuk",
+          "desc": "Tavuk göğsü 180 g, krema 50 ml, köri 5 g, tuz 2 g, çeşni 5 g, parmesan peyniri 20 g, makarna 70 g, domates sos 50 g, patates 70 g",
+          "price": "420",
+          "variants": [],
+          "image": "artboard-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chicken curry",
+            "desc": "Chicken breast 180 g, cream 50 ml, curry 5 g, salt 2 g, seasoning 5 g, parmesan 20 g, pasta 70 g, tomato sauce 50 g, fries 70 g"
+          }
+        },
+        {
+          "name": "Toskana tavuk",
+          "desc": "Tavuk göğsü 200 g, çeri domates 100 g, ıspanak 50 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, parmesan peyniri 15 g, krema 50 ml",
+          "price": "450",
+          "variants": [],
+          "image": "ispir-48.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tuscan chicken",
+            "desc": "Chicken breast 200 g, cherry tomatoes 100 g, spinach 50 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, parmesan 15 g, cream 50 ml"
+          }
+        },
+        {
+          "name": "Ispanaklı kremalı tavuk",
+          "desc": "Tavuk 200 g, ıspanak 100 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, krema 50 ml",
+          "price": "425",
+          "variants": [],
+          "image": "ispir-46.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Creamy spinach chicken",
+            "desc": "Chicken 200 g, spinach 100 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, cream 50 ml"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pide ve lahmacun",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Pide & lahmacun"
+      },
+      "items": [
+        {
+          "name": "Kuşbaşı pide",
+          "desc": "Kuşbaşı 210 g, hamur 200 g",
+          "price": "445",
+          "variants": [],
+          "image": "ispir-93.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Diced beef pide",
+            "desc": "Diced beef 210 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Karışık pide",
+          "desc": "Kuşbaşı 100 g, kaşar 90 g, sucuk 30 g, pastırma 20 g, hamur 200 g",
+          "price": "460",
+          "variants": [],
+          "image": "ispir-97.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed pide",
+            "desc": "Diced beef 100 g, kashar cheese 90 g, sucuk 30 g, pastırma 20 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Lahmacun",
+          "desc": "Dana kıyma 150 g, hamur 120 g",
+          "price": "140",
+          "variants": [],
+          "image": "ispir-100.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Minced beef 150 g, dough 120 g"
+          }
+        },
+        {
+          "name": "Kaşarlı sucuklu pide",
+          "desc": "Kaşar 200 g, sucuk 70 g, hamur 200 g",
+          "price": "380",
+          "variants": [],
+          "image": "ispir-94.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese & sucuk pide",
+            "desc": "Kashar cheese 200 g, sucuk 70 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Kaşarlı pide",
+          "desc": "Kaşar 220 g, hamur 200 g",
+          "price": "370",
+          "variants": [],
+          "image": "artboard-19.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese pide",
+            "desc": "Kashar cheese 220 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Kavurmalı kaşarlı pide",
+          "desc": "Kavurma 150 g, kaşar 50 g, hamur 220 g",
+          "price": "520",
+          "variants": [],
+          "image": "ispir-99.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kavurma & cheese pide",
+            "desc": "Kavurma 150 g, kashar cheese 50 g, dough 220 g"
+          }
+        },
+        {
+          "name": "Trabzon pidesi",
+          "desc": "Kuşbaşı 80 g, kaşar 90 g, sucuk 60 g, domates 20 g, biber 10 g, hamur 220 g",
+          "price": "470",
+          "variants": [],
+          "image": "ispir-84.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Trabzon pide",
+            "desc": "Diced beef 80 g, kashar cheese 90 g, sucuk 60 g, tomato 20 g, peppers 10 g, dough 220 g"
+          }
+        },
+        {
+          "name": "Kuşbaşı kaşarlı pide",
+          "desc": "Kuşbaşı 120 g, kaşar 100 g, hamur 200 g",
+          "price": "460",
+          "variants": [],
+          "image": "ispir-92.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Diced beef & cheese pide",
+            "desc": "Diced beef 120 g, kashar cheese 100 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Kıymalı pide",
+          "desc": "Dana kıyma 180 g, hamur 200 g",
+          "price": "325",
+          "variants": [],
+          "image": "ispir-86.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Minced beef pide",
+            "desc": "Minced beef 180 g, dough 200 g"
+          }
+        },
+        {
+          "name": "Kıymalı kaşarlı pide",
+          "desc": "Kıyma 110 g, kaşar 90 g, hamur 200 g",
+          "price": "380",
+          "variants": [],
+          "image": "ispir-85.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Minced beef & cheese pide",
+            "desc": "Minced beef 110 g, kashar cheese 90 g, dough 200 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pizzalar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Pizza"
+      },
+      "items": [
+        {
+          "name": "Ton balıklı pizza",
+          "desc": "",
+          "price": "485",
+          "variants": [],
+          "image": "artboard-18.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tuna pizza"
+          }
+        },
+        {
+          "name": "Texas pizza",
+          "desc": "Kaşar 90 g, sucuk 50 g, sosis 30 g, salam 50 g, mısır 20 g, zeytin 15 g, jalapeno biber 30 g, hamur 220 g",
+          "price": "485",
+          "variants": [],
+          "image": "ispir-83.webp",
+          "tags": [
+            "acili"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Kashar cheese 90 g, sucuk 50 g, sausage 30 g, salami 50 g, corn 20 g, olives 15 g, jalapeño 30 g, dough 220 g"
+          }
+        },
+        {
+          "name": "Margarita pizza",
+          "desc": "Kaşar 120 g, çeri domates 2 adet, hamur 220 g",
+          "price": "445",
+          "variants": [],
+          "image": "artboard-27-1.webp",
+          "tags": [
+            "vejetaryen"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Margherita pizza",
+            "desc": "Kashar cheese 120 g, 2 cherry tomatoes, dough 220 g"
+          }
+        },
+        {
+          "name": "Vejetaryen pizza",
+          "desc": "",
+          "price": "470",
+          "variants": [],
+          "image": "artboard-17.webp",
+          "tags": [
+            "vejetaryen"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Vegetarian pizza"
+          }
+        },
+        {
+          "name": "Karışık pizza",
+          "desc": "Kaşar 90 g, sucuk 50 g, sosis 30 g, salam 50 g, mısır 20 g, zeytin 15 g, hamur 220 g",
+          "price": "445",
+          "variants": [],
+          "image": "ispir-82.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed pizza",
+            "desc": "Kashar cheese 90 g, sucuk 50 g, sausage 30 g, salami 50 g, corn 20 g, olives 15 g, dough 220 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Makarnalar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Pasta"
+      },
+      "items": [
+        {
+          "name": "Kremalı tavuklu penne",
+          "desc": "Tavuk 90 g, mantar 50 g, makarna 160 g, tuz 3 g, karabiber 3 g, krema 100 ml, parmesan peyniri 30 g, zeytinyağı 10 g",
+          "price": "385",
+          "variants": [],
+          "image": "ispir-51.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Creamy chicken penne",
+            "desc": "Chicken 90 g, mushrooms 50 g, pasta 160 g, salt 3 g, black pepper 3 g, cream 100 ml, parmesan 30 g, olive oil 10 g"
+          }
+        },
+        {
+          "name": "Penne arrabbiata",
+          "desc": "Domates sos 120 g, acı sos 30 g, tereyağı 30 g, penne makarna 160 g, parmesan peyniri 30 g, tuz 3 g",
+          "price": "370",
+          "variants": [],
+          "image": "ispir-50.webp",
+          "tags": [
+            "acili"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Tomato sauce 120 g, hot sauce 30 g, butter 30 g, penne 160 g, parmesan 30 g, salt 3 g"
+          }
+        },
+        {
+          "name": "Spagetti bolonez",
+          "desc": "Kıyma 70 g, spagetti makarna 200 g, domates sos 150 g, tuz 3 g, karabiber 2 g, sarımsak 2 g, tereyağı 30 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-54.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Spaghetti bolognese",
+            "desc": "Minced beef 70 g, spaghetti 200 g, tomato sauce 150 g, salt 3 g, black pepper 2 g, garlic 2 g, butter 30 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meksika mutfağı",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Mexican"
+      },
+      "items": [
+        {
+          "name": "Tavuklu wrap",
+          "desc": "Tavuk 90 g, sebze 120 g, fajita baharatı 4 g, zeytinyağı 25 g, domates sos 40 g, patates 90 g, sos 30 g",
+          "price": "440",
+          "variants": [],
+          "image": "ispir-8.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chicken wrap",
+            "desc": "Chicken 90 g, vegetables 120 g, fajita seasoning 4 g, olive oil 25 g, tomato sauce 40 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Bonfile wrap",
+          "desc": "Bonfile 90 g, sebze 120 g, fajita baharatı 4 g, zeytinyağı 25 g, domates sos 40 g, patates 90 g, sos 30 g",
+          "price": "540",
+          "variants": [],
+          "image": "ispir-7.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Beef wrap",
+            "desc": "Beef tenderloin 90 g, vegetables 120 g, fajita seasoning 4 g, olive oil 25 g, tomato sauce 40 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Combo fajita",
+          "desc": "Tavuk 65 g, et 65 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 15 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g",
+          "price": "620",
+          "variants": [],
+          "image": "ispir-68.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Chicken 65 g, beef 65 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 15 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"
+          }
+        },
+        {
+          "name": "Tavuk fajita",
+          "desc": "Tavuk 130 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 15 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g",
+          "price": "485",
+          "variants": [],
+          "image": "ispir-64.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chicken fajita",
+            "desc": "Chicken 130 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 15 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"
+          }
+        },
+        {
+          "name": "Bonfile fajita",
+          "desc": "Et 130 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, et suyu 30 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 25 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g",
+          "price": "680",
+          "variants": [],
+          "image": "ispir-63.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Beef fajita",
+            "desc": "Beef 130 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, beef stock 30 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 25 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tost, burger ve atıştırmalık",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Toasties, burgers & snacks"
+      },
+      "items": [
+        {
+          "name": "Karışık tost",
+          "desc": "Sucuk 15 g, tost ekmeği 70 g, kaşar 25 g, patates 90 g, mayonez 30 g",
+          "price": "315",
+          "variants": [],
+          "image": "ispir-67.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed toastie",
+            "desc": "Sucuk 15 g, toast bread 70 g, kashar cheese 25 g, fries 90 g, mayonnaise 30 g"
+          }
+        },
+        {
+          "name": "Black burger",
+          "desc": "",
+          "price": "320",
+          "variants": [],
+          "image": "blackburger.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Sucuklu tost",
+          "desc": "Sucuk 40 g, tost ekmeği 80 g, patates 90 g, sos 30 g",
+          "price": "280",
+          "variants": [],
+          "image": "sucuklu-tosttt.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Sucuk toastie",
+            "desc": "Sucuk 40 g, toast bread 80 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Kaşarlı tost",
+          "desc": "Kaşar 50 g, tost ekmeği 70 g, patates 90 g, sos 30 g",
+          "price": "290",
+          "variants": [],
+          "image": "ispir-66.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese toastie",
+            "desc": "Kashar cheese 50 g, toast bread 70 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Karışık bazlama tost",
+          "desc": "Sucuk 30 g, kaşar 60 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g",
+          "price": "340",
+          "variants": [],
+          "image": "ispir-59.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mixed bazlama toastie",
+            "desc": "Sucuk 30 g, kashar cheese 60 g, bazlama 200 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Kavurmalı bazlama tost",
+          "desc": "Kavurma 70 g, kaşar 60 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-61.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kavurma bazlama toastie",
+            "desc": "Kavurma 70 g, kashar cheese 60 g, bazlama 200 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Kaşarlı bazlama tost",
+          "desc": "Kaşar 75 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g",
+          "price": "320",
+          "variants": [],
+          "image": "ispir-55.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese bazlama toastie",
+            "desc": "Kashar cheese 75 g, bazlama 200 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Beyaz peynirli domatesli bazlama tost",
+          "desc": "Beyaz peynir 90 g, domates 50 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g",
+          "price": "315",
+          "variants": [],
+          "image": "ispir-60.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "White cheese & tomato bazlama toastie",
+            "desc": "White cheese 90 g, tomato 50 g, bazlama 200 g, fries 90 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Pastırmalı bazlama tost",
+          "desc": "Pastırma 30 g, kaşar 60 g, patates 90 g, bazlama ekmeği 200 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-61.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Pastırma bazlama toastie",
+            "desc": "Pastırma 30 g, kashar cheese 60 g, fries 90 g, bazlama 200 g"
+          }
+        },
+        {
+          "name": "Hamburger",
+          "desc": "Köfte 90 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g",
+          "price": "345",
+          "variants": [],
+          "image": "ispir-10.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Patty 90 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"
+          }
+        },
+        {
+          "name": "Double burger",
+          "desc": "Köfte 180 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 30 g, hamburger ekmeği 100 g",
+          "price": "460",
+          "variants": [],
+          "image": "ispir-30.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Patties 180 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 30 g, bun 100 g"
+          }
+        },
+        {
+          "name": "Texas burger",
+          "desc": "Köfte 90 g, cheddar peyniri 15 g, jalapeno biber 20 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g",
+          "price": "380",
+          "variants": [],
+          "image": "ispir-11.webp",
+          "tags": [
+            "acili"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Patty 90 g, cheddar 15 g, jalapeño 20 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"
+          }
+        },
+        {
+          "name": "Cheeseburger",
+          "desc": "Köfte 90 g, cheddar peyniri 15 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g",
+          "price": "380",
+          "variants": [],
+          "image": "ispir-13.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Patty 90 g, cheddar 15 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"
+          }
+        },
+        {
+          "name": "Kumru",
+          "desc": "Sosis 75 g, sucuk 50 g, kaşar 50 g, turşu 30 g, domates sos 80 g, patates 90 g, çapata ekmeği 130 g, sos 30 g",
+          "price": "315",
+          "variants": [],
+          "image": "ispir-15.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kumru sandwich",
+            "desc": "Sausage 75 g, sucuk 50 g, kashar cheese 50 g, pickles 30 g, tomato sauce 80 g, fries 90 g, ciabatta 130 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Köfte ekmek",
+          "desc": "Köfte 105 g, sivri biber 10 g, domates 45 g, patates 90 g, çapata ekmeği 130 g, sos 30 g, mayonez 5 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-9.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Meatball sandwich",
+            "desc": "Meatballs 105 g, green pepper 10 g, tomato 45 g, fries 90 g, ciabatta 130 g, sauce 30 g, mayonnaise 5 g"
+          }
+        },
+        {
+          "name": "Patates cips",
+          "desc": "Patates 200 g",
+          "price": "220",
+          "variants": [],
+          "image": "artboard-15.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "French fries",
+            "desc": "Potatoes 200 g"
+          }
+        },
+        {
+          "name": "Elma dilim patates",
+          "desc": "Elma dilim 200 g",
+          "price": "235",
+          "variants": [],
+          "image": "ispir-41.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Potato wedges",
+            "desc": "Potato wedges 200 g"
+          }
+        },
+        {
+          "name": "Çıtır tavuk sepeti",
+          "desc": "Tavuk 130 g, patates 150 g, sos 30 g",
+          "price": "355",
+          "variants": [],
+          "image": "ispir-39.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Crispy chicken basket",
+            "desc": "Chicken 130 g, fries 150 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Kalem börek sepeti",
+          "desc": "Kalem börek 200 g, patates 150 g, sos 30 g",
+          "price": "245",
+          "variants": [],
+          "image": "ispir-42.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Cheese roll basket",
+            "desc": "Cheese rolls 200 g, fries 150 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Soğan halkası sepeti",
+          "desc": "Soğan halkası 125 g, patates 150 g, sos 30 g",
+          "price": "275",
+          "variants": [],
+          "image": "ispir-38.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Onion ring basket",
+            "desc": "Onion rings 125 g, fries 150 g, sauce 30 g"
+          }
+        },
+        {
+          "name": "Sosis tabağı",
+          "desc": "Sosis 150 g, patates 150 g, sos 30 g",
+          "price": "250",
+          "variants": [],
+          "image": "ispir-40.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Sausage plate",
+            "desc": "Sausage 150 g, fries 150 g, sauce 30 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salatalar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Salads"
+      },
+      "items": [
+        {
+          "name": "Mevsim salata",
+          "desc": "",
+          "price": "250",
+          "variants": [],
+          "image": "artboard-14.webp",
+          "tags": [
+            "vejetaryen"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Seasonal salad"
+          }
+        },
+        {
+          "name": "Tulum peynirli salata",
+          "desc": "Yeşillik 70 g, mısır 30 g, köz sebze 60 g, tulum peyniri 50 g",
+          "price": "380",
+          "variants": [],
+          "image": "ispir-3.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Salad with tulum cheese",
+            "desc": "Greens 70 g, corn 30 g, roasted vegetables 60 g, tulum cheese 50 g"
+          }
+        },
+        {
+          "name": "Sezar salata",
+          "desc": "Tavuk 100 g, yeşillik 70 g, mısır 30 g, sezar sos 90 g, parmesan peyniri 20 g, kruton ekmek 15 g",
+          "price": "400",
+          "variants": [],
+          "image": "ispir-5.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Caesar salad",
+            "desc": "Chicken 100 g, greens 70 g, corn 30 g, Caesar dressing 90 g, parmesan 20 g, croutons 15 g"
+          }
+        },
+        {
+          "name": "Gavurdağı salatası",
+          "desc": "Salatalık 70 g, domates 60 g, biber 50 g, soğan 40 g, maydanoz 5 g, beyaz peynir 50 g, ceviz 30 g, sirke 70 g, sumak 3 g, tuz 3 g, zeytinyağı 60 g, nar ekşisi 70 g",
+          "price": "280",
+          "variants": [],
+          "image": "ispir-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Gavurdağı salad",
+            "desc": "Cucumber 70 g, tomato 60 g, peppers 50 g, onion 40 g, parsley 5 g, white cheese 50 g, walnuts 30 g, vinegar 70 g, sumac 3 g, salt 3 g, olive oil 60 g, pomegranate molasses 70 g"
+          }
+        },
+        {
+          "name": "Çoban salata",
+          "desc": "Salatalık 70 g, domates 60 g, biber 50 g, soğan 40 g, maydanoz 5 g, limon 25 g",
+          "price": "240",
+          "variants": [],
+          "image": "ispir-2.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Shepherd's salad",
+            "desc": "Cucumber 70 g, tomato 60 g, peppers 50 g, onion 40 g, parsley 5 g, lemon 25 g"
+          }
+        },
+        {
+          "name": "Ton balıklı salata",
+          "desc": "Yeşillik 70 g, mısır 30 g, kruton ekmek 15 g, ton balığı 80 g, soğan 10 g, yeşil zeytin 25 g",
+          "price": "400",
+          "variants": [],
+          "image": "artboard-13.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tuna salad",
+            "desc": "Greens 70 g, corn 30 g, croutons 15 g, tuna 80 g, onion 10 g, green olives 25 g"
+          }
+        },
+        {
+          "name": "Şefin bonfile salatası",
+          "desc": "Bonfile 100 g, yeşillik 70 g, kruton ekmek 15 g, mısır 30 g, sezar sos 90 g, parmesan peyniri 20 g",
+          "price": "645",
+          "variants": [],
+          "image": "ispir-4.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chef's beef salad",
+            "desc": "Beef tenderloin 100 g, greens 70 g, croutons 15 g, corn 30 g, Caesar dressing 90 g, parmesan 20 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tatlılar",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Desserts"
+      },
+      "items": [
+        {
+          "name": "Waffle",
+          "desc": "Waffle hamuru (yumurta, şeker, ayçiçek yağı, süt, un, kabartma tozu, vanilya) üstüne muz 60 g, kivi 80 g, çilek 70 g, çikolata sosu 100 g, frambuaz sosu 40 g, fındık 10 g, vanilyalı dondurma 40 g",
+          "price": "370",
+          "variants": [],
+          "image": "ispir-35.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Waffle batter (egg, sugar, sunflower oil, milk, flour, baking powder, vanilla) with banana 60 g, kiwi 80 g, strawberry 70 g, chocolate sauce 100 g, raspberry sauce 40 g, hazelnuts 10 g, vanilla ice cream 40 g"
+          }
+        },
+        {
+          "name": "Cevizli baklava",
+          "desc": "",
+          "price": "240",
+          "variants": [],
+          "image": "ispir-75.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Walnut baklava"
+          }
+        },
+        {
+          "name": "Fıstıklı baklava",
+          "desc": "",
+          "price": "290",
+          "variants": [],
+          "image": "ispir-76.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Pistachio baklava"
+          }
+        },
+        {
+          "name": "Sufle",
+          "desc": "Yumurta 70 g, un 20 g, şeker 18 g, çikolata 40 g, tereyağı 40 g, kabartma tozu 0, 3 g, vanilya 0, 3 g, dondurma 30 g, krem şanti 15 g",
+          "price": "310",
+          "variants": [],
+          "image": "ispir-37.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chocolate soufflé",
+            "desc": "Egg 70 g, flour 20 g, sugar 18 g, chocolate 40 g, butter 40 g, baking powder 0.3 g, vanilla 0.3 g, ice cream 30 g, whipped cream 15 g"
+          }
+        },
+        {
+          "name": "Künefe",
+          "desc": "Kadayıf 80 g, künefe yağı 60 g, tuzsuz peynir 50 g, dondurma 30 g, fıstık 10 g",
+          "price": "325",
+          "variants": [],
+          "image": "ispir-36.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "desc": "Kadayıf 80 g, clarified butter 60 g, unsalted cheese 50 g, ice cream 30 g, pistachio 10 g"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sıcak içecekler",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Hot drinks"
+      },
+      "items": [
+        {
+          "name": "Mocha",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "artboard-52.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Çikolatalı Türk kahvesi",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-36.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Chocolate Turkish coffee"
+          }
+        },
+        {
+          "name": "Ballı süt",
+          "desc": "",
+          "price": "170",
+          "variants": [],
+          "image": "artboard-47.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Hot milk with honey"
+          }
+        },
+        {
+          "name": "Menengiç kahvesi",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-35.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Menengiç coffee"
+          }
+        },
+        {
+          "name": "Bardak çay",
+          "desc": "",
+          "price": "45",
+          "variants": [],
+          "image": "artboard-30.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tea, glass"
+          }
+        },
+        {
+          "name": "Caramel macchiato",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "artboard-51.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Damla sakızlı Türk kahvesi",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-37.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Mastic Turkish coffee"
+          }
+        },
+        {
+          "name": "Türk kahvesi",
+          "desc": "",
+          "price": "130",
+          "variants": [],
+          "image": "artboard-34.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Turkish coffee"
+          }
+        },
+        {
+          "name": "Espresso",
+          "desc": "",
+          "price": "175",
+          "variants": [],
+          "image": "esppresso.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Fincan çay",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "artboard-31.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Tea, cup"
+          }
+        },
+        {
+          "name": "Bitki çayları",
+          "desc": "",
+          "price": "170",
+          "variants": [],
+          "image": "artboard-33.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Herbal teas"
+          }
+        },
+        {
+          "name": "Dibek kahvesi",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-37.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Dibek coffee"
+          }
+        },
+        {
+          "name": "Latte",
+          "desc": "",
+          "price": "200",
+          "variants": [],
+          "image": "latteee.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Sıcak çikolata",
+          "desc": "",
+          "price": "195",
+          "variants": [],
+          "image": "artboard-44.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Hot chocolate"
+          }
+        },
+        {
+          "name": "Cappuccino",
+          "desc": "",
+          "price": "200",
+          "variants": [],
+          "image": "artboard-53.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Filtre kahve",
+          "desc": "",
+          "price": "180",
+          "variants": [],
+          "image": "artboard-50.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Filter coffee"
+          }
+        },
+        {
+          "name": "Aromalı cappuccino",
+          "desc": "",
+          "price": "200",
+          "variants": [],
+          "image": "artboard-53.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Flavoured cappuccino"
+          }
+        },
+        {
+          "name": "Meyve çayları",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "meyveee-caylari.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Fruit teas"
+          }
+        },
+        {
+          "name": "Sahlep",
+          "desc": "",
+          "price": "210",
+          "variants": [],
+          "image": "artboard-45.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Salep"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Soğuk içecekler ve kokteyller",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Cold drinks & mocktails"
+      },
+      "items": [
+        {
+          "name": "Mango Sunset",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a01.webp",
+          "tags": [
+            "sef"
+          ],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Cool Lime",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a12.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Berry Hibiscus",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a2.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Red Forest",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a3.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Ice latte",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a4.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced latte"
+          }
+        },
+        {
+          "name": "Ice mocha",
+          "desc": "",
+          "price": "225",
+          "variants": [],
+          "image": "a5.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced mocha"
+          }
+        },
+        {
+          "name": "Antioksidan",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a8.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Antioxidant"
+          }
+        },
+        {
+          "name": "Ice americano / filtre",
+          "desc": "",
+          "price": "195",
+          "variants": [],
+          "image": "a9.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced americano / filter"
+          }
+        },
+        {
+          "name": "Çille",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a10.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Frozen çeşitleri",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a6.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Frozen drinks"
+          }
+        },
+        {
+          "name": "Milkshake çeşitleri",
+          "desc": "",
+          "price": "215",
+          "variants": [],
+          "image": "a7.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Milkshakes"
+          }
+        },
+        {
+          "name": "Blueberry",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a11.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Mango Sunset",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a01.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": true,
+          "en": {}
+        },
+        {
+          "name": "Meyveli soda",
+          "desc": "",
+          "price": "60",
+          "variants": [],
+          "image": "fresa.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Flavoured soda"
+          }
+        },
+        {
+          "name": "Soda",
+          "desc": "",
+          "price": "50",
+          "variants": [],
+          "image": "artboard-42.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Sparkling water"
+          }
+        },
+        {
+          "name": "Limonata",
+          "desc": "",
+          "price": "150",
+          "variants": [],
+          "image": "artboard-28.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Lemonade"
+          }
+        },
+        {
+          "name": "Soğuk beyaz çikolata",
+          "desc": "",
+          "price": "195",
+          "variants": [],
+          "image": "artboard-41.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced white chocolate"
+          }
+        },
+        {
+          "name": "Frappe",
+          "desc": "",
+          "price": "230",
+          "variants": [],
+          "image": "frappee-1.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Frappé"
+          }
+        },
+        {
+          "name": "Portakal suyu",
+          "desc": "",
+          "price": "210",
+          "variants": [],
+          "image": "artboard-24.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Orange juice"
+          }
+        },
+        {
+          "name": "Açık ayran",
+          "desc": "",
+          "price": "70",
+          "variants": [],
+          "image": "artboard-40.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Ayran"
+          }
+        },
+        {
+          "name": "Su",
+          "desc": "",
+          "price": "30",
+          "variants": [],
+          "image": "su-asya.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Water"
+          }
+        },
+        {
+          "name": "Cappy",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "caaappy.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Soğuk çikolata",
+          "desc": "",
+          "price": "200",
+          "variants": [],
+          "image": "artboard-29.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced chocolate"
+          }
+        },
+        {
+          "name": "Fanta",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "fant-aaa.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Ice Tea",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "iceee-tea.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Iced tea"
+          }
+        },
+        {
+          "name": "Sprite",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "spr-te.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Churchill",
+          "desc": "",
+          "price": "85",
+          "variants": [],
+          "image": "artboard-39.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Coca-Cola",
+          "desc": "",
+          "price": "90",
+          "variants": [],
+          "image": "cocaaa-cola.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {}
+        },
+        {
+          "name": "Ice coffee latte",
+          "desc": "",
+          "price": "220",
+          "variants": [],
+          "image": "a4.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": true,
+          "en": {
+            "name": "Iced coffee latte"
+          }
+        },
+        {
+          "name": "Milkshake",
+          "desc": "",
+          "price": "215",
+          "variants": [],
+          "image": "a7.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": true,
+          "en": {}
+        }
+      ]
+    },
+    {
+      "name": "Çocuk menüleri",
+      "desc": "",
+      "layout": "photo",
+      "hidden": false,
+      "en": {
+        "name": "Kids' menu"
+      },
+      "items": [
+        {
+          "name": "Köfteli çocuk menüsü",
+          "desc": "Köfte 100 g, makarna 70 g, patates 70 g, ketçap 15 g",
+          "price": "230",
+          "variants": [],
+          "image": "ispir-26.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kids' meatball menu",
+            "desc": "Meatballs 100 g, pasta 70 g, fries 70 g, ketchup 15 g"
+          }
+        },
+        {
+          "name": "Tavuklu çocuk menüsü",
+          "desc": "Tavuk 100 g, pilav 70 g, patates 70 g, ketçap 15 g",
+          "price": "230",
+          "variants": [],
+          "image": "ispir-27.webp",
+          "tags": [],
+          "allergens": "",
+          "soldOut": false,
+          "hidden": false,
+          "en": {
+            "name": "Kids' chicken menu",
+            "desc": "Chicken 100 g, rice 70 g, fries 70 g, ketchup 15 g"
+          }
+        }
+      ]
+    }
+  ]
+}

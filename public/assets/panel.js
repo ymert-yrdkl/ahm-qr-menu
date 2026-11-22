@@ -87,7 +87,28 @@ function focusSel(selector) {
   });
 }
 
-const priceMissing = (it) => !String(it.price || '').trim() && !(it.variants || []).some((v) => String(v.price || '').trim());
+// Eski menü dosyalarında olmayan alanları tamamlar (görünüm, kapak, saatler, İngilizce). Sunucu kayıtta zaten düzeltir;
+// bu yalnız panel ekranı boş alana takılmasın diye.
+function ensureShape(m) {
+  m.theme = m.theme || { primary: '#c1272d', paper: '', imageFit: 'cover' };
+  m.theme.design = m.theme.design || 'klasik';
+  m.contact = m.contact || {};
+  if (m.contact.reviewUrl == null) m.contact.reviewUrl = '';
+  m.cover = m.cover || '';
+  m.hours = m.hours && typeof m.hours === 'object' ? m.hours : {};
+  m.featured = m.featured || { title: '', label: '' };
+  m.languages = Array.isArray(m.languages) && m.languages.length ? m.languages : ['tr'];
+  m.i18n = m.i18n || {};
+  m.i18n.en = m.i18n.en || {};
+  (m.categories || []).forEach((c) => {
+    c.en = c.en || {};
+    (c.items || []).forEach((it) => { it.en = it.en || {}; });
+  });
+  return m;
+}
+const hasEn = () => S.menu.languages.includes('en');
+
+const priceMissing = (it) =>!String(it.price || '').trim() && !(it.variants || []).some((v) => String(v.price || '').trim());
 const allItems = () => (S.menu ? S.menu.categories.flatMap((c) => c.items) : []);
 
 /* ---------- sunucu ---------- */
@@ -169,7 +190,7 @@ async function save() {
       if (!ok) throw new Error('Kaydedilmedi.');
       r = await send(null);
     }
-    S.menu = r.menu;
+    S.menu = ensureShape(r.menu);
     S.base = r.menu.updatedAt || '';
     S.dirty = false;
     S.saving = false;
@@ -401,7 +422,7 @@ async function loadSession() {
 
 async function loadMenu() {
   const r = await api('menu');
-  S.menu = r.menu;
+  S.menu = ensureShape(r.menu);
   S.base = r.menu.updatedAt || '';
   S.role = r.role || S.role;
   S.dirty = false;
@@ -460,7 +481,7 @@ function viewMenu() {
   aside.append(h('button', {
     type: 'button', class: 'btn block', text: 'Kategori ekle',
     onclick: () => {
-      cats.push({ id: uid('kategori'), name: 'Yeni kategori', desc: '', layout: 'photo', hidden: false, items: [] });
+      cats.push({ id: uid('kategori'), name: 'Yeni kategori', desc: '', layout: 'photo', hidden: false, en: {}, items: [] });
       S.cat = cats.length - 1;
       markDirty();
       render();
@@ -492,7 +513,8 @@ function categoryEditor(c, ci) {
   const head = h('div', { class: 'card' },
     h('div', { class: 'grid2' },
       field('Kategori adı', c, 'name', { max: 80, path: 'cat-name', onInput: (v) => { const el = document.getElementById(`catlabel-${ci}`); if (el) el.textContent = v || 'Adsız kategori'; } }),
-      field('Kısa açıklama', c, 'desc', { max: 200, placeholder: 'İsteğe bağlı' })),
+      field('Kısa açıklama', c, 'desc', { max: 200, placeholder: 'İsteğe bağlı' }),
+      hasEn() ? field('İngilizce adı', c.en, 'name', { max: 80, placeholder: 'Örn. Breakfast' }) : null),
     h('div', { class: 'acts' },
       selectField('Görünüm', c, 'layout', [['photo', 'Fotoğraflı liste'], ['compact', 'Kısa liste (içecek, sos)']]),
       check('Menüde gizle', c, 'hidden', () => render()),
@@ -518,7 +540,7 @@ function categoryEditor(c, ci) {
       h('button', {
         type: 'button', class: 'btn primary', text: 'Ürün ekle',
         onclick: () => {
-          const it = { id: uid('urun'), name: '', desc: '', price: '', variants: [], image: '', tags: [], allergens: '', soldOut: false, hidden: false };
+          const it = { id: uid('urun'), name: '', desc: '', price: '', variants: [], image: '', tags: [], allergens: '', soldOut: false, hidden: false, en: {} };
           c.items.push(it);
           S.open.add(it.id);
           markDirty();
@@ -609,6 +631,9 @@ function itemEditor(c, ci, it, ii) {
     h('div', { class: 'stack' },
       field('Ürün adı', it, 'name', { max: 120, path: `name:${ci}:${ii}`, onInput: (v) => { nameB.textContent = v || 'Adsız ürün'; } }),
       field('Açıklama / içindekiler', it, 'desc', { multiline: true, rows: 3, max: 800 }),
+      hasEn() ? h('div', { class: 'grid2' },
+        field('İngilizce ad', it.en, 'name', { max: 120, placeholder: 'Boşsa Türkçesi görünür' }),
+        field('İngilizce açıklama', it.en, 'desc', { multiline: true, rows: 2, max: 800 })) : null,
       vars,
       tags,
       field('Alerjen bilgisi', it, 'allergens', { max: 200, placeholder: 'Örn. gluten, süt, yumurta' }),
@@ -710,6 +735,85 @@ async function logoColors(src) {
   return picked.map(toHex);
 }
 
+/* Yıldız görünümüne özel ayarlar: kapak, Google yorum, öne çıkanlar, saatler, İngilizce */
+
+const DAYS = ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'];
+
+function hoursEditor(m) {
+  const inputs = [];
+  const rows = DAYS.map((day, i) => {
+    const k = String(i + 1);
+    const cur = m.hours[k] || ['', ''];
+    const opt = (ph, v, label) => h('input', { type: 'text', class: 'saat', maxlength: 5, inputmode: 'numeric', autocomplete: 'off', placeholder: ph, value: v, 'aria-label': `${day} ${label}` });
+    const open = opt('08:00', cur[0], 'açılış');
+    const close = opt('23:00', cur[1], 'kapanış');
+    open.setAttribute('data-path', `hours-${k}`);
+    const closed = h('input', { type: 'checkbox', checked: !m.hours[k] });
+    const sync = () => {
+      open.disabled = close.disabled = closed.checked;
+      if (closed.checked) delete m.hours[k];
+      else m.hours[k] = [open.value.trim(), close.value.trim()];
+    };
+    open.addEventListener('input', () => { sync(); markDirty(); });
+    close.addEventListener('input', () => { sync(); markDirty(); });
+    closed.addEventListener('change', () => {
+      if (!closed.checked && !open.value && !close.value) {
+        open.value = '08:00';
+        close.value = '23:00';
+      }
+      sync();
+      markDirty();
+    });
+    open.disabled = close.disabled = closed.checked;
+    inputs.push({ open, close, closed, sync });
+    return h('div', { class: 'hrow' }, h('span', { class: 'hd', text: day }), open, h('span', { class: 'hs', text: '–' }), close, h('label', { class: 'check' }, closed, 'Kapalı'));
+  });
+  const copy = smallBtn('Pazartesiyi bütün günlere uygula', () => {
+    const [first, ...rest] = inputs;
+    rest.forEach((r) => {
+      r.open.value = first.open.value;
+      r.close.value = first.close.value;
+      r.closed.checked = first.closed.checked;
+      r.sync();
+    });
+    markDirty();
+  });
+  return h('div', {}, h('span', { class: 'lbl', text: 'Çalışma saatleri' }),
+    h('div', { class: 'hours' }, rows),
+    h('div', { class: 'acts' }, copy),
+    h('p', { class: 'hint', text: 'Saati 08:00 gibi yazın. Gece yarısı kapanıyorsa kapanışa 24:00 yazın. Hiç saat girilmezse menüde açık/kapalı bilgisi görünmez.' }));
+}
+
+function yildizSettings(m) {
+  const en = h('input', { type: 'checkbox', checked: m.languages.includes('en') });
+  en.addEventListener('change', () => {
+    m.languages = en.checked ? ['tr', 'en'] : ['tr'];
+    markDirty();
+    render();
+  });
+  return [
+    h('div', {}, h('span', { class: 'lbl', text: 'Kapak fotoğrafı' }),
+      photoCell(m, 'cover', () => 'kapak', { emptyText: 'Kapak yok' }),
+      h('p', { class: 'hint', text: 'Menünün en üstünde, mekânın adının üzerinde görünür. Boş bırakılırsa öne çıkan ürünün fotoğrafı kullanılır.' })),
+    field('Google yorum bağlantısı', m.contact, 'reviewUrl', {
+      type: 'url', max: 500, placeholder: 'https://search.google.com/local/writereview?placeid=…', path: 'reviewUrl',
+      hint: '“Google’da değerlendir” düğmesi buraya gider. Boşsa düğme görünmez.',
+    }),
+    h('div', { class: 'grid2' },
+      field('Öne çıkanlar başlığı', m.featured, 'title', { max: 60, placeholder: 'Şefin önerileri' }),
+      field('Tek ürün etiketi', m.featured, 'label', { max: 40, placeholder: 'Şefin önerisi' })),
+    h('p', { class: 'hint', text: 'Etiketi “Şefin önerisi” olan ürünler menünün başındaki fotoğraflı şeritte görünür.' }),
+    hoursEditor(m),
+    h('div', {}, h('span', { class: 'lbl', text: 'Diller' }),
+      h('label', { class: 'check' }, en, 'İngilizce menü'),
+      h('p', { class: 'hint', text: 'Açıksa menüde TR / EN düğmesi çıkar. Ürün ve kategorilerin İngilizce adları Menü sekmesinde, her ürünün düzenleme alanında yazılır. Boş bırakılan İngilizce alanda Türkçesi görünür.' })),
+    m.languages.includes('en') ? h('div', { class: 'grid2' },
+      field('Öne çıkanlar başlığı (İngilizce)', m.i18n.en, 'featuredTitle', { max: 60, placeholder: 'Chef’s picks' }),
+      field('Tek ürün etiketi (İngilizce)', m.i18n.en, 'featuredLabel', { max: 40, placeholder: 'Chef’s pick' }),
+      field('Menü altı notu (İngilizce)', m.i18n.en, 'note', { multiline: true, rows: 2, max: 600, wide: true })) : null,
+  ];
+}
+
 function viewVenue() {
   const m = S.menu;
   const t = m.theme;
@@ -732,6 +836,7 @@ function viewVenue() {
     if (!th.brandReadable) notes.push('Seçilen renk zemine göre açık. Yazılarda otomatik olarak koyulaştırılmış tonu kullanılır.');
     if (th.onBrand !== '#ffffff') notes.push('Renk açık olduğu için düğmelerde koyu yazı kullanılır.');
     if (th.scheme === 'dark') notes.push('Zemin koyu olduğu için menü koyu temada açılır.');
+    if (t.design === 'yildiz') notes.push('Önizleme klasik görünümü gösterir. Yıldız görünümünü görmek için üstteki “Menüyü aç”a basın; orada zemin rengi kullanılmaz, gece modu menünün kendi düğmesindedir.');
     note.textContent = notes.join(' ');
   };
 
@@ -829,6 +934,15 @@ function viewVenue() {
       ['contain', 'Tamamı görünsün (arka planı şeffaf ürünler)'],
     ]),
     note,
+
+    h('h2', { class: 'sec-t', text: 'Görünüm' }),
+    selectField('Menü görünümü', t, 'design', [
+      ['klasik', 'Klasik (sade liste)'],
+      ['yildiz', 'Yıldız (kapak fotoğraflı tek sayfa)'],
+    ], () => render()),
+    t.design === 'yildiz'
+      ? yildizSettings(m)
+      : h('p', { class: 'hint', text: 'Yıldız görünümünde kapak fotoğrafı, çalışma saatleri, Google yorum düğmesi, öne çıkanlar şeridi ve İngilizce menü de olur.' }),
 
     h('h2', { class: 'sec-t', text: 'İletişim ve bağlantılar' }),
     h('p', { class: 'hint', text: 'Boş bırakılan bilgi menüde gösterilmez.' }),
@@ -1011,7 +1125,7 @@ function viewBackup() {
         if (S.dirty && !confirm('Kaydedilmemiş değişiklikler yedekle değiştirilecek. Devam edilsin mi?')) return;
         try {
           const x = await api('backups/' + encodeURIComponent(b.name));
-          S.menu = { ...x.menu, updatedAt: S.menu.updatedAt };
+          S.menu = ensureShape({ ...x.menu, updatedAt: S.menu.updatedAt });
           markDirty();
           render();
           toast('Yedek açıldı. Kalıcı olması için Kaydet’e basın.');
@@ -1055,6 +1169,7 @@ function viewBackup() {
         it.tags = Array.isArray(it.tags) ? it.tags : [];
       });
     });
+    ensureShape(S.menu);
     S.cat = 0;
     markDirty();
     render();

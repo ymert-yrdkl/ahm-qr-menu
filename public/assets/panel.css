@@ -151,6 +151,13 @@ main.view{max-width:1200px;margin:0 auto;padding:22px 20px 110px}
 .venue{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:40px;align-items:start}
 .color-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .color-row input[type=text]{width:120px;font-variant-numeric:tabular-nums;text-transform:lowercase}
+/* Yıldız görünümü: çalışma saatleri */
+.hours{display:grid;gap:6px;margin:4px 0 8px}
+.hrow{display:grid;grid-template-columns:96px 76px 14px 76px auto;align-items:center;gap:8px}
+.hrow .hd{font-size:14px}
+.hrow .hs{color:var(--muted);text-align:center}
+.hrow input.saat{text-align:center;font-variant-numeric:tabular-nums;padding-left:6px;padding-right:6px}
+.hrow input.saat:disabled{opacity:.45}
 .swatches{display:flex;flex-wrap:wrap;gap:8px}
 .swatch{width:40px;height:40px;padding:0;border:1px solid var(--line);cursor:pointer}
 .swatch:hover{outline:2px solid var(--ink);outline-offset:1px}

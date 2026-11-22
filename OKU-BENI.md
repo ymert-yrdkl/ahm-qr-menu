@@ -120,6 +120,37 @@ Dockerfile              Coolify bu dosyayla kurar.
 - **id alanları** yazılmak zorunda değil, sunucu kendisi üretir.
 - Boş bırakılan her alan menüde gizlenir.
 
+## Görünümler
+
+Her mekân iki görünümden birini kullanır (panel › Mekân ve renkler › Görünüm, dosyada `theme.design`):
+
+- **klasik** (varsayılan): `public/menu.html` + `assets/menu.js`. Sade liste, zemin rengi seçilebilir.
+- **yildiz**: `public/menu-yildiz.html` + `assets/yildiz.js` (Yıldızkart QR menü v8 tasarımı). Kapak fotoğrafı,
+  açık/kapalı durumu ve haftalık saatler, Google yorum düğmesi, Wi-Fi şifresini kopyalama, öne çıkanlar şeridi,
+  TR/EN dil düğmesi, gece modu, `/menu` ve `/menu#urun-adi` bağlantıları. Veri `lib/yildiz.js` ile çevrilir;
+  renkler ana renkten okunurluk denetimiyle hesaplanır (zemin rengi kullanılmaz).
+
+Yıldız görünümünün alanları (klasik görünüm bunları yok sayar):
+
+```json
+{
+  "theme": { "design": "yildiz" },
+  "cover": "kapak.webp",
+  "hours": { "1": ["08:00", "23:00"], "7": ["09:00", "24:00"] },
+  "featured": { "title": "Şefin önerileri", "label": "Şefin önerisi" },
+  "languages": ["tr", "en"],
+  "i18n": { "en": { "note": "", "featuredTitle": "", "featuredLabel": "" } },
+  "contact": { "reviewUrl": "https://search.google.com/local/writereview?placeid=…" },
+  "categories": [{ "en": { "name": "Breakfast" }, "items": [{ "en": { "name": "", "desc": "" } }] }]
+}
+```
+
+- **hours:** 1 = Pazartesi … 7 = Pazar. Olmayan gün kapalı. Hiç saat yoksa açık/kapalı satırı görünmez. Kapanış en geç `24:00`.
+- **Öne çıkanlar:** etiketi `sef` olan ürünler. **cover** boşsa öne çıkan ürünün fotoğrafı kapak olur.
+- **Görsel boyutları:** `/img/<ad>.webp?w=200` istenince klasörde `<ad>-200.webp` varsa o verilir (32, 200, 640, 900, 1200, 1600),
+  yoksa asıl dosya. Toplu aktarımda küçük sürümler önceden üretilir; panelden yüklenen fotoğrafın yalnız aslı olur.
+- **İstatistik:** yıldız görünümü anonim sayaçları `POST /api/olay` ile gönderir. Şimdilik yalnız kabul edilir (204), saklanmaz.
+
 ## Yerelde çalıştırma
 
 ```bash
