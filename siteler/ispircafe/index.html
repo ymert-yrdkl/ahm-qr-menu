@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FAFAF8" id="tema-rengi">
+<script>
+/* Boyamadan ÖNCE: gece modu (kayıtlı seçim, yoksa telefonun ayarı) ve dil/yön (kayıtlı, yoksa telefonun dili).
+   Sonradan değişirse sayfa bir kare açık/Türkçe görünüp sıçramasın. */
+(function () {
+  var d = document.documentElement, g, dl, ok = /*DILLER*/["tr", "en"]/*/DILLER*/;
+  try { g = localStorage.getItem("qm-gece"); dl = localStorage.getItem("qm-dil"); } catch (e) {}
+  if (g ? g === "1" : matchMedia("(prefers-color-scheme: dark)").matches) d.classList.add("gece");
+  if (!dl || ok.indexOf(dl) < 0) { dl = "tr"; (navigator.languages || [navigator.language || "tr"]).some(function (x) { x = String(x).slice(0, 2).toLowerCase(); if (ok.indexOf(x) >= 0) { dl = x; return true; } }); }
+  d.lang = dl;
+})();
+</script>
+<meta name="color-scheme" content="only light">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%274%27 y=%274%27 width=%2724%27 height=%2724%27 rx=%277%27 fill=%27%238C6D27%27/%3E%3C/svg%3E">
+<!-- kapak fotoğrafı betiği beklemeden, ekrana uygun boyutta ve en yüksek öncelikle iner (LCP) -->
+<link rel="preload" as="image" imagesrcset="/medya/kapak-900.webp 900w, /medya/kapak-1600.webp 1600w" imagesizes="(max-width: 520px) 100vw, 520px" fetchpriority="high">
+<title>İspir Ekmek</title>
+<meta name="description" content="İspir Ekmek Cafe & Bistro — 146 ürünlük menü, çalışma saatleri ve yol tarifi.">
+<meta property="og:title" content="İspir Ekmek">
+<meta property="og:description" content="İspir Ekmek Cafe & Bistro — 146 ürünlük menü, çalışma saatleri ve yol tarifi.">
+<meta property="og:image" content="/medya/kapak-1600.webp">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<!--
+  Yıldızkart QR menü — v8: TEK SAYFA, yay fiziği, parmağa bağlı katmanlar.
+  (v7 iki ayrı sayfaydı: sablon-v7.html + sablon-menu-v7.html)
+
+  Neden: iki sayfa arasında her "Menüyü aç" yeni bir yükleme demekti; geçiş
+  animasyonu yalnız bunu örtüyordu, yarıda durdurulamaz, parmağı izlemezdi.
+  Artık:
+  · Menü, açılışın üstüne alttan gelen bir YAPRAK (iOS kart yığını). Açılış
+    geri çekilip kararır; ikisi aynı ilerleme değerine bağlı.
+  · Bütün hareket bir YAY benzetimi (k=420, c=40 → hafif, kontrollü sönüm):
+    hız korunur, hareket yarıda yakalanıp tersine çevrilebilir.
+  · Yapraklar parmağı izler: aşağı çek → kapanır ya da yaylanır (savrulma tahmini
+    y + v·150 ms > %28 ya da hız > 0,5 px/ms); yukarı çekişte lastik direnci; içerik kaydırılmışken
+    çekmek önce kaydırır (iOS davranışı).
+  · Ürün paneli: dokunulan küçük görsel yayla panelin görseline UÇAR (klon +
+    kırpma); dokunma anında büyük görsel indirilmeye başlar.
+  · Geçmiş: her katman bir history girdisi; Android geri / iOS kenar kaydırma
+    üstteki katmanı kapatır. /menu adresi menü açık başlar.
+  · Yalnız transform/opacity; hareketi azalt → yay yerine anında.
+-->
+<style>
+@font-face{font-family:"Jost";font-weight:400;font-display:swap;src:url(/fonts/Jost-400.woff2) format("woff2")}
+@font-face{font-family:"Jost";font-weight:500;font-display:swap;src:url(/fonts/Jost-500.woff2) format("woff2")}
+@font-face{font-family:"Jost";font-weight:600;font-display:swap;src:url(/fonts/Jost-600.woff2) format("woff2")}
+
+:root{
+  --zemin:#FAFAF8; --yazi:#151514; --baslik:"Jost", system-ui, sans-serif; --logo:currentColor; --soluk:#62625C; --cizgi:rgba(21,21,20,.1); --dolgu:#ECEAE4;
+  --vurgu:#8C6D27; --vurgu-acik:#F4EEDF; --kapali:#A1392B; --uyari:#8A5A00;
+  /* metin olarak vurgu (koyu zeminde açılır); düğme zemini hep --vurgu */
+  --vurgu-yazi:#8C6D27; --basili:rgba(21,21,20,.035); --tutamac-renk:rgba(21,21,20,.18); --kutu:#fff; --ipucu:#6E6E67; --foto-bos:#E9E7E1;
+  --cikis:cubic-bezier(.16,1,.3,1);
+  --ust:calc(env(safe-area-inset-top) + 10px);
+}
+*{box-sizing:border-box; margin:0}
+[hidden]{display:none !important}   /* .urun{display:grid} gibi kurallar hidden özniteliğini ezmesin */
+html{-webkit-text-size-adjust:100%; background:var(--zemin); color-scheme:only light}
+/* ── Gece modu: aynı işletme, koyu zeminde. Vurgu metinleri ≥ 4,8:1 okunacak kadar açılır (uret.koyu_palet). */
+html.gece{
+  --zemin:#1D1D1C; --yazi:#EDEBE6; --soluk:#A6A49C; --cizgi:rgba(237,235,230,.12); --dolgu:#2B2A27;
+  --vurgu-yazi:#D2AE5E; --vurgu-acik:#3A3427; --kapali:#EE8B7E; --uyari:#E4B55E;
+  --basili:rgba(255,255,255,.05); --tutamac-renk:rgba(237,235,230,.28); --kutu:#262522; --ipucu:#9B998F; --foto-bos:#2B2A27;
+  color-scheme:dark;
+}
+/* tema değişirken renkler yumuşakça geçsin (yalnız renk özellikleri; hareket etkilenmez) */
+html.gecis, html.gecis *{transition:background-color 320ms var(--cikis), color 320ms var(--cikis), border-color 320ms var(--cikis), fill 320ms var(--cikis) !important}
+html.katmanli, html.katmanli body{background:#151514}   /* açılış geri çekilince kenarlar koyu (iOS kart yığını) */
+body{font-family:"Jost",system-ui,sans-serif; color:var(--yazi); background:#151514; font-size:17px; line-height:1.5;
+  -webkit-font-smoothing:antialiased; font-synthesis:none; overflow-x:hidden; overflow-x:clip; caret-color:var(--vurgu-yazi)}
+body{background:var(--zemin)}
+/* hızlı iki dokunuş yakınlaştırmasın; parmakla yakınlaştırma (erişilebilirlik) serbest */
+button, a, summary, input{touch-action:manipulation}
+html.kilit, html.kilit body{overflow:hidden}
+::selection{background:var(--vurgu-acik); color:var(--yazi)}
+:focus-visible{outline:2px solid var(--vurgu-yazi); outline-offset:2px; border-radius:4px}
+/* dokunarak kullanan birine, katman kapanınca geri verilen odağın halkası görünmesin (Tab ile gezinene görünür) */
+html.dokunmatik :focus-visible:not(input){outline:none}
+.ph{width:1em; height:1em; flex:none; display:block}
+img{display:block}
+button{font:inherit; color:inherit}
+
+/* ══════════════════ AÇILIŞ ══════════════════ */
+#kok{background:var(--zemin); min-height:100vh; min-height:100dvh; padding-bottom:calc(56px + 28px + env(safe-area-inset-bottom));
+  transform-origin:50% 50%}
+.sayfa{max-width:520px; margin:0 auto; position:relative}
+/* kapağın köşesinde: dil + gece (turist kapıdan girer girmez görsün) */
+.ust-araclar{position:absolute; z-index:5; top:calc(env(safe-area-inset-top) + 12px); inset-inline-end:12px; display:flex; gap:8px}
+.cip-grup{display:flex; height:44px; padding:0 4px; border-radius:22px; align-items:center;
+  background:color-mix(in srgb, var(--zemin) 86%, transparent); -webkit-backdrop-filter:blur(14px) saturate(1.4); backdrop-filter:blur(14px) saturate(1.4);
+  box-shadow:0 1px 8px rgba(0,0,0,.12)}
+.cip-grup button{height:36px; min-width:44px; padding:0 10px; border:0; border-radius:18px; background:none; cursor:pointer; color:var(--soluk);
+  font-size:14px; font-weight:500; -webkit-tap-highlight-color:transparent; transition:background-color 180ms var(--cikis), color 180ms var(--cikis)}
+.cip-grup button[data-dil][aria-pressed="true"]{background:var(--yazi); color:var(--zemin)}
+.cip-grup.tek{padding:0; width:44px; justify-content:center}
+.cip-grup.tek button{width:44px; height:44px; min-width:0; padding:0; display:grid; place-items:center; color:var(--yazi)}
+.gece-dugme .ph{font-size:20px}
+.gece-dugme .gunes{display:none} html.gece .gece-dugme .gunes{display:block} html.gece .gece-dugme .ay{display:none}
+.foto{position:relative; height:44vh; height:44dvh; min-height:260px; max-height:460px; background:var(--foto-bos); overflow:hidden}
+.foto .katman{position:absolute; inset:0}
+.foto img, .foto video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+/* Bulanık önizleme ÜSTTE durur ve keskin fotoğraf inince kaybolur. Tersi (fotoğrafın opaklıkla belirmesi)
+   Chrome'un LCP'sini animasyon süresi kadar (~0,7 sn) geciktiriyordu. */
+.foto .onizleme{filter:blur(18px); transform:scale(1.12); z-index:1; transition:opacity 700ms var(--cikis)}
+.foto .katman.hazir .onizleme{opacity:0}
+.foto video{opacity:0; z-index:2; transition:opacity 600ms var(--cikis)}
+.foto video.hazir{opacity:1}
+@supports (animation-timeline: scroll()){
+  @media (prefers-reduced-motion: no-preference){
+    .foto .katman{animation:derinlik linear both; animation-timeline:scroll(root); animation-range:0 55vh}
+    @keyframes derinlik{to{transform:translateY(16%) scale(1.06); filter:brightness(.9)}}
+  }
+}
+.kimlik{padding:22px 20px 18px}
+@media (orientation: landscape) and (max-height: 500px){ .foto{min-height:0; height:62vh; height:62dvh} }
+.kimlik h1{font-family:var(--baslik); font-size:clamp(34px, 9.6vw, 42px); font-weight:600; line-height:1.08; letter-spacing:-.02em; text-wrap:balance}
+/* logo yuvası: vektör logo işletme adının yerine geçer (ad, ekran okuyucu için aria-label'da) */
+.kimlik h1.logolu{line-height:0}
+.kimlik h1.logolu svg{display:block; height:clamp(44px, 12vw, 58px); width:auto; color:var(--logo)}
+.serifli .kimlik h1:not(.logolu), .serifli .m-bas h2, .serifli .bolum h3, .serifli .u-govde h3, .serifli .oneri h3{letter-spacing:0; font-weight:600}
+.serifli .m-bas h2{font-size:clamp(38px, 10.5vw, 46px)}
+.serifli .bolum h3{font-size:25px}
+.serifli .u-govde h3{font-size:29px}
+.serifli .oneri h3{font-family:var(--baslik); font-size:19px; color:var(--yazi)}
+.durum{margin-top:8px; display:flex; align-items:center; gap:8px; color:var(--soluk); font-size:16px}
+.durum i{width:8px; height:8px; border-radius:50%; background:var(--vurgu-yazi); flex:none}
+.durum b{font-weight:500; color:var(--vurgu-yazi)}
+.durum.kapali i{background:var(--kapali)} .durum.kapali b{color:var(--kapali)}
+.durum.yakinda i{background:var(--uyari)} .durum.yakinda b{color:var(--uyari)}
+.satirlar{border-top:1px solid var(--cizgi); margin:0 20px}
+.satir{display:grid; grid-template-columns:24px 1fr auto; align-items:center; gap:14px; min-height:64px; padding:12px 0;
+  border:0; border-bottom:1px solid var(--cizgi); color:inherit; text-decoration:none; text-align:start; background:none; width:100%;
+  cursor:pointer; -webkit-tap-highlight-color:transparent; transition:background-color 120ms var(--cikis)}
+.satir:active{background:var(--basili)}
+.satir > .ph{font-size:22px}
+.satir strong{display:block; font-weight:500; font-size:17px; line-height:1.3; text-wrap:pretty}
+.satir small{display:block; color:var(--soluk); font-size:15px; line-height:1.35; margin-top:1px; text-wrap:pretty}
+.satir .yon{font-size:18px; color:var(--soluk); transition:transform 220ms var(--cikis)}
+a.satir:active .yon{transform:translate(2px,-2px)}
+
+@media (hover:hover){ a.satir:hover .yon{transform:translate(2px,-2px)} }
+.eylem{font-size:15px; font-weight:500; color:var(--vurgu-yazi); display:flex; align-items:center; gap:6px; white-space:nowrap}
+.sifre{font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:.01em}
+.wifi{position:relative; isolation:isolate}
+.wifi::before{content:""; position:absolute; inset:0 -20px; z-index:-1; background:var(--vurgu-acik); opacity:0; transition:opacity 1200ms var(--cikis)}
+.wifi.tamam::before{opacity:1; transition-duration:120ms}
+.cizgi-tik{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round}
+.cizgi-tik path{stroke-dasharray:24; stroke-dashoffset:24}
+.wifi.tamam .cizgi-tik path{stroke-dashoffset:0; transition:stroke-dashoffset 360ms var(--cikis) 60ms}
+.wifi .eylem span{display:inline-block; transition:opacity 150ms var(--cikis), transform 150ms var(--cikis)}
+.wifi .eylem .tik{display:none}
+.wifi.tamam .eylem .tik{display:inline-block}
+.wifi.degisiyor .eylem span{opacity:0; transform:translateY(3px)}
+#wifi-ag{transition:opacity 150ms; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+details.satir{display:block; padding:0; cursor:default}
+details summary{list-style:none; display:grid; grid-template-columns:24px 1fr auto; align-items:center; gap:14px; min-height:64px; padding:12px 0; cursor:pointer}
+details summary::-webkit-details-marker{display:none}
+details summary .yon{transition:transform 220ms var(--cikis)}
+details[open] summary .yon{transform:rotate(180deg)}
+.hafta{display:grid; grid-template-columns:1fr auto; gap:6px 16px; padding-block:0 16px; padding-inline:38px 0; font-size:15.5px; font-variant-numeric:tabular-nums}
+.hafta dt{color:var(--soluk)} .hafta dd{text-align:end}
+.hafta .bugun{color:var(--yazi); font-weight:500}
+.son{padding:28px 20px 8px; color:var(--soluk); font-size:13.5px; display:flex; justify-content:space-between; gap:12px}
+/* başparmak bölgesi: menü açıldıkça aşağı çekilir (JS, aynı ilerleme değeri) */
+.alt{position:fixed; left:0; right:0; bottom:0; z-index:10; padding:14px 16px calc(14px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top, var(--zemin) 62%, color-mix(in srgb, var(--zemin) 0%, transparent))}
+.menu-ac{max-width:488px; margin:0 auto; height:56px; width:100%; border:0; border-radius:12px; background:var(--vurgu); color:#fff; cursor:pointer;
+  display:flex; align-items:center; gap:10px; padding:0 18px; font-size:18px; font-weight:500; letter-spacing:-.005em; -webkit-tap-highlight-color:transparent;
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset, 0 8px 20px -10px color-mix(in srgb, var(--vurgu) 55%, transparent); transition:transform 100ms var(--cikis), background-color 150ms}
+.menu-ac .ph{font-size:20px}
+.menu-ac .sayi{margin-inline-start:auto; font-size:15px; font-weight:400; opacity:.72; font-variant-numeric:tabular-nums}
+.menu-ac:active{transform:scale(.985); background:color-mix(in srgb, var(--vurgu) 86%, #000)}
+/* yatay iPhone: çentik tarafı */
+.alt{padding-left:max(16px, env(safe-area-inset-left)); padding-right:max(16px, env(safe-area-inset-right))}
+@media (prefers-reduced-motion: no-preference){
+  .gir{opacity:0; transform:translateY(8px); animation:gir 420ms var(--cikis) forwards; animation-delay:calc(var(--i, 0) * 60ms)}
+  @keyframes gir{to{opacity:1; transform:none}}
+}
+
+/* ══════════════════ KATMANLAR ══════════════════ */
+/* Kapalıyken display:none — Safari 26 üst çubuk rengini üst kenara değen sabit öğelerden örnekler;
+   saydam ama duran bir koyu perde, menü kapandıktan sonra da çubuğu koyu bırakıyordu. */
+.perde{position:fixed; inset:0; background:#151514; opacity:0; pointer-events:none; display:none}
+.perde.var{display:block}
+.perde.etkin{pointer-events:auto}
+#perde1{z-index:20} #perde2{z-index:40}
+.yaprak{position:fixed; left:0; right:0; bottom:0; margin:0 auto; max-width:560px; background:var(--zemin); visibility:hidden;
+  border-radius:14px 14px 0 0; box-shadow:0 -10px 40px rgba(21,21,20,.18); transform:translate3d(0,100%,0); will-change:transform;
+  display:flex; flex-direction:column; overflow:hidden; touch-action:pan-y}
+.yaprak.gorunur{visibility:visible}
+#menuYaprak{z-index:30; top:var(--ust)}
+#urunYaprak{z-index:50; max-height:calc(100vh - var(--ust) - 24px); max-height:calc(100dvh - var(--ust) - 24px)}
+.tutamac{flex:none; display:grid; place-items:center; height:22px; cursor:grab; touch-action:none}
+.tutamac::before{content:""; width:40px; height:5px; border-radius:3px; background:var(--tutamac-renk)}
+.kaydir{flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch}
+
+/* ── menü yaprağı ── */
+.m-ust{flex:none; background:var(--zemin); position:relative; z-index:2; transition:box-shadow 220ms var(--cikis); touch-action:none}
+.m-ust.golgeli{box-shadow:0 1px 0 var(--cizgi)}
+.m-satir{display:grid; grid-template-columns:96px 1fr 96px; align-items:center; height:48px; padding:0 8px}
+.m-sag{display:flex; justify-content:flex-end}
+.dugme{width:48px; height:48px; display:grid; place-items:center; border-radius:12px; background:none; border:0; cursor:pointer;
+  -webkit-tap-highlight-color:transparent; transition:background-color 120ms}
+.dugme:active{background:var(--basili)}
+.dugme.gece-dugme .ph{font-size:21px}
+.dugme .ph{font-size:22px}
+.m-baslik{text-align:center; font-weight:500; font-size:16px; line-height:1.2; opacity:0; transform:translateY(6px);
+  transition:opacity 220ms var(--cikis), transform 320ms var(--cikis)}
+.m-ust.golgeli .m-baslik{opacity:1; transform:none}
+.m-baslik .m-logo{display:flex; justify-content:center; line-height:0} .m-baslik .m-logo svg{height:19px; width:auto; color:var(--logo)}
+.m-baslik:has(.m-logo) small{margin-top:3px}
+.m-baslik small{display:block; font-weight:400; font-size:13px; color:var(--soluk)}
+.ara{display:none; padding:4px 16px 10px}
+.ara.acik{display:block}
+.ara input{width:100%; height:48px; border-radius:12px; border:1px solid var(--cizgi); background:var(--kutu); padding:0 16px;
+  font:inherit; font-size:17px; color:var(--yazi); outline:none; transition:border-color 150ms; touch-action:manipulation}
+.ara input:focus{border-color:var(--vurgu-yazi)}
+.ara input::placeholder{color:var(--ipucu)}
+.ara input::-webkit-search-cancel-button{-webkit-appearance:none; display:none}
+.sekmeler{position:relative; display:flex; gap:22px; overflow-x:auto; padding:0 20px; scrollbar-width:none; border-bottom:1px solid var(--cizgi); touch-action:pan-x}
+.sekmeler::-webkit-scrollbar{display:none}
+.sekme{flex:none; height:46px; display:flex; align-items:center; background:none; border:0; padding:0; cursor:pointer;
+  color:var(--soluk); font-size:16px; font-weight:500; white-space:nowrap; -webkit-tap-highlight-color:transparent; transition:color 150ms}
+.sekme[aria-current="true"]{color:var(--yazi)}
+.isaret{position:absolute; left:0; bottom:0; width:100px; height:2px; border-radius:2px; background:var(--vurgu-yazi);
+  transform-origin:0 50%; transform:translateX(var(--x, 20px)) scaleX(var(--o, 0)); pointer-events:none}
+.isaret.hazir{transition:transform 360ms var(--cikis)}
+.m-bas{padding:18px 20px 4px}
+.m-bas h2{font-family:var(--baslik); font-size:clamp(34px, 9.6vw, 42px); font-weight:600; line-height:1.08; letter-spacing:-.02em}
+.m-bas p{margin-top:6px; color:var(--soluk); font-size:15px}
+.oneri{padding-top:22px}
+.oneri h3{font-size:15px; font-weight:500; color:var(--soluk); padding:0 20px 12px}
+.serit{display:flex; gap:12px; overflow-x:auto; padding:0 20px 4px; scroll-snap-type:x mandatory; scroll-padding-inline:20px; scrollbar-width:none; touch-action:pan-x pan-y}
+.serit::-webkit-scrollbar{display:none}
+.vitrin{flex:none; width:min(72vw, 300px); scroll-snap-align:start; text-align:start; background:none; border:0; padding:0; cursor:pointer; -webkit-tap-highlight-color:transparent}
+.vitrin .kadr{display:block; position:relative; aspect-ratio:4 / 5; border-radius:14px; overflow:hidden; background:var(--dolgu)}
+.vitrin img{width:100%; height:100%; object-fit:cover}
+.vitrin .oynat{position:absolute; inset-inline-start:12px; bottom:12px; height:30px; padding:0 11px 0 9px; border-radius:8px; display:flex; align-items:center; gap:6px;
+  background:rgba(21,21,20,.62); color:#fff; font-size:13px; font-weight:500}
+.vitrin .oynat .ph{font-size:14px}
+.vitrin b{display:flex; justify-content:space-between; gap:12px; margin-top:10px; font-weight:500; font-size:17px}
+.vitrin b span{font-variant-numeric:tabular-nums}
+.vitrin small{display:block; color:var(--soluk); font-size:14.5px}
+.bolum{padding:30px 20px 0}
+.bolum h3{font-family:var(--baslik); font-size:22px; font-weight:600; letter-spacing:-.015em; padding-bottom:10px; border-bottom:1px solid var(--yazi)}
+.urun{display:grid; grid-template-columns:76px 1fr auto; gap:3px 14px; padding:14px 0; border:0; border-bottom:1px solid var(--cizgi); width:100%;
+  background:none; text-align:start; cursor:pointer; -webkit-tap-highlight-color:transparent; transition:background-color 120ms}
+.urun:active{background:var(--basili)}
+.urun .kucuk{display:block; grid-row:1 / span 3; width:76px; height:76px; border-radius:12px; overflow:hidden; background:var(--dolgu); position:relative}
+.urun .kucuk img{width:100%; height:100%; object-fit:cover}
+.urun .kucuk i{position:absolute; inset-inline-end:5px; bottom:5px; width:22px; height:22px; border-radius:6px; background:rgba(21,21,20,.62); color:#fff; display:grid; place-items:center}
+.urun .kucuk i .ph{font-size:12px}
+.urun h4{font-size:17px; font-weight:500; line-height:1.3; letter-spacing:-.005em; align-self:start; padding-top:2px}
+.fiyat{font-size:17px; font-weight:500; font-variant-numeric:tabular-nums; white-space:nowrap; text-align:end; padding-top:2px}
+/* fotoğrafsız ürün: aynı görseli tekrar eden menüden iyidir — yazı satırı, dokunulmaz */
+.urun.yalin{grid-template-columns:1fr auto; cursor:default; padding:13px 0}
+.urun.yalin:active{background:none}
+.urun.yalin p, .urun.yalin .etiketler{grid-column:1 / 2}
+.urun p{grid-column:2 / 3; color:var(--soluk); font-size:15px; line-height:1.4; text-wrap:pretty}
+.urun p, .vitrin small{display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden}   /* uzun gramaj listesi: tamamı ürün panelinde */
+.etiketler{grid-column:2 / 3; display:flex; flex-wrap:wrap; gap:4px 12px; margin-top:3px}
+.etiket{font-size:12px; font-weight:500; letter-spacing:.08em; text-transform:uppercase; color:var(--soluk)}
+.etiket.sef{color:var(--vurgu-yazi)}
+.etiket.tukendi{color:var(--kapali)}
+/* alerjenler: Türk Gıda Kodeksi / AB'nin 14 alerjeni — listede tek satır, panelde de */
+.alerjen{grid-column:2 / 3; font-size:13.5px; line-height:1.35; color:var(--soluk); margin-top:2px}
+.alerjen b{font-weight:500}
+.urun.yalin .alerjen{grid-column:1 / 2}
+.u-govde .alerjen{margin-top:12px; font-size:15px}
+.u-govde .alerjen:empty{display:none}
+.bitti h4, .bitti .fiyat, .bitti p, .bitti .kucuk img, .bitti .kadr img{opacity:.5}
+.gel{opacity:0; transform:scale(1.04); transition:opacity 500ms var(--cikis), transform 700ms var(--cikis)}
+.gel.yuklendi{opacity:1; transform:none}
+mark{background:none; color:inherit; box-shadow:inset 0 -.42em 0 var(--vurgu-acik); border-radius:2px}
+.bos{display:none; padding:40px 20px; color:var(--soluk); text-align:center}
+.bos.gorunur{display:block}
+.m-not{padding:28px 20px 0; color:var(--soluk); font-size:14px; line-height:1.5}
+.m-son{padding:20px 20px calc(28px + env(safe-area-inset-bottom)); color:var(--soluk); font-size:13.5px; display:flex; justify-content:space-between; gap:12px}
+
+/* ── ürün yaprağı ── */
+#urunYaprak .tutamac{position:absolute; top:0; left:0; right:0; z-index:3}
+#urunYaprak .tutamac::before{background:color-mix(in srgb, var(--zemin) 90%, transparent); box-shadow:0 1px 3px rgba(21,21,20,.25)}
+/* Genişlik hep tam; yükseklik = genişliğin ¾'ü ya da ekranın %46'sı (küçüğü).
+   aspect-ratio + max-height kullanılmaz: yükseklik sınıra takılınca tarayıcı oranı korumak için
+   GENİŞLİĞİ daraltıyordu (geniş ekranda sağda boş şerit, kapat düğmesi içeride). */
+.u-medya{position:relative; flex:none; width:100%; height:min(calc(min(100vw, 560px) * .75), 46vh); height:min(calc(min(100vw, 560px) * .75), 46dvh);
+  background:var(--dolgu); overflow:hidden; touch-action:none}
+@supports not (aspect-ratio: 1){ .vitrin .kadr{height:min(90vw, 375px)} }
+.u-medya img, .u-medya video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover}
+.u-medya video{opacity:0; transition:opacity 500ms var(--cikis)}
+.u-medya video.hazir{opacity:1}
+#u-gorsel{transition:filter 450ms var(--cikis)}
+#u-gorsel.dusuk{filter:blur(8px)}
+.u-medya.ucusta > *:not(.u-kapat){visibility:hidden}
+.u-kapat{position:absolute; top:12px; inset-inline-end:12px; width:44px; height:44px; border-radius:12px; border:0; cursor:pointer; z-index:4;
+  background:color-mix(in srgb, var(--zemin) 92%, transparent); display:grid; place-items:center}
+.u-kapat .ph{font-size:20px}
+.u-govde{flex:1 1 auto; min-height:0; padding:20px 20px calc(24px + env(safe-area-inset-bottom)); overflow-y:auto; overscroll-behavior:contain}
+.u-govde .u-ust{display:flex; justify-content:space-between; align-items:baseline; gap:16px}
+.u-govde h3{font-family:var(--baslik); font-size:26px; font-weight:600; letter-spacing:-.02em; line-height:1.15}
+.u-govde .fiyat{font-size:22px; font-weight:600}
+.u-govde p{margin-top:8px; color:var(--soluk); font-size:16.5px}
+.u-govde .etiketler{margin-top:12px}
+.u-govde .kategori{margin-top:18px; padding-top:14px; border-top:1px solid var(--cizgi); color:var(--soluk); font-size:14.5px}
+/* uçan görsel: küçük görselden panel görseline */
+.ucan{position:fixed; left:0; top:0; z-index:60; overflow:hidden; pointer-events:none; transform-origin:0 0; will-change:transform, clip-path}
+.ucan img{width:100%; height:100%; object-fit:cover}
+</style>
+</head>
+<body class="">
+
+<!-- ══════════════════ AÇILIŞ ══════════════════ -->
+<div id="kok"><div class="sayfa">
+  <div class="ust-araclar" id="ust-araclar">
+    <div class="cip-grup" id="dil-sec" role="group" data-ta="dil"></div>
+    <div class="cip-grup tek"><button class="gece-dugme" id="gece-kapak" type="button" data-ta="gece" aria-pressed="false"><span class="ay"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M232.13,143.64a6,6,0,0,0-6-1.49A90.07,90.07,0,0,1,113.86,29.85a6,6,0,0,0-7.49-7.48A102.88,102.88,0,0,0,54.48,58.68,102,102,0,0,0,197.32,201.52a102.88,102.88,0,0,0,36.31-51.89A6,6,0,0,0,232.13,143.64Zm-42,48.29a90,90,0,0,1-126-126A90.9,90.9,0,0,1,99.65,37.66,102.06,102.06,0,0,0,218.34,156.35,90.9,90.9,0,0,1,190.1,191.93Z"/></svg></span><span class="gunes"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M122,40V16a6,6,0,0,1,12,0V40a6,6,0,0,1-12,0Zm68,88a62,62,0,1,1-62-62A62.07,62.07,0,0,1,190,128Zm-12,0a50,50,0,1,0-50,50A50.06,50.06,0,0,0,178,128ZM59.76,68.24a6,6,0,1,0,8.48-8.48l-16-16a6,6,0,0,0-8.48,8.48Zm0,119.52-16,16a6,6,0,1,0,8.48,8.48l16-16a6,6,0,1,0-8.48-8.48ZM192,70a6,6,0,0,0,4.24-1.76l16-16a6,6,0,0,0-8.48-8.48l-16,16A6,6,0,0,0,192,70Zm4.24,117.76a6,6,0,0,0-8.48,8.48l16,16a6,6,0,0,0,8.48-8.48ZM46,128a6,6,0,0,0-6-6H16a6,6,0,0,0,0,12H40A6,6,0,0,0,46,128Zm82,82a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V216A6,6,0,0,0,128,210Zm112-88H216a6,6,0,0,0,0,12h24a6,6,0,0,0,0-12Z"/></svg></span></button></div>
+  </div>
+  <div class="foto"><div class="katman">
+    <img class="onizleme" id="onizleme" src="/medya/kapak-32.webp" alt="" aria-hidden="true">
+    <img id="foto" src="/medya/kapak-900.webp" srcset="/medya/kapak-900.webp 900w, /medya/kapak-1600.webp 1600w" sizes="(max-width: 520px) 100vw, 520px" alt="İspir Ekmek" fetchpriority="high" decoding="async" width="1200" height="800" onload="this.parentNode.classList.add('hazir')">
+  </div></div>
+  <header class="kimlik">
+    <h1 class="gir" id="ad">İspir Ekmek</h1>
+    <p class="durum gir" style="--i:1" id="durum"><i aria-hidden="true"></i><b id="durum-yazi"></b><span id="saat-yazi"></span></p>
+  </header>
+  <main class="satirlar">
+    <button class="satir wifi gir" style="--i:2" id="wifi" type="button">
+      <svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M138,204a10,10,0,1,1-10-10A10,10,0,0,1,138,204ZM235.81,88.55a170,170,0,0,0-215.62,0,6,6,0,1,0,7.62,9.27,158,158,0,0,1,200.38,0,6,6,0,1,0,7.62-9.27Zm-32.08,35.79a122,122,0,0,0-151.46,0,6,6,0,0,0,7.46,9.41,110,110,0,0,1,136.54,0A6,6,0,0,0,200,135a6,6,0,0,0,3.73-10.7Zm-32.2,35.81a74,74,0,0,0-87.06,0,6,6,0,0,0,7.06,9.7,62,62,0,0,1,72.94,0,6,6,0,0,0,8.38-1.32A6,6,0,0,0,171.53,160.15Z"/></svg>
+      <span><strong><span data-t="wifi">Wi-Fi şifresi</span> <span class="sifre" id="wifi-sifre"></span></strong><small id="wifi-ag"></small></span>
+      <span class="eylem"><span id="kopya-yazi" data-t="kopyala">Kopyala</span><span class="tik"><svg class="cizgi-tik" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12.5l5 5 10-11"/></svg></span></span>
+    </button>
+    <a class="satir gir" style="--i:3" id="yorum" href="#"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M237.28,97.87A14.18,14.18,0,0,0,224.76,88l-60.25-4.87-23.22-56.2a14.37,14.37,0,0,0-26.58,0L91.49,83.11,31.24,88a14.18,14.18,0,0,0-12.52,9.89A14.43,14.43,0,0,0,23,113.32L69,152.93l-14,59.25a14.4,14.4,0,0,0,5.59,15,14.1,14.1,0,0,0,15.91.6L128,196.12l51.58,31.71a14.1,14.1,0,0,0,15.91-.6,14.4,14.4,0,0,0,5.59-15l-14-59.25L233,113.32A14.43,14.43,0,0,0,237.28,97.87Zm-12.14,6.37-48.69,42a6,6,0,0,0-1.92,5.92l14.88,62.79a2.35,2.35,0,0,1-.95,2.57,2.24,2.24,0,0,1-2.6.1L131.14,184a6,6,0,0,0-6.28,0L70.14,217.61a2.24,2.24,0,0,1-2.6-.1,2.35,2.35,0,0,1-1-2.57l14.88-62.79a6,6,0,0,0-1.92-5.92l-48.69-42a2.37,2.37,0,0,1-.73-2.65,2.28,2.28,0,0,1,2.07-1.65l63.92-5.16a6,6,0,0,0,5.06-3.69l24.63-59.6a2.35,2.35,0,0,1,4.38,0l24.63,59.6a6,6,0,0,0,5.06,3.69l63.92,5.16a2.28,2.28,0,0,1,2.07,1.65A2.37,2.37,0,0,1,225.14,104.24Z"/></svg><span><strong data-t="yorum">Google'da değerlendir</strong><small data-t="yorum_alt">Yorumunuz yeni misafirlere yol gösterir</small></span><span class="yon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></svg></span></a>
+    <a class="satir gir" style="--i:4" id="instagram" href="#"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,82a46,46,0,1,0,46,46A46.06,46.06,0,0,0,128,82Zm0,80a34,34,0,1,1,34-34A34,34,0,0,1,128,162ZM176,26H80A54.06,54.06,0,0,0,26,80v96a54.06,54.06,0,0,0,54,54h96a54.06,54.06,0,0,0,54-54V80A54.06,54.06,0,0,0,176,26Zm42,150a42,42,0,0,1-42,42H80a42,42,0,0,1-42-42V80A42,42,0,0,1,80,38h96a42,42,0,0,1,42,42ZM190,76a10,10,0,1,1-10-10A10,10,0,0,1,190,76Z"/></svg><span><strong>Instagram</strong><small id="instagram-ad"></small></span><span class="yon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></svg></span></a>
+    <details class="satir gir" style="--i:5">
+      <summary><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,26A102,102,0,1,0,230,128,102.12,102.12,0,0,0,128,26Zm0,192a90,90,0,1,1,90-90A90.1,90.1,0,0,1,128,218Zm62-90a6,6,0,0,1-6,6H128a6,6,0,0,1-6-6V72a6,6,0,0,1,12,0v50h50A6,6,0,0,1,190,128Z"/></svg><span><strong id="bugun-ozet"></strong><small data-t="hafta">Haftanın saatleri</small></span><span class="yon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M212.24,100.24l-80,80a6,6,0,0,1-8.48,0l-80-80a6,6,0,0,1,8.48-8.48L128,167.51l75.76-75.75a6,6,0,0,1,8.48,8.48Z"/></svg></span></summary>
+      <dl class="hafta" id="hafta"></dl>
+    </details>
+    <a class="satir gir" style="--i:6" id="telefon" href="#" hidden><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M221.59,160.3l-47.24-21.17a14,14,0,0,0-13.28,1.22,4.81,4.81,0,0,0-.56.42l-24.69,21a1.88,1.88,0,0,1-1.68.06C118.39,152.17,103.8,137.68,96,122.1a1.89,1.89,0,0,1,0-1.68l21.1-25a5.72,5.72,0,0,0,.42-.57,14,14,0,0,0,1.12-13.27L97.71,34.49A14,14,0,0,0,83.14,26.08,54.35,54.35,0,0,0,36,80c0,77.2,62.8,140,140,140a54.35,54.35,0,0,0,53.92-47.14A14,14,0,0,0,221.59,160.3Zm-3.6,11.08A42.33,42.33,0,0,1,176,208C105.42,208,48,150.58,48,80A42.33,42.33,0,0,1,84.62,38a2.14,2.14,0,0,1,.29,0,2,2,0,0,1,1.83,1.26l21,47.06a2,2,0,0,1,0,1.67L86.74,113c-.14.16-.27.34-.4.51a14,14,0,0,0-.91,13.73c9.87,20.2,30.21,40.39,50.63,50.26a14,14,0,0,0,13.74-1c.17-.11.33-.24.49-.37l24.63-21a1.92,1.92,0,0,1,1.6-.1l47.25,21.17a2,2,0,0,1,1.21,2.08Z"/></svg><span><strong data-t="ara">Ara</strong><small id="telefon-yazi"></small></span><span class="yon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></svg></span></a>
+    <a class="satir gir" style="--i:6" id="adres" href="#"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M128,66a38,38,0,1,0,38,38A38,38,0,0,0,128,66Zm0,64a26,26,0,1,1,26-26A26,26,0,0,1,128,130Zm0-112a86.1,86.1,0,0,0-86,86c0,30.91,14.34,63.74,41.47,94.94a252.32,252.32,0,0,0,41.09,38,6,6,0,0,0,6.88,0,252.32,252.32,0,0,0,41.09-38c27.13-31.2,41.47-64,41.47-94.94A86.1,86.1,0,0,0,128,18Zm0,206.51C113,212.93,54,163.62,54,104a74,74,0,0,1,148,0C202,163.62,143,212.93,128,224.51Z"/></svg><span><strong id="adres-yazi"></strong><small data-t="yol">Yol tarifi al</small></span><span class="yon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M198,64V168a6,6,0,0,1-12,0V78.48L68.24,196.24a6,6,0,0,1-8.48-8.48L177.52,70H88a6,6,0,0,1,0-12H192A6,6,0,0,1,198,64Z"/></svg></span></a>
+  </main>
+  <footer class="son"><span>Yıldızkart</span><span id="guncel"></span></footer>
+</div></div>
+
+<div class="alt" id="alt"><button class="menu-ac" id="menu-ac" type="button" aria-controls="menuYaprak" aria-expanded="false"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M74,88V40a6,6,0,0,1,12,0V88a6,6,0,0,1-12,0ZM214,40V224a6,6,0,0,1-12,0V174H152a6,6,0,0,1-6-6c0-4.41.68-108.25,59.64-133.51A6,6,0,0,1,214,40ZM202,50c-36.79,24.29-42.82,91.48-43.81,112H202ZM117.92,39a6,6,0,1,0-11.84,2L114,88.48a34,34,0,0,1-68,0L53.92,41a6,6,0,0,0-11.84-2l-8,48A6.61,6.61,0,0,0,34,88a46.06,46.06,0,0,0,40,45.6V224a6,6,0,0,0,12,0V133.6A46.06,46.06,0,0,0,126,88a6.61,6.61,0,0,0-.08-1Z"/></svg><span data-t="menu_ac">Menüyü aç</span><span class="sayi" id="menu-sayi"></span></button></div>
+
+<!-- ══════════════════ MENÜ YAPRAĞI ══════════════════ -->
+<div class="perde" id="perde1"></div>
+<section class="yaprak" id="menuYaprak" role="dialog" aria-modal="true" aria-label="Menü" data-ta="menu">
+  <div class="m-ust" id="m-ust">
+    <div class="tutamac" aria-hidden="true"></div>
+    <div class="m-satir">
+      <button class="dugme" id="menu-kapat" type="button" aria-label="Menüyü kapat" data-ta="menu_kapat"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M212.24,100.24l-80,80a6,6,0,0,1-8.48,0l-80-80a6,6,0,0,1,8.48-8.48L128,167.51l75.76-75.75a6,6,0,0,1,8.48,8.48Z"/></svg></button>
+      <span class="m-baslik"><span class="isletme-ad">İspir Ekmek</span><small data-t="menu">Menü</small></span>
+      <span class="m-sag"><button class="dugme gece-dugme" id="gece-menu" type="button" data-ta="gece" aria-pressed="false"><span class="ay"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M232.13,143.64a6,6,0,0,0-6-1.49A90.07,90.07,0,0,1,113.86,29.85a6,6,0,0,0-7.49-7.48A102.88,102.88,0,0,0,54.48,58.68,102,102,0,0,0,197.32,201.52a102.88,102.88,0,0,0,36.31-51.89A6,6,0,0,0,232.13,143.64Zm-42,48.29a90,90,0,0,1-126-126A90.9,90.9,0,0,1,99.65,37.66,102.06,102.06,0,0,0,218.34,156.35,90.9,90.9,0,0,1,190.1,191.93Z"/></svg></span><span class="gunes"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M122,40V16a6,6,0,0,1,12,0V40a6,6,0,0,1-12,0Zm68,88a62,62,0,1,1-62-62A62.07,62.07,0,0,1,190,128Zm-12,0a50,50,0,1,0-50,50A50.06,50.06,0,0,0,178,128ZM59.76,68.24a6,6,0,1,0,8.48-8.48l-16-16a6,6,0,0,0-8.48,8.48Zm0,119.52-16,16a6,6,0,1,0,8.48,8.48l16-16a6,6,0,1,0-8.48-8.48ZM192,70a6,6,0,0,0,4.24-1.76l16-16a6,6,0,0,0-8.48-8.48l-16,16A6,6,0,0,0,192,70Zm4.24,117.76a6,6,0,0,0-8.48,8.48l16,16a6,6,0,0,0,8.48-8.48ZM46,128a6,6,0,0,0-6-6H16a6,6,0,0,0,0,12H40A6,6,0,0,0,46,128Zm82,82a6,6,0,0,0-6,6v24a6,6,0,0,0,12,0V216A6,6,0,0,0,128,210Zm112-88H216a6,6,0,0,0,0,12h24a6,6,0,0,0,0-12Z"/></svg></span></button><button class="dugme" id="ara-ac" type="button" aria-label="Menüde ara" data-ta="menude_ara" aria-expanded="false"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M228.24,219.76l-51.38-51.38a86.15,86.15,0,1,0-8.48,8.48l51.38,51.38a6,6,0,0,0,8.48-8.48ZM38,112a74,74,0,1,1,74,74A74.09,74.09,0,0,1,38,112Z"/></svg></button></span>
+    </div>
+    <div class="ara" id="ara"><input id="ara-kutu" type="search" placeholder="Menüde ara, örn. latte" autocomplete="off" enterkeyhint="search"></div>
+    <nav class="sekmeler" id="sekmeler" aria-label="Kategoriler" data-ta="kategoriler"></nav>
+  </div>
+  <div class="kaydir" id="menuKaydir">
+    <header class="m-bas"><h2 id="m-h2" data-t="menu">Menü</h2><p id="ozet"></p></header>
+    <div class="oneri" id="oneri"><h3 id="oneri-baslik">Şefin önerileri</h3><div class="serit" id="serit"></div></div>
+    <div id="liste"></div>
+    <p class="bos" id="bos" role="status"></p>
+    <p class="m-not" id="m-not">Alerjen ve içerik bilgisi için lütfen çalışanlarımıza sorun. Görseller temsilidir.</p>
+    <footer class="m-son"><span>Yıldızkart</span><span id="m-guncel"></span></footer>
+  </div>
+</section>
+
+<!-- ══════════════════ ÜRÜN YAPRAĞI ══════════════════ -->
+<div class="perde" id="perde2"></div>
+<section class="yaprak" id="urunYaprak" role="dialog" aria-modal="true" aria-labelledby="u-ad">
+  <div class="tutamac" aria-hidden="true"></div>
+  <div class="u-medya" id="u-medya"><button class="u-kapat" id="u-kapat" type="button" aria-label="Kapat" data-ta="kapat"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M204.24,195.76a6,6,0,1,1-8.48,8.48L128,136.49,60.24,204.24a6,6,0,0,1-8.48-8.48L119.51,128,51.76,60.24a6,6,0,0,1,8.48-8.48L128,119.51l67.76-67.75a6,6,0,0,1,8.48,8.48L136.49,128Z"/></svg></button></div>
+  <div class="u-govde">
+    <div class="u-ust"><h3 id="u-ad"></h3><span class="fiyat" id="u-fiyat"></span></div>
+    <p id="u-aciklama"></p>
+    <div class="etiketler" id="u-etiket"></div>
+    <p class="alerjen" id="u-alerjen"></p>
+    <p class="kategori" id="u-kategori"></p>
+  </div>
+</section>
+
+<template id="oynat-ikon"><svg class="ph" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></template>
+
+<script>
+/* ══════════════ VERİ — panelden doldurulacak ══════════════ */
+/* Tüm işletme verisi uret.py'den gelir (isletmeler/<slug>.json) */
+const ISLETME = /*VERI*/{"slug":"ispircafe","ad":"İspir Ekmek","tur":"Cafe & Bistro","vurgu":"#8C6D27","vurgu_acik":"#F4EEDF","oneri":"İspir'in imzaları","oneri_tekil":"İspir imzası","wifi":null,"instagram":"ispircafe","telefon":"0507 248 81 18","adres":"Mergiç, Esen Köyü Yolu, Merkez / Düzce","saatler":{"1":["05:30","24:00"],"2":["05:30","24:00"],"3":["05:30","24:00"],"4":["05:30","24:00"],"5":["05:30","24:00"],"6":["05:30","24:00"],"7":["05:30","24:00"]},"yorum":"https://search.google.com/local/writereview?placeid=ChIJSQY50L-fnUARGIJFyC6P734","harita":"https://www.google.com/maps/search/?api=1&query=%C4%B0SP%C4%B0R+EKMEK+CAFE%26B%C4%B0STRO&query_place_id=ChIJSQY50L-fnUARGIJFyC6P734","guncel":"2026-11-22","hero_foto":"/medya/kapak","hero_video":null,"menu":[{"ad":"Kahvaltılar","urunler":[{"ad":"Kahvaltı tabağı","aciklama":"Süzme bal 35 g, fındık ezmesi 25 g, acuka 25 g, tereyağı 15 g, salatalık 30 g, domates 30 g, beyaz peynir 25 g, kaşar 35 g, zeytin 25 g, kuruyemiş 25 g, Nutella 15 g, 1 haşlanmış yumurta, 1 paçanga böreği 45 g, 1 yumurtalı ekmek 35 g, patates 70 g, 1 poğaça ve ekmek sepeti. 2 bardak çay dahil. Yumurta sahanda ya da haşlanmış olabilir.","fiyat":550,"foto":"/medya/ispir-91","dil":{"en":{"ad":"Breakfast plate","aciklama":"Strained honey 35 g, hazelnut spread 25 g, acuka 25 g, butter 15 g, cucumber 30 g, tomato 30 g, white cheese 25 g, kashar cheese 35 g, olives 25 g, mixed nuts 25 g, Nutella 15 g, 1 boiled egg, 1 paçanga börek 45 g, 1 egg bread 35 g, fries 70 g, 1 poğaça and a bread basket. 2 glasses of tea included. Eggs can be fried or boiled."}}},{"ad":"Express kahvaltı","aciklama":"Beyaz peynir 25 g, kaşar 35 g, zeytin 70 g, salatalık 40 g, domates 60 g, 1 haşlanmış yumurta, 1 fincan çay dahil","fiyat":335,"foto":"/medya/ispir-89","dil":{"en":{"ad":"Express breakfast","aciklama":"White cheese 25 g, kashar cheese 35 g, olives 70 g, cucumber 40 g, tomato 60 g, 1 boiled egg, 1 cup of tea included"}}},{"ad":"Serpme kahvaltı","aciklama":"İki kişilik. Fındık ezmesi, reçel, pekmez, labne, tereyağı, acuka, salatalık, domates, petek bal, kaymak, tahin, incir, kayısı, ceviz, patates, yeşil ve siyah zeytin, beyaz peynir, kaşar, örgü ve çeçil peyniri, 2 Nutella, 2 paçanga böreği, 2 yumurtalı ekmek, 2 poğaçalık sepet, mıhlama ya da menemen, su ve sınırsız çay. Yumurta sahanda, haşlanmış ya da sucuklu. Yazılanların dışındakiler ücretlidir.","fiyat":1100,"sef":true,"foto":"/medya/ispir-serpme-2","dil":{"en":{"ad":"Turkish breakfast spread","aciklama":"For two. Hazelnut spread, jam, grape molasses, labneh, butter, acuka, cucumber, tomato, honeycomb, clotted cream, tahini, fig, apricot, walnut, potatoes, green and black olives, white, kashar, braided and string cheese, 2 Nutella, 2 paçanga börek, 2 egg breads, a basket of 2 poğaça, mıhlama or menemen, water and unlimited tea. Eggs fried, boiled or with sucuk. Anything extra is charged."}}},{"ad":"Sahanda yumurta","aciklama":"Tereyağı 40 g, yumurta 2 adet, tuz 2 g","fiyat":160,"foto":"/medya/ispir-78","dil":{"en":{"ad":"Fried eggs","aciklama":"Butter 40 g, 2 eggs, salt 2 g"}}},{"ad":"Sucuklu yumurta","aciklama":"Sucuk 50 g, tereyağı 40 g, yumurta 2 adet","fiyat":290,"foto":"/medya/ispir-90","dil":{"en":{"ad":"Eggs with sucuk","aciklama":"Sucuk 50 g, butter 40 g, 2 eggs"}}},{"ad":"Kavurmalı yumurta","aciklama":"Tereyağı 40 g, yumurta 2 adet, kavurma 60 g, tuz 2 g, kekik 2 g, pul biber 2 g","fiyat":345,"foto":"/medya/ispir-79","dil":{"en":{"ad":"Eggs with kavurma","aciklama":"Butter 40 g, 2 eggs, kavurma 60 g, salt 2 g, thyme 2 g, chili flakes 2 g"}}},{"ad":"Pastırmalı yumurta","aciklama":"Tereyağı 40 g, yumurta 2 adet, pastırma 30 g","fiyat":320,"foto":"/medya/ispir-81","dil":{"en":{"ad":"Eggs with pastırma","aciklama":"Butter 40 g, 2 eggs, pastırma 30 g"}}},{"ad":"Paçanga böreği","aciklama":"","fiyat":275,"foto":"/medya/artboard-3","dil":{"en":{"ad":"Paçanga börek"}}},{"ad":"Kaşarlı mantarlı omlet","aciklama":"Yumurta 2 adet, mantar 55 g, kaşar 60 g, tuz 2 g, çeşni 2 g, zeytinyağı 20 g","fiyat":285,"foto":"/medya/ispir-87","dil":{"en":{"ad":"Mushroom & cheese omelette","aciklama":"2 eggs, mushrooms 55 g, kashar cheese 60 g, salt 2 g, seasoning 2 g, olive oil 20 g"}}},{"ad":"Karışık omlet","aciklama":"Yumurta 2 adet, mantar 30 g, sucuk 25 g, sosis 25 g, tuz 2 g, çeşni 2 g, kaşar 60 g, zeytinyağı 20 g","fiyat":285,"foto":"/medya/ispir-88","dil":{"en":{"ad":"Mixed omelette","aciklama":"2 eggs, mushrooms 30 g, sucuk 25 g, sausage 25 g, salt 2 g, seasoning 2 g, kashar cheese 60 g, olive oil 20 g"}}},{"ad":"Kaşarlı omlet","aciklama":"Yumurta 2 adet, kaşar 80 g, tuz 2 g, çeşni 2 g, zeytinyağı 20 g","fiyat":270,"foto":"/medya/kasaaarli-omlet","dil":{"en":{"ad":"Cheese omelette","aciklama":"2 eggs, kashar cheese 80 g, salt 2 g, seasoning 2 g, olive oil 20 g"}}},{"ad":"Mıhlama","aciklama":"Tereyağı 70 g, mısır unu 55 g, mıhlama peyniri 90 g, tuz 3 g","fiyat":275,"foto":"/medya/artboard-2-1","dil":{"en":{"aciklama":"Butter 70 g, cornmeal 55 g, mıhlama cheese 90 g, salt 3 g"}}},{"ad":"Menemen","aciklama":"Domates 180 g, biber 70 g, çeşni 3 g, tuz 3 g, tereyağı 15 g, yumurta 1 adet","fiyat":240,"foto":"/medya/artboard-1-1","dil":{"en":{"aciklama":"Tomato 180 g, peppers 70 g, seasoning 3 g, salt 3 g, butter 15 g, 1 egg"}}}],"dil":{"en":"Breakfast"}},{"ad":"Çorbalar","urunler":[{"ad":"Ezogelin çorbası","aciklama":"","fiyat":150,"foto":"/medya/artboard-6-1","dil":{"en":{"ad":"Ezogelin soup"}}},{"ad":"Mercimek çorbası","aciklama":"","fiyat":150,"foto":"/medya/artboard-7-1","dil":{"en":{"ad":"Lentil soup"}}},{"ad":"Yayla çorbası","aciklama":"","fiyat":150,"foto":"/medya/artboard-9-1","dil":{"en":{"ad":"Yayla soup"}}},{"ad":"Domates çorbası","aciklama":"","fiyat":150,"foto":"/medya/artboard-11","dil":{"en":{"ad":"Tomato soup"}}},{"ad":"Kremalı sebze çorbası","aciklama":"","fiyat":170,"foto":"/medya/artboard-8-1","dil":{"en":{"ad":"Cream of vegetable soup"}}}],"dil":{"en":"Soups"}},{"ad":"Türk mutfağı","urunler":[{"ad":"Pirinç pilavı","aciklama":"Pilav 150 g","fiyat":180,"foto":"/medya/artboard-4","dil":{"en":{"ad":"Rice pilaf","aciklama":"Rice 150 g"}}},{"ad":"Çökertme kebabı","aciklama":"Et 160 g, ekmek 80 g, kibrit cips 35 g, sarımsaklı yoğurt 100 g, tereyağı 40 g, çeri domates 2 adet, sivri biber 2 adet","fiyat":710,"foto":"/medya/ispir-34","dil":{"en":{"ad":"Çökertme kebab","aciklama":"Beef 160 g, bread 80 g, shoestring fries 35 g, garlic yogurt 100 g, butter 40 g, 2 cherry tomatoes, 2 green peppers"}}},{"ad":"Sac tava","aciklama":"Et 170 g, pilav 100 g, tereyağı 40 g","fiyat":565,"foto":"/medya/ispir-56","dil":{"en":{"aciklama":"Beef 170 g, rice 100 g, butter 40 g"}}},{"ad":"Beğendi yatağında İspir kebabı","aciklama":"Et 180 g, közlenmiş patlıcanlı beğendi 250 g, kibrit patates 35 g, sarımsaklı yoğurt 60 g, tereyağı 40 g","fiyat":660,"sef":true,"foto":"/medya/ispir-33","dil":{"en":{"ad":"İspir kebab on beğendi","aciklama":"Beef 180 g, smoky aubergine beğendi 250 g, shoestring fries 35 g, garlic yogurt 60 g, butter 40 g"}}},{"ad":"İspir lobya","aciklama":"Ispir fasulye 350 g, biber turşusu 50 g, lahana turşusu 50 g","fiyat":525,"sef":true,"foto":"/medya/ispir-32","dil":{"en":{"aciklama":"İspir beans 350 g, pickled peppers 50 g, pickled cabbage 50 g"}}},{"ad":"Türkmen mantı","aciklama":"Türkmen mantı 200 g, süzme yoğurt 150 g, tereyağı 25 g, nane 3 g","fiyat":410,"foto":"/medya/ispir-43","dil":{"en":{"ad":"Turkmen mantı","aciklama":"Turkmen mantı 200 g, strained yogurt 150 g, butter 25 g, mint 3 g"}}},{"ad":"Güveç kavurma","aciklama":"Kavurma et 180 g, biber turşusu 50 g, lahana turşusu 50 g, pul biber, kekik","fiyat":590,"foto":"/medya/ispir-31","dil":{"en":{"ad":"Kavurma in a clay pot","aciklama":"Kavurma 180 g, pickled peppers 50 g, pickled cabbage 50 g, chili flakes, thyme"}}},{"ad":"Askılı kebap","aciklama":"2 kalem kuzu, tavuk 400 g, bonfile 200 g, köfte 140 g, hellim 150 g, mantar 70 g, 1 lavaş, sucuk 120 g, 4 çeri domates, 4 sivri biber. Soslar: sarımsaklı yoğurt, hardal, acı sos, avokado","fiyat":2140,"sef":true,"foto":"/medya/sebzelikebap","dil":{"en":{"ad":"Hanging kebab platter","aciklama":"2 lamb chops, chicken 400 g, beef tenderloin 200 g, meatballs 140 g, halloumi 150 g, mushrooms 70 g, 1 lavash, sucuk 120 g, 4 cherry tomatoes, 4 green peppers. Sauces: garlic yogurt, mustard, hot sauce, avocado"}}},{"ad":"Kayseri mantı","aciklama":"Kayseri mantısı 200 g, süzme yoğurt 150 g, tereyağı 25 g, nane 3 g","fiyat":390,"foto":"/medya/ispir-44","dil":{"en":{"aciklama":"Kayseri mantı 200 g, strained yogurt 150 g, butter 25 g, mint 3 g"}}}],"dil":{"en":"Turkish kitchen"}},{"ad":"Kırmızı etler","urunler":[{"ad":"Lokum bonfile","aciklama":"Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, tuz 2 g, sarımsak 2 g, çeşni 2 g","fiyat":830,"foto":"/medya/ispir-45","dil":{"en":{"ad":"Beef tenderloin","aciklama":"Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, salt 2 g, garlic 2 g, seasoning 2 g"}}},{"ad":"Mantar soslu julyen bonfile","aciklama":"Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, krema 130 ml, hardal 10 g, soya sosu 20 g, mantar 50 g, tuz 2 g, sarımsak 2 g, çeşni 2 g","fiyat":830,"foto":"/medya/ispir-47","dil":{"en":{"ad":"Beef julienne in mushroom sauce","aciklama":"Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, cream 130 ml, mustard 10 g, soy sauce 20 g, mushrooms 50 g, salt 2 g, garlic 2 g, seasoning 2 g"}}},{"ad":"Köz sebzeli bonfile","aciklama":"Bonfile 200 g, sebze 130 g, haşlanmış patates 120 g, köz sebze 100 g, tuz 2 g, sarımsak 2 g, çeşni 2 g","fiyat":865,"foto":"/medya/ispir-45-1","dil":{"en":{"ad":"Beef tenderloin with roasted vegetables","aciklama":"Beef tenderloin 200 g, vegetables 130 g, boiled potatoes 120 g, fire-roasted vegetables 100 g, salt 2 g, garlic 2 g, seasoning 2 g"}}},{"ad":"Kuzu pirzola","aciklama":"Kuzu 4 kalem, haşlanmış patates 90 g, lavaş 1 adet, domates 2 adet, sivri biber 2 adet","fiyat":865,"foto":"/medya/ispir-65","dil":{"en":{"ad":"Lamb chops","aciklama":"4 lamb chops, boiled potatoes 90 g, 1 lavash, 2 tomatoes, 2 green peppers"}}},{"ad":"Arnavut ciğeri","aciklama":"Ciğer 190 g, lavaş 35 g","fiyat":585,"foto":"/medya/ispir-17","dil":{"en":{"ad":"Albanian-style liver","aciklama":"Liver 190 g, lavash 35 g"}}},{"ad":"Izgara köfte","aciklama":"Köfte 180 g, patates 90 g, yeşillik 40 g, pilav 100 g","fiyat":510,"foto":"/medya/12kft","dil":{"en":{"ad":"Grilled meatballs","aciklama":"Meatballs 180 g, fries 90 g, greens 40 g, rice 100 g"}}},{"ad":"Ispanaklı kremalı bonfile","aciklama":"Bonfile 200 g, ıspanak 100 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, krema 50 ml","fiyat":820,"foto":"/medya/ispir-49","dil":{"en":{"ad":"Creamy spinach beef tenderloin","aciklama":"Beef tenderloin 200 g, spinach 100 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, cream 50 ml"}}},{"ad":"Karışık ızgara","aciklama":"Köfte 70 g, bonfile 100 g, sucuk 60 g, tavuk 170 g, haşlanmış patates 90 g, çeri domates 2 adet, sivri biber 2 adet","fiyat":980,"foto":"/medya/ispir-52","dil":{"en":{"ad":"Mixed grill","aciklama":"Meatballs 70 g, beef tenderloin 100 g, sucuk 60 g, chicken 170 g, boiled potatoes 90 g, 2 cherry tomatoes, 2 green peppers"}}},{"ad":"Ekmek arası Arnavut ciğeri","aciklama":"Ciğer 100 g, patates 90 g, çapata ekmeği 130 g, amerikan salata 80 g, soğan 30 g, sos 30 g","fiyat":400,"foto":"/medya/ispir-18","dil":{"en":{"ad":"Albanian liver sandwich","aciklama":"Liver 100 g, fries 90 g, ciabatta 130 g, Olivier salad 80 g, onion 30 g, sauce 30 g"}}}],"dil":{"en":"Red meat"}},{"ad":"Beyaz etler","urunler":[{"ad":"Şinitzel tavuk","aciklama":"Tavuk göğsü 200 g, mayonez 30 g, patates 70 g","fiyat":445,"foto":"/medya/ispir-6","dil":{"en":{"ad":"Chicken schnitzel","aciklama":"Chicken breast 200 g, mayonnaise 30 g, fries 70 g"}}},{"ad":"Meksika soslu tavuk","aciklama":"Tavuk göğsü 180 g, domates sos 50 g, acı sos 10 g, patates 70 g, çeşni 5 g, tuz 2 g, makarna 70 g, parmesan peyniri 10 g, krema 30 ml","fiyat":415,"etiket":["Acılı"],"foto":"/medya/artboard-6","dil":{"en":{"ad":"Mexican-style chicken","aciklama":"Chicken breast 180 g, tomato sauce 50 g, hot sauce 10 g, fries 70 g, seasoning 5 g, salt 2 g, pasta 70 g, parmesan 10 g, cream 30 ml"}}},{"ad":"Etli but ızgara","aciklama":"Kemikli but 300 g, pirinç 70 g, patates 70 g, sivri biber 20 g, çeri domates 50 g","fiyat":445,"foto":"/medya/artboard-2","dil":{"en":{"ad":"Grilled chicken leg","aciklama":"Bone-in chicken leg 300 g, rice 70 g, fries 70 g, green peppers 20 g, cherry tomatoes 50 g"}}},{"ad":"Köri soslu tavuk","aciklama":"Tavuk göğsü 180 g, krema 50 ml, köri 5 g, tuz 2 g, çeşni 5 g, parmesan peyniri 20 g, makarna 70 g, domates sos 50 g, patates 70 g","fiyat":420,"foto":"/medya/artboard-1","dil":{"en":{"ad":"Chicken curry","aciklama":"Chicken breast 180 g, cream 50 ml, curry 5 g, salt 2 g, seasoning 5 g, parmesan 20 g, pasta 70 g, tomato sauce 50 g, fries 70 g"}}},{"ad":"Toskana tavuk","aciklama":"Tavuk göğsü 200 g, çeri domates 100 g, ıspanak 50 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, parmesan peyniri 15 g, krema 50 ml","fiyat":450,"foto":"/medya/ispir-48","dil":{"en":{"ad":"Tuscan chicken","aciklama":"Chicken breast 200 g, cherry tomatoes 100 g, spinach 50 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, parmesan 15 g, cream 50 ml"}}},{"ad":"Ispanaklı kremalı tavuk","aciklama":"Tavuk 200 g, ıspanak 100 g, soğan 30 g, sarımsak 5 g, tuz 1 g, karabiber 1 g, krema 50 ml","fiyat":425,"foto":"/medya/ispir-46","dil":{"en":{"ad":"Creamy spinach chicken","aciklama":"Chicken 200 g, spinach 100 g, onion 30 g, garlic 5 g, salt 1 g, black pepper 1 g, cream 50 ml"}}}],"dil":{"en":"Chicken"}},{"ad":"Pide ve lahmacun","urunler":[{"ad":"Kuşbaşı pide","aciklama":"Kuşbaşı 210 g, hamur 200 g","fiyat":445,"foto":"/medya/ispir-93","dil":{"en":{"ad":"Diced beef pide","aciklama":"Diced beef 210 g, dough 200 g"}}},{"ad":"Karışık pide","aciklama":"Kuşbaşı 100 g, kaşar 90 g, sucuk 30 g, pastırma 20 g, hamur 200 g","fiyat":460,"foto":"/medya/ispir-97","dil":{"en":{"ad":"Mixed pide","aciklama":"Diced beef 100 g, kashar cheese 90 g, sucuk 30 g, pastırma 20 g, dough 200 g"}}},{"ad":"Lahmacun","aciklama":"Dana kıyma 150 g, hamur 120 g","fiyat":140,"foto":"/medya/ispir-100","dil":{"en":{"aciklama":"Minced beef 150 g, dough 120 g"}}},{"ad":"Kaşarlı sucuklu pide","aciklama":"Kaşar 200 g, sucuk 70 g, hamur 200 g","fiyat":380,"foto":"/medya/ispir-94","dil":{"en":{"ad":"Cheese & sucuk pide","aciklama":"Kashar cheese 200 g, sucuk 70 g, dough 200 g"}}},{"ad":"Kaşarlı pide","aciklama":"Kaşar 220 g, hamur 200 g","fiyat":370,"foto":"/medya/artboard-19","dil":{"en":{"ad":"Cheese pide","aciklama":"Kashar cheese 220 g, dough 200 g"}}},{"ad":"Kavurmalı kaşarlı pide","aciklama":"Kavurma 150 g, kaşar 50 g, hamur 220 g","fiyat":520,"foto":"/medya/ispir-99","dil":{"en":{"ad":"Kavurma & cheese pide","aciklama":"Kavurma 150 g, kashar cheese 50 g, dough 220 g"}}},{"ad":"Trabzon pidesi","aciklama":"Kuşbaşı 80 g, kaşar 90 g, sucuk 60 g, domates 20 g, biber 10 g, hamur 220 g","fiyat":470,"foto":"/medya/ispir-84","dil":{"en":{"ad":"Trabzon pide","aciklama":"Diced beef 80 g, kashar cheese 90 g, sucuk 60 g, tomato 20 g, peppers 10 g, dough 220 g"}}},{"ad":"Kuşbaşı kaşarlı pide","aciklama":"Kuşbaşı 120 g, kaşar 100 g, hamur 200 g","fiyat":460,"foto":"/medya/ispir-92","dil":{"en":{"ad":"Diced beef & cheese pide","aciklama":"Diced beef 120 g, kashar cheese 100 g, dough 200 g"}}},{"ad":"Kıymalı pide","aciklama":"Dana kıyma 180 g, hamur 200 g","fiyat":325,"foto":"/medya/ispir-86","dil":{"en":{"ad":"Minced beef pide","aciklama":"Minced beef 180 g, dough 200 g"}}},{"ad":"Kıymalı kaşarlı pide","aciklama":"Kıyma 110 g, kaşar 90 g, hamur 200 g","fiyat":380,"foto":"/medya/ispir-85","dil":{"en":{"ad":"Minced beef & cheese pide","aciklama":"Minced beef 110 g, kashar cheese 90 g, dough 200 g"}}}],"dil":{"en":"Pide & lahmacun"}},{"ad":"Pizzalar","urunler":[{"ad":"Ton balıklı pizza","aciklama":"","fiyat":485,"foto":"/medya/artboard-18","dil":{"en":{"ad":"Tuna pizza"}}},{"ad":"Texas pizza","aciklama":"Kaşar 90 g, sucuk 50 g, sosis 30 g, salam 50 g, mısır 20 g, zeytin 15 g, jalapeno biber 30 g, hamur 220 g","fiyat":485,"etiket":["Acılı"],"foto":"/medya/ispir-83","dil":{"en":{"aciklama":"Kashar cheese 90 g, sucuk 50 g, sausage 30 g, salami 50 g, corn 20 g, olives 15 g, jalapeño 30 g, dough 220 g"}}},{"ad":"Margarita pizza","aciklama":"Kaşar 120 g, çeri domates 2 adet, hamur 220 g","fiyat":445,"etiket":["Vejetaryen"],"foto":"/medya/artboard-27-1","dil":{"en":{"ad":"Margherita pizza","aciklama":"Kashar cheese 120 g, 2 cherry tomatoes, dough 220 g"}}},{"ad":"Vejetaryen pizza","aciklama":"","fiyat":470,"etiket":["Vejetaryen"],"foto":"/medya/artboard-17","dil":{"en":{"ad":"Vegetarian pizza"}}},{"ad":"Karışık pizza","aciklama":"Kaşar 90 g, sucuk 50 g, sosis 30 g, salam 50 g, mısır 20 g, zeytin 15 g, hamur 220 g","fiyat":445,"foto":"/medya/ispir-82","dil":{"en":{"ad":"Mixed pizza","aciklama":"Kashar cheese 90 g, sucuk 50 g, sausage 30 g, salami 50 g, corn 20 g, olives 15 g, dough 220 g"}}}],"dil":{"en":"Pizza"}},{"ad":"Makarnalar","urunler":[{"ad":"Kremalı tavuklu penne","aciklama":"Tavuk 90 g, mantar 50 g, makarna 160 g, tuz 3 g, karabiber 3 g, krema 100 ml, parmesan peyniri 30 g, zeytinyağı 10 g","fiyat":385,"foto":"/medya/ispir-51","dil":{"en":{"ad":"Creamy chicken penne","aciklama":"Chicken 90 g, mushrooms 50 g, pasta 160 g, salt 3 g, black pepper 3 g, cream 100 ml, parmesan 30 g, olive oil 10 g"}}},{"ad":"Penne arrabbiata","aciklama":"Domates sos 120 g, acı sos 30 g, tereyağı 30 g, penne makarna 160 g, parmesan peyniri 30 g, tuz 3 g","fiyat":370,"etiket":["Acılı"],"foto":"/medya/ispir-50","dil":{"en":{"aciklama":"Tomato sauce 120 g, hot sauce 30 g, butter 30 g, penne 160 g, parmesan 30 g, salt 3 g"}}},{"ad":"Spagetti bolonez","aciklama":"Kıyma 70 g, spagetti makarna 200 g, domates sos 150 g, tuz 3 g, karabiber 2 g, sarımsak 2 g, tereyağı 30 g","fiyat":400,"foto":"/medya/ispir-54","dil":{"en":{"ad":"Spaghetti bolognese","aciklama":"Minced beef 70 g, spaghetti 200 g, tomato sauce 150 g, salt 3 g, black pepper 2 g, garlic 2 g, butter 30 g"}}}],"dil":{"en":"Pasta"}},{"ad":"Meksika mutfağı","urunler":[{"ad":"Tavuklu wrap","aciklama":"Tavuk 90 g, sebze 120 g, fajita baharatı 4 g, zeytinyağı 25 g, domates sos 40 g, patates 90 g, sos 30 g","fiyat":440,"foto":"/medya/ispir-8","dil":{"en":{"ad":"Chicken wrap","aciklama":"Chicken 90 g, vegetables 120 g, fajita seasoning 4 g, olive oil 25 g, tomato sauce 40 g, fries 90 g, sauce 30 g"}}},{"ad":"Bonfile wrap","aciklama":"Bonfile 90 g, sebze 120 g, fajita baharatı 4 g, zeytinyağı 25 g, domates sos 40 g, patates 90 g, sos 30 g","fiyat":540,"foto":"/medya/ispir-7","dil":{"en":{"ad":"Beef wrap","aciklama":"Beef tenderloin 90 g, vegetables 120 g, fajita seasoning 4 g, olive oil 25 g, tomato sauce 40 g, fries 90 g, sauce 30 g"}}},{"ad":"Combo fajita","aciklama":"Tavuk 65 g, et 65 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 15 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g","fiyat":620,"foto":"/medya/ispir-68","dil":{"en":{"aciklama":"Chicken 65 g, beef 65 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 15 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"}}},{"ad":"Tavuk fajita","aciklama":"Tavuk 130 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 15 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g","fiyat":485,"foto":"/medya/ispir-64","dil":{"en":{"ad":"Chicken fajita","aciklama":"Chicken 130 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 15 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"}}},{"ad":"Bonfile fajita","aciklama":"Et 130 g, sebze 100 g, lavaş 120 g, fajita baharatı 7 g, et suyu 30 g, domates sos 40 g, tuz 3 g, tereyağı 25 g, acı sos 25 g, sarımsaklı yoğurt 15 g, avokado sos 15 g, zeytinyağı 20 g","fiyat":680,"foto":"/medya/ispir-63","dil":{"en":{"ad":"Beef fajita","aciklama":"Beef 130 g, vegetables 100 g, lavash 120 g, fajita seasoning 7 g, beef stock 30 g, tomato sauce 40 g, salt 3 g, butter 25 g, hot sauce 25 g, garlic yogurt 15 g, avocado sauce 15 g, olive oil 20 g"}}}],"dil":{"en":"Mexican"}},{"ad":"Tost, burger ve atıştırmalık","urunler":[{"ad":"Karışık tost","aciklama":"Sucuk 15 g, tost ekmeği 70 g, kaşar 25 g, patates 90 g, mayonez 30 g","fiyat":315,"foto":"/medya/ispir-67","dil":{"en":{"ad":"Mixed toastie","aciklama":"Sucuk 15 g, toast bread 70 g, kashar cheese 25 g, fries 90 g, mayonnaise 30 g"}}},{"ad":"Black burger","aciklama":"","fiyat":320,"foto":"/medya/blackburger"},{"ad":"Sucuklu tost","aciklama":"Sucuk 40 g, tost ekmeği 80 g, patates 90 g, sos 30 g","fiyat":280,"foto":"/medya/sucuklu-tosttt","dil":{"en":{"ad":"Sucuk toastie","aciklama":"Sucuk 40 g, toast bread 80 g, fries 90 g, sauce 30 g"}}},{"ad":"Kaşarlı tost","aciklama":"Kaşar 50 g, tost ekmeği 70 g, patates 90 g, sos 30 g","fiyat":290,"foto":"/medya/ispir-66","dil":{"en":{"ad":"Cheese toastie","aciklama":"Kashar cheese 50 g, toast bread 70 g, fries 90 g, sauce 30 g"}}},{"ad":"Karışık bazlama tost","aciklama":"Sucuk 30 g, kaşar 60 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g","fiyat":340,"foto":"/medya/ispir-59","dil":{"en":{"ad":"Mixed bazlama toastie","aciklama":"Sucuk 30 g, kashar cheese 60 g, bazlama 200 g, fries 90 g, sauce 30 g"}}},{"ad":"Kavurmalı bazlama tost","aciklama":"Kavurma 70 g, kaşar 60 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g","fiyat":400,"foto":"/medya/ispir-61","dil":{"en":{"ad":"Kavurma bazlama toastie","aciklama":"Kavurma 70 g, kashar cheese 60 g, bazlama 200 g, fries 90 g, sauce 30 g"}}},{"ad":"Kaşarlı bazlama tost","aciklama":"Kaşar 75 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g","fiyat":320,"foto":"/medya/ispir-55","dil":{"en":{"ad":"Cheese bazlama toastie","aciklama":"Kashar cheese 75 g, bazlama 200 g, fries 90 g, sauce 30 g"}}},{"ad":"Beyaz peynirli domatesli bazlama tost","aciklama":"Beyaz peynir 90 g, domates 50 g, bazlama ekmeği 200 g, patates 90 g, sos 30 g","fiyat":315,"foto":"/medya/ispir-60","dil":{"en":{"ad":"White cheese & tomato bazlama toastie","aciklama":"White cheese 90 g, tomato 50 g, bazlama 200 g, fries 90 g, sauce 30 g"}}},{"ad":"Pastırmalı bazlama tost","aciklama":"Pastırma 30 g, kaşar 60 g, patates 90 g, bazlama ekmeği 200 g","fiyat":400,"foto":"/medya/ispir-61","dil":{"en":{"ad":"Pastırma bazlama toastie","aciklama":"Pastırma 30 g, kashar cheese 60 g, fries 90 g, bazlama 200 g"}}},{"ad":"Hamburger","aciklama":"Köfte 90 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g","fiyat":345,"foto":"/medya/ispir-10","dil":{"en":{"aciklama":"Patty 90 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"}}},{"ad":"Double burger","aciklama":"Köfte 180 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 30 g, hamburger ekmeği 100 g","fiyat":460,"foto":"/medya/ispir-30","dil":{"en":{"aciklama":"Patties 180 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 30 g, bun 100 g"}}},{"ad":"Texas burger","aciklama":"Köfte 90 g, cheddar peyniri 15 g, jalapeno biber 20 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g","fiyat":380,"etiket":["Acılı"],"foto":"/medya/ispir-11","dil":{"en":{"aciklama":"Patty 90 g, cheddar 15 g, jalapeño 20 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"}}},{"ad":"Cheeseburger","aciklama":"Köfte 90 g, cheddar peyniri 15 g, marul 10 g, mayonez 5 g, domates 20 g, soğan 10 g, turşu 30 g, patates 90 g, sos 30 g, soğan halkası 15 g, hamburger ekmeği 100 g","fiyat":380,"foto":"/medya/ispir-13","dil":{"en":{"aciklama":"Patty 90 g, cheddar 15 g, lettuce 10 g, mayonnaise 5 g, tomato 20 g, onion 10 g, pickles 30 g, fries 90 g, sauce 30 g, onion rings 15 g, bun 100 g"}}},{"ad":"Kumru","aciklama":"Sosis 75 g, sucuk 50 g, kaşar 50 g, turşu 30 g, domates sos 80 g, patates 90 g, çapata ekmeği 130 g, sos 30 g","fiyat":315,"foto":"/medya/ispir-15","dil":{"en":{"ad":"Kumru sandwich","aciklama":"Sausage 75 g, sucuk 50 g, kashar cheese 50 g, pickles 30 g, tomato sauce 80 g, fries 90 g, ciabatta 130 g, sauce 30 g"}}},{"ad":"Köfte ekmek","aciklama":"Köfte 105 g, sivri biber 10 g, domates 45 g, patates 90 g, çapata ekmeği 130 g, sos 30 g, mayonez 5 g","fiyat":400,"foto":"/medya/ispir-9","dil":{"en":{"ad":"Meatball sandwich","aciklama":"Meatballs 105 g, green pepper 10 g, tomato 45 g, fries 90 g, ciabatta 130 g, sauce 30 g, mayonnaise 5 g"}}},{"ad":"Patates cips","aciklama":"Patates 200 g","fiyat":220,"foto":"/medya/artboard-15","dil":{"en":{"ad":"French fries","aciklama":"Potatoes 200 g"}}},{"ad":"Elma dilim patates","aciklama":"Elma dilim 200 g","fiyat":235,"foto":"/medya/ispir-41","dil":{"en":{"ad":"Potato wedges","aciklama":"Potato wedges 200 g"}}},{"ad":"Çıtır tavuk sepeti","aciklama":"Tavuk 130 g, patates 150 g, sos 30 g","fiyat":355,"foto":"/medya/ispir-39","dil":{"en":{"ad":"Crispy chicken basket","aciklama":"Chicken 130 g, fries 150 g, sauce 30 g"}}},{"ad":"Kalem börek sepeti","aciklama":"Kalem börek 200 g, patates 150 g, sos 30 g","fiyat":245,"foto":"/medya/ispir-42","dil":{"en":{"ad":"Cheese roll basket","aciklama":"Cheese rolls 200 g, fries 150 g, sauce 30 g"}}},{"ad":"Soğan halkası sepeti","aciklama":"Soğan halkası 125 g, patates 150 g, sos 30 g","fiyat":275,"foto":"/medya/ispir-38","dil":{"en":{"ad":"Onion ring basket","aciklama":"Onion rings 125 g, fries 150 g, sauce 30 g"}}},{"ad":"Sosis tabağı","aciklama":"Sosis 150 g, patates 150 g, sos 30 g","fiyat":250,"foto":"/medya/ispir-40","dil":{"en":{"ad":"Sausage plate","aciklama":"Sausage 150 g, fries 150 g, sauce 30 g"}}}],"dil":{"en":"Toasties, burgers & snacks"}},{"ad":"Salatalar","urunler":[{"ad":"Mevsim salata","aciklama":"","fiyat":250,"etiket":["Vejetaryen"],"foto":"/medya/artboard-14","dil":{"en":{"ad":"Seasonal salad"}}},{"ad":"Tulum peynirli salata","aciklama":"Yeşillik 70 g, mısır 30 g, köz sebze 60 g, tulum peyniri 50 g","fiyat":380,"foto":"/medya/ispir-3","dil":{"en":{"ad":"Salad with tulum cheese","aciklama":"Greens 70 g, corn 30 g, roasted vegetables 60 g, tulum cheese 50 g"}}},{"ad":"Sezar salata","aciklama":"Tavuk 100 g, yeşillik 70 g, mısır 30 g, sezar sos 90 g, parmesan peyniri 20 g, kruton ekmek 15 g","fiyat":400,"foto":"/medya/ispir-5","dil":{"en":{"ad":"Caesar salad","aciklama":"Chicken 100 g, greens 70 g, corn 30 g, Caesar dressing 90 g, parmesan 20 g, croutons 15 g"}}},{"ad":"Gavurdağı salatası","aciklama":"Salatalık 70 g, domates 60 g, biber 50 g, soğan 40 g, maydanoz 5 g, beyaz peynir 50 g, ceviz 30 g, sirke 70 g, sumak 3 g, tuz 3 g, zeytinyağı 60 g, nar ekşisi 70 g","fiyat":280,"foto":"/medya/ispir-1","dil":{"en":{"ad":"Gavurdağı salad","aciklama":"Cucumber 70 g, tomato 60 g, peppers 50 g, onion 40 g, parsley 5 g, white cheese 50 g, walnuts 30 g, vinegar 70 g, sumac 3 g, salt 3 g, olive oil 60 g, pomegranate molasses 70 g"}}},{"ad":"Çoban salata","aciklama":"Salatalık 70 g, domates 60 g, biber 50 g, soğan 40 g, maydanoz 5 g, limon 25 g","fiyat":240,"foto":"/medya/ispir-2","dil":{"en":{"ad":"Shepherd's salad","aciklama":"Cucumber 70 g, tomato 60 g, peppers 50 g, onion 40 g, parsley 5 g, lemon 25 g"}}},{"ad":"Ton balıklı salata","aciklama":"Yeşillik 70 g, mısır 30 g, kruton ekmek 15 g, ton balığı 80 g, soğan 10 g, yeşil zeytin 25 g","fiyat":400,"foto":"/medya/artboard-13","dil":{"en":{"ad":"Tuna salad","aciklama":"Greens 70 g, corn 30 g, croutons 15 g, tuna 80 g, onion 10 g, green olives 25 g"}}},{"ad":"Şefin bonfile salatası","aciklama":"Bonfile 100 g, yeşillik 70 g, kruton ekmek 15 g, mısır 30 g, sezar sos 90 g, parmesan peyniri 20 g","fiyat":645,"foto":"/medya/ispir-4","dil":{"en":{"ad":"Chef's beef salad","aciklama":"Beef tenderloin 100 g, greens 70 g, croutons 15 g, corn 30 g, Caesar dressing 90 g, parmesan 20 g"}}}],"dil":{"en":"Salads"}},{"ad":"Tatlılar","urunler":[{"ad":"Waffle","aciklama":"Waffle hamuru (yumurta, şeker, ayçiçek yağı, süt, un, kabartma tozu, vanilya) üstüne muz 60 g, kivi 80 g, çilek 70 g, çikolata sosu 100 g, frambuaz sosu 40 g, fındık 10 g, vanilyalı dondurma 40 g","fiyat":370,"foto":"/medya/ispir-35","dil":{"en":{"aciklama":"Waffle batter (egg, sugar, sunflower oil, milk, flour, baking powder, vanilla) with banana 60 g, kiwi 80 g, strawberry 70 g, chocolate sauce 100 g, raspberry sauce 40 g, hazelnuts 10 g, vanilla ice cream 40 g"}}},{"ad":"Cevizli baklava","aciklama":"","fiyat":240,"foto":"/medya/ispir-75","dil":{"en":{"ad":"Walnut baklava"}}},{"ad":"Fıstıklı baklava","aciklama":"","fiyat":290,"foto":"/medya/ispir-76","dil":{"en":{"ad":"Pistachio baklava"}}},{"ad":"Sufle","aciklama":"Yumurta 70 g, un 20 g, şeker 18 g, çikolata 40 g, tereyağı 40 g, kabartma tozu 0, 3 g, vanilya 0, 3 g, dondurma 30 g, krem şanti 15 g","fiyat":310,"foto":"/medya/ispir-37","dil":{"en":{"ad":"Chocolate soufflé","aciklama":"Egg 70 g, flour 20 g, sugar 18 g, chocolate 40 g, butter 40 g, baking powder 0.3 g, vanilla 0.3 g, ice cream 30 g, whipped cream 15 g"}}},{"ad":"Künefe","aciklama":"Kadayıf 80 g, künefe yağı 60 g, tuzsuz peynir 50 g, dondurma 30 g, fıstık 10 g","fiyat":325,"sef":true,"foto":"/medya/ispir-36","dil":{"en":{"aciklama":"Kadayıf 80 g, clarified butter 60 g, unsalted cheese 50 g, ice cream 30 g, pistachio 10 g"}}}],"dil":{"en":"Desserts"}},{"ad":"Sıcak içecekler","urunler":[{"ad":"Mocha","aciklama":"","fiyat":220,"foto":"/medya/artboard-52"},{"ad":"Çikolatalı Türk kahvesi","aciklama":"","fiyat":150,"foto":"/medya/artboard-36","dil":{"en":{"ad":"Chocolate Turkish coffee"}}},{"ad":"Ballı süt","aciklama":"","fiyat":170,"foto":"/medya/artboard-47","dil":{"en":{"ad":"Hot milk with honey"}}},{"ad":"Menengiç kahvesi","aciklama":"","fiyat":150,"foto":"/medya/artboard-35","dil":{"en":{"ad":"Menengiç coffee"}}},{"ad":"Bardak çay","aciklama":"","fiyat":45,"foto":"/medya/artboard-30","dil":{"en":{"ad":"Tea, glass"}}},{"ad":"Caramel macchiato","aciklama":"","fiyat":220,"foto":"/medya/artboard-51"},{"ad":"Damla sakızlı Türk kahvesi","aciklama":"","fiyat":150,"foto":"/medya/artboard-37","dil":{"en":{"ad":"Mastic Turkish coffee"}}},{"ad":"Türk kahvesi","aciklama":"","fiyat":130,"foto":"/medya/artboard-34","dil":{"en":{"ad":"Turkish coffee"}}},{"ad":"Espresso","aciklama":"","fiyat":175,"foto":"/medya/esppresso"},{"ad":"Fincan çay","aciklama":"","fiyat":90,"foto":"/medya/artboard-31","dil":{"en":{"ad":"Tea, cup"}}},{"ad":"Bitki çayları","aciklama":"","fiyat":170,"foto":"/medya/artboard-33","dil":{"en":{"ad":"Herbal teas"}}},{"ad":"Dibek kahvesi","aciklama":"","fiyat":150,"foto":"/medya/artboard-37","dil":{"en":{"ad":"Dibek coffee"}}},{"ad":"Latte","aciklama":"","fiyat":200,"foto":"/medya/latteee"},{"ad":"Sıcak çikolata","aciklama":"","fiyat":195,"foto":"/medya/artboard-44","dil":{"en":{"ad":"Hot chocolate"}}},{"ad":"Cappuccino","aciklama":"","fiyat":200,"foto":"/medya/artboard-53"},{"ad":"Filtre kahve","aciklama":"","fiyat":180,"foto":"/medya/artboard-50","dil":{"en":{"ad":"Filter coffee"}}},{"ad":"Aromalı cappuccino","aciklama":"","fiyat":200,"foto":"/medya/artboard-53","dil":{"en":{"ad":"Flavoured cappuccino"}}},{"ad":"Meyve çayları","aciklama":"","fiyat":150,"foto":"/medya/meyveee-caylari","dil":{"en":{"ad":"Fruit teas"}}},{"ad":"Sahlep","aciklama":"","fiyat":210,"foto":"/medya/artboard-45","dil":{"en":{"ad":"Salep"}}}],"dil":{"en":"Hot drinks"}},{"ad":"Soğuk içecekler ve kokteyller","urunler":[{"ad":"Mango Sunset","aciklama":"","fiyat":220,"sef":true,"foto":"/medya/a01"},{"ad":"Cool Lime","aciklama":"","fiyat":220,"foto":"/medya/a12"},{"ad":"Berry Hibiscus","aciklama":"","fiyat":220,"foto":"/medya/a2"},{"ad":"Red Forest","aciklama":"","fiyat":220,"foto":"/medya/a3"},{"ad":"Ice latte","aciklama":"","fiyat":220,"foto":"/medya/a4","dil":{"en":{"ad":"Iced latte"}}},{"ad":"Ice mocha","aciklama":"","fiyat":225,"foto":"/medya/a5","dil":{"en":{"ad":"Iced mocha"}}},{"ad":"Antioksidan","aciklama":"","fiyat":220,"foto":"/medya/a8","dil":{"en":{"ad":"Antioxidant"}}},{"ad":"Ice americano / filtre","aciklama":"","fiyat":195,"foto":"/medya/a9","dil":{"en":{"ad":"Iced americano / filter"}}},{"ad":"Çille","aciklama":"","fiyat":220,"foto":"/medya/a10"},{"ad":"Frozen çeşitleri","aciklama":"","fiyat":220,"foto":"/medya/a6","dil":{"en":{"ad":"Frozen drinks"}}},{"ad":"Milkshake çeşitleri","aciklama":"","fiyat":215,"foto":"/medya/a7","dil":{"en":{"ad":"Milkshakes"}}},{"ad":"Blueberry","aciklama":"","fiyat":220,"foto":"/medya/a11"},{"ad":"Mango Sunset","aciklama":"","fiyat":220,"gizli":true,"foto":"/medya/a01"},{"ad":"Meyveli soda","aciklama":"","fiyat":60,"foto":"/medya/fresa","dil":{"en":{"ad":"Flavoured soda"}}},{"ad":"Soda","aciklama":"","fiyat":50,"foto":"/medya/artboard-42","dil":{"en":{"ad":"Sparkling water"}}},{"ad":"Limonata","aciklama":"","fiyat":150,"foto":"/medya/artboard-28","dil":{"en":{"ad":"Lemonade"}}},{"ad":"Soğuk beyaz çikolata","aciklama":"","fiyat":195,"foto":"/medya/artboard-41","dil":{"en":{"ad":"Iced white chocolate"}}},{"ad":"Frappe","aciklama":"","fiyat":230,"foto":"/medya/frappee-1","dil":{"en":{"ad":"Frappé"}}},{"ad":"Portakal suyu","aciklama":"","fiyat":210,"foto":"/medya/artboard-24","dil":{"en":{"ad":"Orange juice"}}},{"ad":"Açık ayran","aciklama":"","fiyat":70,"foto":"/medya/artboard-40","dil":{"en":{"ad":"Ayran"}}},{"ad":"Su","aciklama":"","fiyat":30,"foto":"/medya/su-asya","dil":{"en":{"ad":"Water"}}},{"ad":"Cappy","aciklama":"","fiyat":90,"foto":"/medya/caaappy"},{"ad":"Soğuk çikolata","aciklama":"","fiyat":200,"foto":"/medya/artboard-29","dil":{"en":{"ad":"Iced chocolate"}}},{"ad":"Fanta","aciklama":"","fiyat":90,"foto":"/medya/fant-aaa"},{"ad":"Ice Tea","aciklama":"","fiyat":90,"foto":"/medya/iceee-tea","dil":{"en":{"ad":"Iced tea"}}},{"ad":"Sprite","aciklama":"","fiyat":90,"foto":"/medya/spr-te"},{"ad":"Churchill","aciklama":"","fiyat":85,"foto":"/medya/artboard-39"},{"ad":"Coca-Cola","aciklama":"","fiyat":90,"foto":"/medya/cocaaa-cola"},{"ad":"Ice coffee latte","aciklama":"","fiyat":220,"gizli":true,"foto":"/medya/a4","dil":{"en":{"ad":"Iced coffee latte"}}},{"ad":"Milkshake","aciklama":"","fiyat":215,"gizli":true,"foto":"/medya/a7"}],"dil":{"en":"Cold drinks & mocktails"}},{"ad":"Çocuk menüleri","urunler":[{"ad":"Köfteli çocuk menüsü","aciklama":"Köfte 100 g, makarna 70 g, patates 70 g, ketçap 15 g","fiyat":230,"foto":"/medya/ispir-26","dil":{"en":{"ad":"Kids' meatball menu","aciklama":"Meatballs 100 g, pasta 70 g, fries 70 g, ketchup 15 g"}}},{"ad":"Tavuklu çocuk menüsü","aciklama":"Tavuk 100 g, pilav 70 g, patates 70 g, ketçap 15 g","fiyat":230,"foto":"/medya/ispir-27","dil":{"en":{"ad":"Kids' chicken menu","aciklama":"Chicken 100 g, rice 70 g, fries 70 g, ketchup 15 g"}}}],"dil":{"en":"Kids' menu"}}],"not_":"Alerjen ve içerik bilgisi için lütfen çalışanlarımıza sorun. Fiyatlara KDV dahildir.","diller":["tr","en"],"dil":{"en":{"oneri":"House signatures","oneri_tekil":"House signature","not_":"Please ask our staff for allergen and ingredient information. Prices include VAT."}}}/*/VERI*/;
+/* Panelden gizlenen ürünler sunucuda da çıkarılır; burada ikinci emniyet. Boş kalan kategori görünmez. */
+ISLETME.menu = ISLETME.menu.map((k) => ({ ...k, urunler: k.urunler.filter((u) => !u.gizli) })).filter((k) => k.urunler.length);
+const MENU = ISLETME.menu;
+
+// dokunmatik cihazda baştan dokunmatik kip: bağlantıyla açılan katmanın kapat düğmesinde odak halkası görünmesin
+if (matchMedia("(pointer: coarse)").matches) document.documentElement.classList.add("dokunmatik");
+/* ══════════════ YARDIMCILAR ══════════════ */
+const $ = (id) => document.getElementById(id);
+const AZALT = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let AZALT_ANLIK = false;
+const TASARRUF = navigator.connection && navigator.connection.saveData;
+const kacis = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const sade = (s) => s.toLocaleLowerCase("tr").normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i");
+const slug = (s) => sade(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const para = (n) => n == null ? "" : new Intl.NumberFormat(T("sayi")).format(n) + " ₺";   // fiyatsız: yeni ürün, fiyatı kasada
+const boyut = (u, w, h) => !u ? "" : u.startsWith("/") ? `${u}-${w <= 200 ? 200 : w <= 640 ? 640 : 1200}.webp` : u.includes("images.unsplash.com")
+  ? `${u.split("?")[0]}?w=${w}&h=${h}&fit=crop&auto=format&q=72`
+  : u.includes("images.pexels.com") ? `${u.split("?")[0]}?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop` : u;
+const medya = (u) => ({ foto: u.foto, video: u.video });
+const titret = (ms) => navigator.vibrate && navigator.vibrate(ms);
+const lerp = (a, b, t) => a + (b - a) * t;
+const goreli = (iso) => {
+  const g = Math.round((new Date(new Date().toDateString()) - new Date(iso + "T00:00")) / 864e5), r = T("goreli");
+  return g <= 0 ? r[0] : g === 1 ? r[1] : g < 30 ? r[2](g) : new Date(iso).toLocaleDateString(DIL === "tr" ? "tr-TR" : DIL, { day: "numeric", month: "long" });
+};
+/* ══════════════ İSTATİSTİK ══════════════
+   İşletmenin panelindeki "müşteriler menüde ne yapıyor" ekranı için SAYAÇLAR. Kimlik yok: çerez, IP,
+   cihaz kimliği gönderilmez; tarayıcıda yalnız "bu menü bu telefonda daha önce açıldı mı" tutulur.
+   Birikenler sayfa gizlenince (uygulamadan çıkma, ekran kilidi) tek istekte gider, sonra sıfırdan birikir. */
+const IZ = (() => {
+  const adres = "/api/menu/" + encodeURIComponent(ISLETME.slug || "") + "/olay";
+  let ilk = true, yeni = 0, menu = 0, inceledi = 0, sure = 0, bas = document.visibilityState === "visible" ? Date.now() : 0;
+  let urun = {}, kat = {}, vitrin = {}, arama = {}, bos = {}, eylem = {};
+  let menuSayildi = false, inceSayildi = false, bekleyen = null, aramaZamanlayici = 0;
+  const katGoruldu = new Set(), aramaGoruldu = new Set();
+  try { const k = "qm-ilk-" + ISLETME.slug; if (!localStorage.getItem(k)) { localStorage.setItem(k, "1"); yeni = 1; } } catch {}
+  const ekle = (o, k) => { o[k] = (o[k] || 0) + 1; };
+  function aramaYaz() {
+    clearTimeout(aramaZamanlayici);
+    if (!bekleyen) return;
+    const { q, n } = bekleyen; bekleyen = null;
+    if (q.length < 2 || aramaGoruldu.has(q)) return;
+    aramaGoruldu.add(q); ekle(n ? arama : bos, q);
+  }
+  function gonder() {
+    aramaYaz();
+    if (bas) { sure += Date.now() - bas; bas = document.visibilityState === "visible" ? Date.now() : 0; }
+    const dolu = [urun, kat, vitrin, arama, bos, eylem].some((o) => Object.keys(o).length);
+    if (!ilk && !menu && !inceledi && !dolu && sure < 1000) return;
+    const v = { ilk: ilk ? 1 : 0, yeni: ilk ? yeni : 0, menu, inceledi, sure: Math.round(sure / 1000), urun, kat, vitrin, arama, bos, eylem,
+      dil: document.documentElement.lang, gece: document.documentElement.classList.contains("gece") ? 1 : 0 };
+    try { if (!navigator.sendBeacon(adres, new Blob([JSON.stringify(v)], { type: "text/plain" }))) return; } catch { return; }
+    ilk = false; menu = inceledi = sure = 0; urun = {}; kat = {}; vitrin = {}; arama = {}; bos = {}; eylem = {};
+  }
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") gonder(); else bas = Date.now(); });
+  addEventListener("pagehide", gonder);
+  return {
+    menu() { if (!menuSayildi) { menuSayildi = true; menu = 1; } },
+    urun(u, vit) { if (!u) return; ekle(urun, u.ad); if (vit) ekle(vitrin, u.ad); if (!inceSayildi) { inceSayildi = true; inceledi = 1; } },
+    kat(ad) { if (ad && !katGoruldu.has(ad)) { katGoruldu.add(ad); ekle(kat, ad); } },
+    ara(q, n) { q = q.trim().toLocaleLowerCase("tr").replace(/\s+/g, " ").slice(0, 30); bekleyen = q ? { q, n } : null; clearTimeout(aramaZamanlayici); aramaZamanlayici = setTimeout(aramaYaz, 1500); },
+    eylem(k) { ekle(eylem, k); },
+  };
+})();
+
+/* ══════════════ DİL ══════════════
+   Arayüz metinleri burada; menü içeriği ISLETME'de (ürün/kategori "dil" alanı, uret.py + ceviri.py).
+   Saat cümleleri dil bilgisi ister ("23:00'e kadar" / "until 23:00"), o yüzden işlev. */
+const GECE_YARISI = { tr: "gece yarısı", en: "midnight" };
+const saatYaz = (s, dil) => (s === "24:00" || s === "00:00") ? GECE_YARISI[dil] : s;
+const EK = { 1:["e","de"], 2:["ye","de"], 3:["e","te"], 4:["e","te"], 5:["e","te"], 6:["ya","da"], 7:["ye","de"],
+  8:["e","de"], 9:["a","da"], 10:["a","da"], 20:["ye","de"], 30:["a","da"], 40:["a","ta"], 50:["ye","de"] };
+const ekli = (s, hal) => { if (s === "24:00" || s === "00:00") return hal ? "gece yarısı" : "gece yarısına";
+  const [h, m] = s.split(":").map(Number); const n = m || h; return s + "'" + EK[n % 10 || n][hal]; };
+const UI = {
+  tr: { icerir: "İçerir:", tukendi: "Tükendi", wifi: "Wi-Fi şifresi", kopyala: "Kopyala", kopyalandi: "Kopyalandı", yapistir: "Wi-Fi ayarlarında yapıştırın",
+    yorum: "Google'da değerlendir", yorum_alt: "Yorumunuz yeni misafirlere yol gösterir", hafta: "Haftanın saatleri",
+    ara: "Ara", yol: "Yol tarifi al", menu_ac: "Menüyü aç", menu: "Menü", menu_kapat: "Menüyü kapat", menude_ara: "Menüde ara",
+    kategoriler: "Kategoriler", kapat: "Kapat", dil: "Dil", gece: "Gece modu", ara_ipucu: "Menüde ara, örn. latte", video: "Video",
+    urun: (n) => n + " ürün", ozet: (n) => `${n} ürün · Fiyatlar TL, KDV dahil`,
+    sonuc_yok: (q) => `“${q}” için sonuç yok. Başka bir kelime deneyin.`,
+    acik: "Açık", kapali: "Kapalı", gunler: ["", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar"],
+    bugun: (a) => "Bugün " + a, bugun_kapali: "Bugün kapalı", kapanisa: (n) => `· kapanışa ${n} dk`, kadar: (s) => "· " + ekli(s, 0) + " kadar",
+    dk_sonra: (n) => `· ${n} dk sonra açılıyor`, acilir: (s) => "· " + ekli(s, 1) + " açılır", yarin: (s) => "· yarın " + ekli(s, 1) + " açılır",
+    goreli: ["bugün", "dün", (g) => g + " gün önce"], guncel: (x) => "Menü " + x + " güncellendi",
+    m_guncel: (x) => x.replace(/^./, (c) => c.toLocaleUpperCase("tr")) + " güncellendi", sayi: "tr-TR" },
+  en: { icerir: "Contains:", tukendi: "Sold out", wifi: "Wi-Fi password", kopyala: "Copy", kopyalandi: "Copied", yapistir: "Paste it in your Wi-Fi settings",
+    yorum: "Review us on Google", yorum_alt: "Your review helps new guests", hafta: "Opening hours",
+    ara: "Call", yol: "Get directions", menu_ac: "View menu", menu: "Menu", menu_kapat: "Close menu", menude_ara: "Search the menu",
+    kategoriler: "Categories", kapat: "Close", dil: "Language", gece: "Dark mode", ara_ipucu: "Search the menu, e.g. latte", video: "Video",
+    urun: (n) => n + (n === 1 ? " item" : " items"), ozet: (n) => `${n} items · Prices in TRY, VAT included`,
+    sonuc_yok: (q) => `No results for “${q}”. Try another word.`,
+    acik: "Open", kapali: "Closed", gunler: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    bugun: (a) => "Today " + a, bugun_kapali: "Closed today", kapanisa: (n) => `· closes in ${n} min`, kadar: (s) => "· until " + saatYaz(s, "en"),
+    dk_sonra: (n) => `· opens in ${n} min`, acilir: (s) => "· opens at " + saatYaz(s, "en"), yarin: (s) => "· opens tomorrow at " + saatYaz(s, "en"),
+    goreli: ["today", "yesterday", (g) => g + " days ago"], guncel: (x) => "Menu updated " + x, m_guncel: (x) => "Updated " + x, sayi: "en-US" },
+};
+const DIL_ADI = { tr: ["TR", "Türkçe"], en: ["EN", "English"] };
+const ALERJEN = { gluten: ["gluten", "gluten"], kabuklu: ["kabuklu deniz ürünü", "crustaceans"], yumurta: ["yumurta", "egg"],
+  balik: ["balık", "fish"], yerfistigi: ["yer fıstığı", "peanuts"], soya: ["soya", "soy"], sut: ["süt", "milk"],
+  kuruyemis: ["kuruyemiş", "tree nuts"], kereviz: ["kereviz", "celery"], hardal: ["hardal", "mustard"], susam: ["susam", "sesame"],
+  sulfit: ["sülfit", "sulphites"], acibakla: ["acı bakla", "lupin"], yumusakca: ["yumuşakça", "molluscs"] };
+const alerjenYaz = (u) => !(u.alerjen && u.alerjen.length) ? "" :
+  `<b>${kacis(T("icerir"))}</b> ${kacis(u.alerjen.map((a) => (ALERJEN[a] || [a, a])[DIL === "tr" ? 0 : 1]).join(", "))}`;
+const ETIKET = { "Yeni": { en: "New" }, "Vegan": { en: "Vegan" }, "Acılı": { en: "Spicy" }, "Glutensiz": { en: "Gluten-free" }, "Vejetaryen": { en: "Vegetarian" } };
+let DIL = (ISLETME.diller || ["tr"]).includes(document.documentElement.lang) ? document.documentElement.lang : "tr";
+const T = (k, ...a) => { const v = (UI[DIL] && UI[DIL][k] !== undefined) ? UI[DIL][k] : UI.tr[k]; return typeof v === "function" ? v(...a) : v; };
+const cev = (o, alan) => (DIL !== "tr" && o.dil && o.dil[DIL] && o.dil[DIL][alan]) || o[alan];     // ürün alanı
+const kadi = (k) => (DIL !== "tr" && k.dil && k.dil[DIL]) || k.ad;                                   // kategori adı
+const isl = (alan) => (DIL !== "tr" && ISLETME.dil && ISLETME.dil[DIL] && ISLETME.dil[DIL][alan]) || ISLETME[alan];
+const etiketAdi = (e) => (DIL !== "tr" && ETIKET[e] && ETIKET[e][DIL]) || e;
+const tum = MENU.flatMap((k) => k.urunler.map((u) => ({ ...u, kat: k })));
+
+/* ══════════════ YAY MOTORU ══════════════
+   Kritik sönüme yakın yay (k=420, c=40 → ζ≈0,98): hızlı, taşmasız, doğal.
+   Yarıda yakalanabilir: yeni hedef eski hızla devralır. */
+function yay(baslangic, hedef, hiz, guncelle, bitti, k = 420, c = 40) {
+  let x = baslangic, v = hiz, son = performance.now(), iptal = false;
+  if (AZALT || AZALT_ANLIK) { guncelle(hedef); bitti && bitti(); return { dur() {}, hiz: () => 0 }; }
+  function adim(t) {
+    if (iptal) return;
+    let dt = Math.min(0.032, (t - son) / 1000); son = t;
+    for (let i = 0; i < 4; i++) { const a = -k * (x - hedef) - c * v; v += a * dt / 4; x += v * dt / 4; }   // alt adım: kararlılık
+    if (Math.abs(v) < 8 && Math.abs(x - hedef) < 0.4) { guncelle(hedef); bitti && bitti(); return; }
+    guncelle(x); requestAnimationFrame(adim);
+  }
+  requestAnimationFrame(adim);
+  return { dur() { iptal = true; }, hiz: () => v };
+}
+
+/* Bırakma hızı: olayların OLUŞMA zamanı (e.timeStamp) ve son 100 ms — ana iş parçacığı
+   meşgulken (video çözme) olaylar yığılsa da gerçek parmak hızı ölçülür. px/ms */
+function birakmaHizi(ornek) {
+  const son = ornek[ornek.length - 1]; let ilk = son;
+  for (let i = ornek.length - 1; i >= 0 && son[0] - ornek[i][0] <= 100; i--) ilk = ornek[i];
+  return son[0] > ilk[0] ? (son[1] - ilk[1]) / (son[0] - ilk[0]) : 0;
+}
+/* Kapat mı? iOS gibi: parmağın savuracağı yere bak (y + v·150 ms), yukarı fiske asla kapatmaz */
+const kapatsinMi = (y, hiz, H) => hiz > -0.2 && (hiz > 0.5 || y + hiz * 150 > H * 0.28);
+
+/* ══════════════ YAPRAK: parmağa bağlı katman ══════════════ */
+class Yaprak {
+  constructor(el, perde, { ilerleme, kapandi, kaydirici, surukleAlani }) {
+    Object.assign(this, { el, perde, ilerleme, kapandi, kaydirici, surukleAlani, y: 0, acik: false, anim: null });
+    this.baglaDokunma(); this.baglaFare();
+    // açıldıktan hemen sonraki dokunuş (hızlı çift dokunuş) perdeye düşerse kapatmasın
+    perde.addEventListener("click", () => this.acik && performance.now() - this.acilis > 400 && geriCik());
+    perde.addEventListener("touchmove", (e) => e.cancelable && e.preventDefault(), { passive: false });   // eski iOS: arka sayfa kaymasın
+  }
+  get H() { return this.el.offsetHeight || innerHeight; }
+  ayarla(y) {
+    this.y = y;
+    this.el.style.transform = `translate3d(0,${y}px,0)`;
+    const p = Math.min(1, Math.max(0, 1 - y / this.H));
+    this.perde.style.opacity = (p * 0.42).toFixed(3);
+    this.perde.classList.toggle("var", p > 0.001);
+    this.ilerleme && this.ilerleme(p);
+  }
+  ac(anlik = false, hiz = 0) {
+    this.anim && this.anim.dur();
+    if (!this.acik) this.acilis = performance.now();
+    this.el.classList.add("gorunur"); this.perde.classList.add("etkin"); this.acik = true;
+    if (!this.y && !this.el.dataset.acildi) this.ayarla(this.H);
+    this.el.dataset.acildi = 1;
+    if (anlik) { this.ayarla(0); return; }
+    this.anim = yay(this.y, 0, hiz, (y) => this.ayarla(y));
+  }
+  kapat(hiz = 0, bitince) {
+    this.anim && this.anim.dur(); this.acik = false; this.perde.classList.remove("etkin");
+    this.anim = yay(this.y, this.H, Math.max(hiz, 0), (y) => this.ayarla(y), () => {
+      this.el.classList.remove("gorunur"); delete this.el.dataset.acildi;
+      this.kapandi && this.kapandi(); bitince && bitince();
+    }, 380, 38);
+  }
+  /* Dokunma: aşağı çek → izler. İçerik kaydırılmışsa ya da yukarı çekiliyorsa kaydırmaya bırakır. */
+  baglaDokunma() {
+    let x0 = 0, y0 = 0, yBas = 0, karar = null, ornek = [];
+    this.el.addEventListener("touchstart", (e) => {
+      if (!this.acik || e.touches.length > 1) return;
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; yBas = this.y; karar = null; ornek = [[e.timeStamp, y0]];
+      this.icerde = this.kaydirici && this.kaydirici.contains(e.target) && !(this.surukleAlani && this.surukleAlani.contains(e.target));
+    }, { passive: true });
+    this.el.addEventListener("touchmove", (e) => {
+      if (!this.acik) return;
+      const yy = e.touches[0].clientY, dy = yy - y0, dx = e.touches[0].clientX - x0;
+      // karar İLK harekette verilmeli: önlenmeyen ilk touchmove'dan sonra tarayıcı kaydırmayı üstlenir
+      if (karar === null) {
+        if (!dy && !dx) return;
+        karar = Math.abs(dx) > Math.abs(dy) ? "kaydir"                                    // yatay: sekmeler, vitrin şeridi
+          : dy > 0 && (!this.icerde || this.kaydirici.scrollTop <= 0) ? "surukle" : "kaydir";
+        if (karar === "surukle") { this.anim && this.anim.dur(); y0 = yy; yBas = this.y; }
+      }
+      if (karar !== "surukle") return;
+      e.preventDefault();
+      const d = yy - y0; let y = yBas + d;
+      if (y < 0) y = -Math.pow(-y, 0.72);                       // yukarı: lastik direnci
+      this.ayarla(y);
+      ornek.push([e.timeStamp, yy]); if (ornek.length > 12) ornek.shift();
+    }, { passive: false });
+    const birak = () => {
+      if (karar !== "surukle") { karar = null; return; }
+      karar = null;
+      const hiz = birakmaHizi(ornek);
+      if (kapatsinMi(this.y, hiz, this.H)) { titret(6); geriCik(hiz * 1000); }
+      else this.anim = yay(this.y, 0, hiz * 1000, (y) => this.ayarla(y));
+    };
+    this.el.addEventListener("touchend", birak); this.el.addEventListener("touchcancel", birak);
+  }
+  /* Fare (masaüstü): yalnız tutamaç/üst bölgeden sürükle */
+  baglaFare() {
+    const alan = this.surukleAlani || this.el; let y0 = null, yBas = 0, ornek = [];
+    alan.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || !this.acik || e.target.closest("button,input,a")) return;
+      this.anim && this.anim.dur(); y0 = e.clientY; yBas = this.y; ornek = [[e.timeStamp, y0]]; alan.setPointerCapture(e.pointerId);
+    });
+    alan.addEventListener("pointermove", (e) => {
+      if (y0 === null) return;
+      let y = yBas + e.clientY - y0; if (y < 0) y = -Math.pow(-y, 0.72);
+      this.ayarla(y); ornek.push([e.timeStamp, e.clientY]); if (ornek.length > 12) ornek.shift();
+    });
+    const birak = () => {
+      if (y0 === null) return; y0 = null;
+      const hiz = birakmaHizi(ornek);
+      if (kapatsinMi(this.y, hiz, this.H)) geriCik(hiz * 1000);
+      else this.anim = yay(this.y, 0, hiz * 1000, (y) => this.ayarla(y));
+    };
+    alan.addEventListener("pointerup", birak); alan.addEventListener("pointercancel", birak);
+  }
+}
+
+/* ══════════════ AÇILIŞ İÇERİĞİ ══════════════ */
+document.title = ISLETME.ad;
+if (!ISLETME.logo) $("ad").textContent = ISLETME.ad;
+if (!ISLETME.logo) document.querySelectorAll(".isletme-ad").forEach((e) => (e.textContent = ISLETME.ad));
+/* Panelde boş bırakılan satır görünmez */
+$("wifi").hidden = !ISLETME.wifi; $("telefon").hidden = !ISLETME.telefon;
+$("instagram").hidden = !ISLETME.instagram; $("adres").hidden = !ISLETME.adres;
+if (ISLETME.wifi) { $("wifi-ag").textContent = ISLETME.wifi.ag; $("wifi-sifre").textContent = ISLETME.wifi.sifre; }
+if (ISLETME.telefon) { $("telefon").href = "tel:" + ISLETME.telefon.replace(/[^+\d]/g, ""); $("telefon-yazi").textContent = "\u2066" + ISLETME.telefon + "\u2069"; }
+$("yorum").href = ISLETME.yorum;
+if (ISLETME.instagram) $("instagram").href = "https://www.instagram.com/" + ISLETME.instagram + "/";
+$("instagram-ad").textContent = "\u2066@" + ISLETME.instagram + "\u2069";   // LRI…PDI: sağdan sola yazıda "@" başta kalsın
+$("adres-yazi").textContent = ISLETME.adres;
+$("adres").href = ISLETME.harita || "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(ISLETME.adres || "");
+/* Dile bağlı her şey burada: dil değişince yalnız bu ve menuCiz() yeniden çalışır (sayfa yenilenmez) */
+function acilisCiz() {
+  document.querySelectorAll("[data-t]").forEach((e) => (e.textContent = T(e.dataset.t)));
+  document.querySelectorAll("[data-ta]").forEach((e) => e.setAttribute("aria-label", T(e.dataset.ta)));
+  $("ara-kutu").placeholder = T("ara_ipucu");
+  $("menu-sayi").textContent = T("urun", tum.length);
+  $("guncel").textContent = T("guncel", goreli(ISLETME.guncel));
+  $("m-guncel").textContent = T("m_guncel", goreli(ISLETME.guncel));
+  $("oneri-baslik").textContent = isl("oneri"); $("m-not").textContent = isl("not_");
+  $("ozet").textContent = T("ozet", tum.length);
+  durumCiz(); dilSeciciCiz();
+}
+
+(function kapak() {
+  const u = ISLETME.hero_foto;
+  const olc = (w) => u.startsWith("/") ? `${u}-${w <= 32 ? 32 : innerWidth * devicePixelRatio <= 900 ? 900 : 1600}.webp` : u.includes("images.unsplash.com") ? u.split("?")[0] + `?w=${w}&q=75&auto=format&fit=crop`
+    : u.includes("images.pexels.com") ? u.split("?")[0] + `?auto=compress&cs=tinysrgb&w=${w}` : u;
+  const f = $("foto"); if (f.complete && f.naturalWidth) f.parentNode.classList.add("hazir");   // src ve srcset HTML'de
+  if (!ISLETME.hero_video || AZALT || TASARRUF) return;
+  /* Kapak videosu sayfa oturduktan SONRA ve yalnız uygun bağlantıda iner: fotoğraf LCP'yi taşır,
+     video (~1,3 MB) yavaş bağlantıda ya da Android'in hücresel verisinde hiç inmez. */
+  const bag = navigator.connection || {};
+  if (bag.type === "cellular" || /(^|-)2g|3g/.test(bag.effectiveType || "")) return;
+  const basla = () => setTimeout(videoKur, 1200);
+  if (document.readyState === "complete") basla(); else addEventListener("load", basla, { once: true });
+})();
+function videoKur() {
+  const v = document.createElement("video");
+  Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: "auto", src: ISLETME.hero_video });
+  ["muted", "playsinline", "webkit-playsinline", "autoplay", "loop"].forEach((a) => v.setAttribute(a, ""));
+  v.setAttribute("aria-hidden", "true"); v.addEventListener("playing", () => v.classList.add("hazir"), { once: true });
+  document.querySelector(".foto .katman").append(v); v.play().catch(() => {});   // Düşük Güç Modu: oynamazsa fotoğraf kalır
+}
+
+function durumCiz() {
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Istanbul", weekday: "short",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map((x) => [x.type, x.value]));
+  const gun = { Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6, Sun:7 }[p.weekday];
+  const dk = (s) => { const [h, m] = s.split(":").map(Number); return h * 60 + m; };
+  const goster = (s) => (s === "24:00" ? "00:00" : s), aralik = (a, b) => a + "\u2009–\u2009" + goster(b);
+  const simdi = +p.hour * 60 + +p.minute, [ac, kapa] = ISLETME.saatler[gun] || [];
+  $("durum").classList.remove("kapali", "yakinda");
+  $("bugun-ozet").textContent = ac ? T("bugun", aralik(ac, kapa)) : T("bugun_kapali");
+  if (ac && simdi >= dk(ac) && simdi < dk(kapa)) {
+    const kalan = dk(kapa) - simdi; $("durum-yazi").textContent = T("acik");
+    if (kalan <= 60) { $("durum").classList.add("yakinda"); $("saat-yazi").textContent = T("kapanisa", kalan); }
+    else $("saat-yazi").textContent = T("kadar", kapa);
+  } else {
+    $("durum").classList.add("kapali"); $("durum-yazi").textContent = T("kapali");
+    const yarin = ISLETME.saatler[gun % 7 + 1];
+    $("saat-yazi").textContent = ac && simdi < dk(ac) ? (dk(ac) - simdi <= 60 ? T("dk_sonra", dk(ac) - simdi) : T("acilir", ac))
+      : (yarin ? T("yarin", yarin[0]) : "");
+  }
+  const G = T("gunler");
+  $("hafta").innerHTML = [1,2,3,4,5,6,7].map((g) => { const s = ISLETME.saatler[g], b = g === gun ? ' class="bugun"' : "";
+    return `<dt${b}>${G[g]}</dt><dd${b}>${s ? aralik(s[0], s[1]) : T("kapali")}</dd>`; }).join("");
+}
+
+$("wifi").addEventListener("click", async () => {
+  const b = $("wifi"), ag = $("wifi-ag");
+  try { await navigator.clipboard.writeText(ISLETME.wifi.sifre); }
+  catch { const r = document.createRange(); r.selectNodeContents($("wifi-sifre")); const s = getSelection();
+    s.removeAllRanges(); s.addRange(r); document.execCommand("copy"); s.removeAllRanges(); }
+  titret(8);
+  const yaz = (metin, tamam) => { b.classList.add("degisiyor");
+    setTimeout(() => { $("kopya-yazi").textContent = metin; b.classList.toggle("tamam", tamam); b.classList.remove("degisiyor"); }, 150); };
+  yaz(T("kopyalandi"), true);
+  // alt satır: bir sonraki adım (TEK satır — satır yüksekliği zıplamasın)
+  ag.style.opacity = 0; setTimeout(() => { ag.textContent = T("yapistir"); ag.style.opacity = 1; }, 150);
+  clearTimeout(b._z); b._z = setTimeout(() => { yaz(T("kopyala"), false); ag.style.opacity = 0;
+    setTimeout(() => { ag.textContent = ISLETME.wifi.ag; ag.style.opacity = 1; }, 150); }, 2600);
+});
+
+/* ══════════════ MENÜ İÇERİĞİ ══════════════ */
+const OYNAT = $("oynat-ikon").innerHTML;
+const etiketler = (u) => [...(u.tukendi ? [`<span class="etiket tukendi">${kacis(T("tukendi"))}</span>`] : []), ...(u.sef ? [`<span class="etiket sef">${kacis(isl("oneri_tekil"))}</span>`] : []),
+  ...(u.etiket || []).map((e) => `<span class="etiket">${kacis(etiketAdi(e))}</span>`)];
+const kaydir = $("menuKaydir");
+let bolumler = [], sekmeler = [], gorsellerVerildi = false;
+const isaret = document.createElement("span"); isaret.className = "isaret";
+const gelisIzle = () => document.querySelectorAll("#menuYaprak img.gel:not(.yuklendi)").forEach((i) => {
+  if (i.complete && i.naturalWidth) i.classList.add("yuklendi"); else i.addEventListener("load", () => i.classList.add("yuklendi"), { once: true }); });
+const gorselVer = () => document.querySelectorAll("#menuYaprak img[data-src]").forEach((i) => { i.src = i.dataset.src; i.removeAttribute("data-src"); });
+/* Menü dile göre çizilir; dil değişince yeniden çağrılır (görseller zaten indiyse doğrudan verilir) */
+function menuCiz() {
+  $("serit").innerHTML = tum.filter((u) => u.sef).map((u) => { const m = medya(u), i = tum.indexOf(u);
+    return `<button class="vitrin${u.tukendi ? " bitti" : ""}" type="button" data-i="${i}"><span class="kadr"><img class="gel" data-src="${boyut(m.foto, 600, 750)}" alt="${kacis(cev(u, "ad"))}" width="300" height="375" loading="lazy" decoding="async">
+      ${m.video ? `<span class="oynat">${OYNAT}${kacis(T("video"))}</span>` : ""}</span><b>${kacis(cev(u, "ad"))}<span>${para(u.fiyat)}</span></b><small>${kacis(cev(u, "aciklama") || "")}</small></button>`; }).join("");
+  $("sekmeler").innerHTML = MENU.map((k) => `<button class="sekme" type="button" data-k="${slug(k.ad)}">${kacis(kadi(k))}</button>`).join("");
+  $("liste").innerHTML = MENU.map((k) => `<section class="bolum" id="k-${slug(k.ad)}" data-k="${slug(k.ad)}" aria-labelledby="b-${slug(k.ad)}">
+    <h3 id="b-${slug(k.ad)}">${kacis(kadi(k))}</h3>
+    ${k.urunler.map((u) => { const i = tum.findIndex((t) => t.ad === u.ad), m = medya(u), et = etiketler(u), ad = cev(u, "ad"), ac = cev(u, "aciklama");
+      // arama: gösterilen dil + Türkçe (turist "latte" da yazar, garsonun söylediği "menemen"i de)
+      const ara = kacis(sade([ad, ac, u.ad, u.aciklama, ...(u.etiket || []).map(etiketAdi)].filter(Boolean).join(" ")));
+      const govde = `<h4 data-ad="${kacis(ad)}">${kacis(ad)}</h4><span class="fiyat">${para(u.fiyat)}</span>
+        ${ac ? `<p>${kacis(ac)}</p>` : ""}${et.length ? `<span class="etiketler">${et.join("")}</span>` : ""}${u.alerjen && u.alerjen.length ? `<span class="alerjen">${alerjenYaz(u)}</span>` : ""}`;
+      if (!m.foto) return `<div class="urun yalin${u.tukendi ? " bitti" : ""}" data-ara="${ara}">${govde}</div>`;
+      return `<button class="urun${u.tukendi ? " bitti" : ""}" type="button" data-i="${i}" data-ara="${ara}">
+        <span class="kucuk"><img class="gel" data-src="${boyut(m.foto, 160, 160)}" alt="" width="76" height="76" loading="lazy" decoding="async">${m.video ? `<i aria-hidden="true">${OYNAT}</i>` : ""}</span>
+        ${govde}</button>`; }).join("")}
+  </section>`).join("");
+  bolumler = [...document.querySelectorAll(".bolum")]; sekmeler = [...document.querySelectorAll(".sekme")];
+  $("sekmeler").append(isaret);
+  if (gorsellerVerildi) gorselVer();
+  gelisIzle();
+}
+menuCiz();
+
+function etkin(k) {
+  if (document.documentElement.classList.contains("kilit")) { const c = MENU.find((x) => slug(x.ad) === k); c && IZ.kat(c.ad); }   // menü açıkken (açılış animasyonu dahil)
+  sekmeler.forEach((s) => s.setAttribute("aria-current", s.dataset.k === k ? "true" : "false"));
+  const s = sekmeler.find((x) => x.dataset.k === k), n = $("sekmeler"); if (!s) return;
+  isaret.style.setProperty("--x", s.offsetLeft + "px"); isaret.style.setProperty("--o", s.offsetWidth / 100);
+  // sekmeyi şeridin ortasına getir — göreli fark: soldan sağa ve sağdan sola yazıda aynı çalışır
+  const nr = n.getBoundingClientRect(), sr = s.getBoundingClientRect();
+  n.scrollTo({ left: n.scrollLeft + (sr.left + sr.width / 2) - (nr.left + nr.width / 2), behavior: AZALT ? "auto" : "smooth" });
+}
+let bant = null;
+function bantKur() {
+  bant && bant.disconnect();
+  const ustH = $("m-ust").offsetHeight;
+  bant = new IntersectionObserver((g) => { const v = g.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (v[0] && !kaydirHedef) etkin(v[0].target.dataset.k); }, { root: kaydir, rootMargin: `-${ustH - 50}px 0px -60% 0px` });
+  bolumler.forEach((b) => bant.observe(b));
+}
+new IntersectionObserver(([e]) => $("m-ust").classList.toggle("golgeli", !e.isIntersecting), { root: kaydir }).observe($("m-h2"));
+/* Sekmeye dokun: kaydırma bir yayla (tarayıcının düz kaydırması yerine), gösterge hemen gider */
+let kaydirHedef = null, kaydirAnim = null;
+$("sekmeler").addEventListener("click", (e) => {
+  const s = e.target.closest(".sekme"); if (!s) return;
+  const b = $("k-" + s.dataset.k); etkin(s.dataset.k); kaydirHedef = s.dataset.k;
+  const hedef = Math.min(kaydir.scrollHeight - kaydir.clientHeight,
+    kaydir.scrollTop + b.getBoundingClientRect().top - kaydir.getBoundingClientRect().top - 8);
+  kaydirAnim && kaydirAnim.dur();
+  kaydirAnim = yay(kaydir.scrollTop, hedef, 0, (y) => (kaydir.scrollTop = y), () => (kaydirHedef = null), 260, 32);
+});
+kaydir.addEventListener("touchstart", () => { kaydirAnim && kaydirAnim.dur(); kaydirHedef = null; }, { passive: true });   // parmak kaydırmayı yakalar
+
+/* Arama */
+$("ara-ac").addEventListener("click", () => {
+  const a = $("ara"), acik = !a.classList.contains("acik");
+  a.classList.toggle("acik", acik); $("ara-ac").setAttribute("aria-expanded", acik);
+  if (acik) $("ara-kutu").focus(); else { $("ara-kutu").value = ""; suz(""); }
+  bantKur();
+});
+function suz(q) {
+  const s = sade(q.trim()); let bulunan = 0;
+  kaydirAnim && kaydirAnim.dur(); kaydir.scrollTop = 0;              // sonuçlar baştan görünsün
+  bolumler.forEach((b) => { let n = 0;
+    b.querySelectorAll(".urun").forEach((u) => { const ok = !s || u.dataset.ara.includes(s); u.hidden = !ok; n += ok;
+      const h = u.querySelector("h4"), ad = h.dataset.ad, j = s ? sade(ad).indexOf(s) : -1;
+      h.innerHTML = j < 0 ? kacis(ad) : kacis(ad.slice(0, j)) + "<mark>" + kacis(ad.slice(j, j + s.length)) + "</mark>" + kacis(ad.slice(j + s.length)); });
+    b.hidden = n === 0; bulunan += n; });
+  $("sekmeler").style.display = s ? "none" : ""; $("oneri").hidden = !!s;
+  $("bos").classList.toggle("gorunur", bulunan === 0);
+  $("bos").textContent = bulunan === 0 ? T("sonuc_yok", q.trim()) : "";
+  IZ.ara(q, bulunan);
+}
+$("ara-kutu").addEventListener("input", (e) => suz(e.target.value));
+
+/* ══════════════ KATMANLAR ══════════════ */
+const kok = $("kok"), alt = $("alt");
+const menuYaprak = new Yaprak($("menuYaprak"), $("perde1"), {
+  kaydirici: kaydir, surukleAlani: $("m-ust"),
+  // açılış geri çekilir, alt düğme aşağı iner — hepsi aynı ilerleme değerine bağlı
+  ilerleme(p) {
+    kok.style.transformOrigin = `50% ${scrollY + innerHeight * 0.5}px`;
+    kok.style.willChange = p > 0.001 && p < 0.999 ? "transform" : "";          // katman yalnız hareket sırasında (zayıf telefonda bellek)
+    kok.style.transform = p > 0.001 ? `scale(${(1 - 0.06 * p).toFixed(4)})` : "";
+    document.documentElement.classList.toggle("katmanli", p > 0.001);
+    alt.style.transform = p > 0.001 ? `translate3d(0,${(p * 120).toFixed(1)}%,0)` : "";
+    $("menu-ac").setAttribute("aria-expanded", p > 0.5);
+  },
+  kapandi() { const hv = document.querySelector(".foto video"); if (hv) hv.play().catch(() => {});
+    document.documentElement.classList.remove("kilit", "katmanli"); kok.style.transform = ""; kok.style.willChange = ""; alt.style.transform = "";
+    kok.inert = alt.inert = false; $("menu-ac").focus({ preventScroll: true }); },
+});
+const urunYaprak = new Yaprak($("urunYaprak"), $("perde2"), {
+  kaydirici: document.querySelector(".u-govde"), surukleAlani: $("u-medya"),
+  ilerleme(p) { ucusGuncelle && ucusGuncelle(p); },
+  kapandi() { panelMedyaTemizle(); $("menuYaprak").inert = false; if (sonDugme && sonDugme.isConnected) sonDugme.focus({ preventScroll: true }); },
+});
+
+/* ── ürün paneli + uçan görsel ── */
+let ucusGuncelle = null, kaynakKutu = null, ucan = null, acikUrun = -1;
+function panelDoldur(i, yerTutucu) {
+  const u = tum[i], m = medya(u), yer = $("u-medya");
+  yer.querySelectorAll("img,video").forEach((e) => e.remove());
+  const img = new Image(); img.alt = cev(u, "ad"); img.id = "u-gorsel"; img.className = "dusuk"; acikUrun = i;
+  img.src = yerTutucu || boyut(m.foto, 160, 160); yer.prepend(img);
+  const buyuk = new Image(); buyuk.src = boyut(m.foto, 1120, 840);
+  if (buyuk.complete && buyuk.naturalWidth) { img.src = buyuk.src; img.classList.remove("dusuk"); }   // dokunuşta indirildiyse keskin başla
+  buyuk.decode().then(() => { if (img.isConnected) { img.src = buyuk.src; img.classList.remove("dusuk"); } }).catch(() => {});
+  if (m.video && !AZALT && !TASARRUF) {
+    const v = document.createElement("video");
+    Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: "auto", src: m.video });
+    ["muted", "playsinline", "webkit-playsinline", "autoplay", "loop"].forEach((a) => v.setAttribute(a, ""));
+  v.setAttribute("aria-hidden", "true"); v.addEventListener("playing", () => v.classList.add("hazir"), { once: true }); yer.append(v); v.play().catch(() => {});
+  }
+  panelMetin(u);
+}
+function panelMetin(u) {
+  $("u-ad").textContent = cev(u, "ad"); $("u-fiyat").textContent = para(u.fiyat); $("u-aciklama").textContent = cev(u, "aciklama") || "";
+  $("u-etiket").innerHTML = etiketler(u).join(""); $("u-alerjen").innerHTML = alerjenYaz(u); $("u-kategori").textContent = kadi(u.kat);
+}
+function panelMedyaTemizle() { $("u-medya").querySelectorAll("video").forEach((v) => v.pause()); ucanKaldir(); }
+function ucanKaldir() { ucan && ucan.remove(); ucan = null; ucusGuncelle = null; $("u-medya").classList.remove("ucusta"); }
+/* dikdörtgen R'yi, r1 boyutlu klonda: tek tip ölçek + kırpma (en-boy oranı bozulmaz) */
+function ucanCiz(R, r1, yaricap) {
+  const sc = Math.max(R.w / r1.w, R.h / r1.h), cx = (r1.w - R.w / sc) / 2, cy = (r1.h - R.h / sc) / 2;
+  ucan.style.transform = `translate3d(${R.x - cx * sc}px,${R.y - cy * sc}px,0) scale(${sc})`;
+  ucan.style.clipPath = `inset(${cy}px ${cx}px round ${yaricap / sc}px)`;
+}
+const kutu = (el) => { const r = el.getBoundingClientRect(); return { x: r.left, y: r.top, w: r.width, h: r.height }; };
+function ucusKur(kaynakImg, yon) {
+  ucanKaldir(); if (AZALT || !kaynakImg || !kaynakImg.getClientRects().length) return;
+  const medyaEl = $("u-medya"), H = urunYaprak.H;
+  const r1 = kutu(medyaEl); r1.y -= urunYaprak.y;                 // panel açıkken (y=0) görselin yeri
+  const r0 = kutu(kaynakImg), r0Yaricap = parseFloat(getComputedStyle(kaynakImg.parentElement).borderRadius) || 12;
+  ucan = document.createElement("div"); ucan.className = "ucan"; ucan.style.width = r1.w + "px"; ucan.style.height = r1.h + "px";
+  const im = new Image(); im.src = $("u-gorsel").src; im.alt = ""; ucan.append(im); document.body.append(ucan);
+  medyaEl.classList.add("ucusta");
+  const yBas = urunYaprak.y;
+  ucusGuncelle = (p) => {
+    const y = urunYaprak.y;
+    // açılış: t = p (0 → 1); kapanış: başlangıç konumundan küçük görsele
+    const t = yon === "ac" ? p : Math.min(1, Math.max(0, (y - yBas) / Math.max(1, H - yBas)));
+    const hedef = { x: r1.x, y: r1.y + y, w: r1.w, h: r1.h };
+    const R = yon === "ac" ? { x: lerp(r0.x, hedef.x, t), y: lerp(r0.y, hedef.y, t), w: lerp(r0.w, hedef.w, t), h: lerp(r0.h, hedef.h, t) }
+      : { x: lerp(r1.x, r0.x, t), y: lerp(r1.y + yBas, r0.y, t), w: lerp(r1.w, r0.w, t), h: lerp(r1.h, r0.h, t) };
+    ucanCiz(R, r1, yon === "ac" ? lerp(r0Yaricap, 0, t) : lerp(0, r0Yaricap, t));
+    if (yon === "ac" && t > 0.995) ucanKaldir();
+  };
+  ucusGuncelle(1 - urunYaprak.y / H);
+}
+let sonKaynak = null, sonDugme = null;
+function urunAc(i, dugme, anlik = false) {
+  sonKaynak = dugme && dugme.querySelector("img"); sonDugme = dugme;
+  $("menuYaprak").inert = true;
+  panelDoldur(i, sonKaynak && sonKaynak.currentSrc);
+  IZ.urun(tum[i], dugme && dugme.classList.contains("vitrin"));
+  urunYaprak.el.classList.add("gorunur");
+  if (!urunYaprak.acik) urunYaprak.ayarla(urunYaprak.H);
+  if (!anlik) ucusKur(sonKaynak, "ac");
+  urunYaprak.ac(anlik);
+  $("u-kapat").focus({ preventScroll: true });
+}
+function urunKapat(hiz = 0) {
+  $("u-medya").querySelectorAll("video").forEach((v) => v.pause());
+  const gorunur = sonKaynak && sonKaynak.getClientRects().length && (() => { const r = sonKaynak.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; })();
+  if (gorunur) ucusKur(sonKaynak, "kapat"); else ucanKaldir();
+  urunYaprak.kapat(hiz);
+}
+/* dokunma anında büyük görseli indirmeye başla: panel açılınca çoğu zaman hazır */
+addEventListener("pointerdown", (e) => { if (e.target.closest("#menu-ac")) menuGorselleri(); }, { passive: true, capture: true });
+document.addEventListener("pointerdown", (e) => { const b = e.target.closest("[data-i]"); if (!b) return;
+  const m = medya(tum[+b.dataset.i]); if (m.foto) new Image().src = boyut(m.foto, 1120, 840); }, { passive: true });
+
+/* ══════════════ GEÇMİŞ: her katman bir adım ══════════════ */
+const TABAN = location.pathname.replace(/\/menu\/?$/, "").replace(/\/$/, "");
+let durumSahte = false;
+/* Menü görselleri menü ilk açılınca iner: yaprak ekranın hemen altında beklediği için tarayıcı onları
+   "görünmek üzere" sayıp açılışta indiriyor, kapak fotoğrafıyla bant genişliği paylaşıyordu (LCP). */
+function menuGorselleri() {
+  if (gorsellerVerildi) return; gorsellerVerildi = true; gorselVer();
+}
+function menuAc(anlik = false) {
+  menuGorselleri();
+  setTimeout(() => { const hv = document.querySelector(".foto video"); if (hv && menuYaprak.acik) hv.pause(); }, 500);   // açılış bitince
+  document.documentElement.classList.add("kilit");
+  kok.inert = alt.inert = true;                                      // ekran okuyucu arkadaki sayfayı okumasın
+  menuYaprak.ac(anlik); bantKur(); IZ.menu();
+  $("menu-kapat").focus({ preventScroll: true });                    // görünür olduktan sonra
+  requestAnimationFrame(() => { gelisIzle(); if (!isaret.classList.contains("hazir")) { etkin(bolumler[0].dataset.k); requestAnimationFrame(() => isaret.classList.add("hazir")); } });
+}
+function menuKapat(hiz = 0) { menuYaprak.kapat(hiz); }
+function geriCik(hiz = 0) {
+  // katmanı kapat ve geçmişi bir adım geri al (UI'dan kapatınca da tutarlı kalsın)
+  geriHiz = hiz;
+  if (history.state && history.state.k) history.back(); else durumaUy({ k: null }, hiz);
+}
+let geriHiz = 0;
+function durumaUy(s, hiz = 0) {
+  const hedef = s || {};
+  if (urunYaprak.acik && hedef.k !== "urun") urunKapat(hiz);
+  if (menuYaprak.acik && !hedef.k) menuKapat(urunYaprak.acik ? 0 : hiz);
+  if ((hedef.k === "menu" || hedef.k === "urun") && !menuYaprak.acik) menuAc();
+  if (hedef.k === "urun" && !urunYaprak.acik) urunAc(hedef.i, document.querySelector(`.urun[data-i="${hedef.i}"]`));
+}
+addEventListener("popstate", (e) => {
+  // iOS kenar kaydırması / Android geri hareketi zaten kendi animasyonunu oynattıysa ikinci kez oynatma
+  if (e.hasUAVisualTransition) { const eski = AZALT_ANLIK; AZALT_ANLIK = true; durumaUy(e.state, 0); AZALT_ANLIK = eski; }
+  else durumaUy(e.state, geriHiz);
+  geriHiz = 0;
+});
+
+$("menu-ac").addEventListener("click", () => { if (menuYaprak.acik) return; history.pushState({ k: "menu" }, "", TABAN + "/menu"); titret(6); menuAc(); });
+$("menu-kapat").addEventListener("click", () => geriCik());
+$("u-kapat").addEventListener("click", () => geriCik());
+addEventListener("keydown", (e) => { if (e.key === "Escape" && (menuYaprak.acik || urunYaprak.acik)) geriCik(); });
+document.addEventListener("click", (e) => { const b = e.target.closest("[data-i]"); if (!b || urunYaprak.acik) return;
+  // "Menüyü aç"a çift dokunuşta ikinci dokunuş, yükselen menüdeki bir ürüne denk gelmesin
+  if (performance.now() - (menuYaprak.acilis || 0) < 450) return;
+  history.pushState({ k: "urun", i: +b.dataset.i }, "", TABAN + "/menu#" + slug(tum[+b.dataset.i].ad)); urunAc(+b.dataset.i, b); });
+addEventListener("resize", () => { if (menuYaprak.acik) { menuYaprak.ayarla(0); bantKur(); } if (urunYaprak.acik) urunYaprak.ayarla(0); }, { passive: true });
+document.fonts.ready.then(() => { const e = document.querySelector('.sekme[aria-current="true"]'); if (e) etkin(e.dataset.k); });
+
+/* /menu ile gelindiyse menü açık başlar (geçmiş: açılış ← menü, geri tuşu açılışa döner) */
+if (/\/menu\/?$/.test(location.pathname)) {
+  const iz = location.hash;                                          // adres değişmeden önce oku
+  history.replaceState({ k: null }, "", TABAN || "/");
+  history.pushState({ k: "menu" }, "", TABAN + "/menu");
+  menuAc(true);
+  const i = tum.findIndex((u) => "#" + slug(u.ad) === decodeURIComponent(iz));   // /menu#brownie → ürün açık gelir
+  if (iz && i >= 0) {
+    history.replaceState({ k: "menu" }, "", TABAN + "/menu");
+    history.pushState({ k: "urun", i }, "", TABAN + "/menu#" + slug(tum[i].ad));
+    const d = document.querySelector(`.urun[data-i="${i}"]`);
+    requestAnimationFrame(() => { d.scrollIntoView({ block: "center" }); urunAc(i, d, true); });
+  }
+}
+/* ══════════════ DİL SEÇİCİ ══════════════ */
+function dilSeciciCiz() {
+  const d = ISLETME.diller || ["tr"], k = $("dil-sec");
+  k.hidden = d.length < 2;
+  k.innerHTML = d.map((x) => `<button type="button" lang="${x}" data-dil="${x}" aria-label="${DIL_ADI[x][1]}" aria-pressed="${x === DIL}">${DIL_ADI[x][0]}</button>`).join("");
+}
+function dilDegistir(d) {
+  if (d === DIL || !(ISLETME.diller || []).includes(d)) return;
+  DIL = d; document.documentElement.lang = d;
+  try { localStorage.setItem("qm-dil", d); } catch {}
+  const ara = $("ara-kutu").value;
+  acilisCiz(); menuCiz();
+  requestAnimationFrame(() => { $("serit").scrollLeft = 0; });   // yeni dilde öneriler baştan
+  if (ara) suz(ara);
+  if (menuYaprak.acik) { bantKur(); const g = bolumler.find((b) => b.getBoundingClientRect().bottom > kaydir.getBoundingClientRect().top + 60); etkin((g || bolumler[0]).dataset.k); }
+  else isaret.classList.remove("hazir");
+  if (urunYaprak.acik && acikUrun >= 0) panelMetin(tum[acikUrun]);
+}
+$("dil-sec").addEventListener("click", (e) => { const b = e.target.closest("[data-dil]"); if (b) { titret(6); if (b.dataset.dil !== DIL) IZ.eylem("dil"); dilDegistir(b.dataset.dil); } });
+
+/* ══════════════ GECE MODU ══════════════
+   Varsayılan: telefonun ayarı (başlıkta, boyamadan önce uygulanır). Düğmeyle seçilen hatırlanır;
+   seçim yoksa telefon ayarı değişince sayfa da değişir. */
+const geceMi = () => document.documentElement.classList.contains("gece");
+function temaRengi() { $("tema-rengi").content = getComputedStyle(document.documentElement).getPropertyValue("--zemin").trim(); }
+function geceUygula(g, kaydet) {
+  const h = document.documentElement;
+  if (!AZALT) { h.classList.add("gecis"); clearTimeout(geceUygula._z); geceUygula._z = setTimeout(() => h.classList.remove("gecis"), 420); }
+  h.classList.toggle("gece", g);
+  if (kaydet) try { localStorage.setItem("qm-gece", g ? "1" : "0"); } catch {}
+  document.querySelectorAll(".gece-dugme").forEach((b) => b.setAttribute("aria-pressed", g));
+  temaRengi();
+}
+document.querySelectorAll(".gece-dugme").forEach((b) => b.addEventListener("click", () => { titret(6); IZ.eylem("gece"); geceUygula(!geceMi(), true); }));
+/* dışarı giden bağlantılar ve Wi-Fi kopyalama: panelde "etkileşimler" */
+[["wifi", "wifi"], ["instagram", "instagram"], ["yorum", "yorum"], ["telefon", "telefon"], ["adres", "yol"]].forEach(([id, k]) => $(id).addEventListener("click", () => IZ.eylem(k)));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => { let k = null; try { k = localStorage.getItem("qm-gece"); } catch {} if (k === null) geceUygula(e.matches, false); });
+document.querySelectorAll(".gece-dugme").forEach((b) => b.setAttribute("aria-pressed", geceMi()));
+temaRengi();
+acilisCiz();
+
+/* D: iOS Safari :active durumunu ancak bir touchstart dinleyicisi varsa gösterir */
+document.addEventListener("touchstart", () => {}, { passive: true });
+addEventListener("pointerdown", () => document.documentElement.classList.add("dokunmatik"), { passive: true, capture: true });
+addEventListener("keydown", (e) => { if (e.key === "Tab") document.documentElement.classList.remove("dokunmatik"); }, { capture: true });
+/* K: geri gelince (bfcache: Instagram'dan dönüş) videolar yeniden oynasın */
+addEventListener("pageshow", (e) => { if (e.persisted) document.querySelectorAll("video").forEach((v) => v.play().catch(() => {})); });
+</script>
+</body>
+</html>
